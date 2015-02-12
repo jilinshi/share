@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="check" namespace="/page/check" extends="json-default">
+		<interceptors>
+			<interceptor name="operationlogInterceptor"
+				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
+			<interceptor name="authorityInterceptor"
+				class="com.share.interceptor.AuthorityInterceptor"></interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="authorityInterceptor" />
+				<interceptor-ref name="operationlogInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
+		<action name="querymemberinfoinit" method="queryMemberInfoInit"
+			class="checkAction">
+			<result name="success">/page/check/check_query_memberinfo.jsp</result>
+		</action>
+		<action name="querymemberinfo" method="queryMemberInfo" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="checkssninit" method="checkSSNInit" class="checkAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="changstatusinit" method="changStatusInit" class="checkAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="changstatus" method="changStatus" class="checkAction">
+			<result type="json">
+				<param name="root">u_result</param>
+			</result>
+		</action>
+		<action name="getguarantee" method="getGuarantee" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="gettoguarantee" method="getToGuarantee" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="getallguarantee" method="getAllGuarantee" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="getalltoguarantee" method="getAllToGuarantee" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+	</package>
+</struts>   
