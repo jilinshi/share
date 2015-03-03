@@ -10,7 +10,7 @@
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.action.extension" value="action" />
 	<constant name="struts.serve.static.browserCache" value="false" />
-	<package name="common" namespace="/page/common" extends="struts-default">
+	<package name="login" namespace="/" extends="struts-default">
 		<interceptors>
 			<interceptor name="operationlogInterceptor"
 				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
@@ -21,11 +21,11 @@
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
 		<global-results>
-			<result name="nouser" type="redirect">/login.jsp</result>
+			<result name="nouser" type="redirect">/logout.jsp</result>
 		</global-results>
 		<action name="login" method="login" class="loginAction">
-			<result name="success">/main.jsp</result>
-			<result name="error">/login.jsp</result>
+			<result name="success" type="redirect">/page/html/index.jsp</result>
+			<result name="error">/logout.jsp</result>
 		</action>
 	</package>
 	<include file="com/in/action/check/struts-check.xml"></include>

@@ -1,19 +1,100 @@
 package com.share.dto;
 
-import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class UserDTO {
 
-	private String username;
-	private String password;
-	private String account;
-	private String empidcard;
-	private String employeeId;
-	private String idcard;
-	private String ipaddr;
-	private BigDecimal isadmin;
-	private String organizationId;
+	private long userId;
+
+	private Timestamp ctime;
+
+	private String flag;
+
+	private String idno;
+
+	private String mobilephone;
+
+	private String uaccount;
+
+	private String uname;
+
+	private String upwds;
+
+	private Timestamp utime;
+
 	private String token;
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public Timestamp getCtime() {
+		return ctime;
+	}
+
+	public void setCtime(Timestamp ctime) {
+		this.ctime = ctime;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+	public String getIdno() {
+		return idno;
+	}
+
+	public void setIdno(String idno) {
+		this.idno = idno;
+	}
+
+	public String getMobilephone() {
+		return mobilephone;
+	}
+
+	public void setMobilephone(String mobilephone) {
+		this.mobilephone = mobilephone;
+	}
+
+	public String getUaccount() {
+		return uaccount;
+	}
+
+	public void setUaccount(String uaccount) {
+		this.uaccount = uaccount;
+	}
+
+	public String getUname() {
+		return uname;
+	}
+
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+
+	public String getUpwds() {
+		return upwds;
+	}
+
+	public void setUpwds(String upwds) {
+		this.upwds = upwds;
+	}
+
+	public Timestamp getUtime() {
+		return utime;
+	}
+
+	public void setUtime(Timestamp utime) {
+		this.utime = utime;
+	}
 
 	public String getToken() {
 		return token;
@@ -21,78 +102,6 @@ public class UserDTO {
 
 	public void setToken(String token) {
 		this.token = token;
-	}
-
-	public String getAccount() {
-		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public String getEmpidcard() {
-		return empidcard;
-	}
-
-	public void setEmpidcard(String empidcard) {
-		this.empidcard = empidcard;
-	}
-
-	public String getEmployeeId() {
-		return employeeId;
-	}
-
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
-	}
-
-	public String getIdcard() {
-		return idcard;
-	}
-
-	public void setIdcard(String idcard) {
-		this.idcard = idcard;
-	}
-
-	public String getIpaddr() {
-		return ipaddr;
-	}
-
-	public void setIpaddr(String ipaddr) {
-		this.ipaddr = ipaddr;
-	}
-
-	public BigDecimal getIsadmin() {
-		return isadmin;
-	}
-
-	public void setIsadmin(BigDecimal isadmin) {
-		this.isadmin = isadmin;
-	}
-
-	public String getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(String organizationId) {
-		this.organizationId = organizationId;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 }

@@ -182,6 +182,15 @@ public interface BaseDAO<T> {
 	 * @return
 	 */
 	public List<Object> findJDBCSql(String sql,  List<Object> param);
+	
+	/**
+	 * 执行原生sQL语句
+	 * 
+	 * @param sql
+	 * @param param
+	 * @return
+	 */
+	public List<Object> findJDBCSql(String sql,  Object[] param);
 
 	/**
 	 * 执行原生sQL语句 查询总数
@@ -191,5 +200,36 @@ public interface BaseDAO<T> {
 	 * @return
 	 * 
 	 */
+	
+	public List<Object[]> findJDBCSql(String sql,  Object[] param, Object[] clz);
+	
+	/**
+	 * 执行原生sQL语句 查询总数
+	 * 
+	 * @param sql
+	 * @param param
+	 * @return
+	 * 
+	 */
+	
+	public List<T> findJDBCSql(String sql,  Object[] param, Class<T> clz);
+	/**
+	 * 执行原生sQL语句 查询总数
+	 * 
+	 * @param sql
+	 * @param param
+	 * @return
+	 * 
+	 */
+	
 	public Long countJDBCsql(String sql,  List<Object> param);
+	/**
+	 * 执行原生sQL语句 查询总数
+	 * 
+	 * @param sql
+	 * @param param
+	 * @return
+	 * 
+	 */
+	public Long countJDBCsql(String sql, Object[] param);
 }

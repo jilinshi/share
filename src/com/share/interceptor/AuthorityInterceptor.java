@@ -2,7 +2,6 @@ package com.share.interceptor;
 
 import java.util.Map;
 
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -20,7 +19,7 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 		Map session = ctx.getSession();
 		UserDTO user = (UserDTO) session.get("user");
 		if (null == user) {
-			return Action.LOGIN;
+			return "nouser";
 		} else {
 			return invocation.invoke();
 		}

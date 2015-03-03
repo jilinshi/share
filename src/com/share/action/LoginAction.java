@@ -1,5 +1,7 @@
 package com.share.action;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.share.dto.MenuDTO;
 import com.share.dto.UserDTO;
 import com.share.service.YbService;
 
@@ -24,13 +27,16 @@ public class LoginAction extends ActionSupport {
 
 	public String login() {
 		UserDTO userDTO = new UserDTO();
-		userDTO.setAccount(username);
-		userDTO.setPassword(password);
+		userDTO.setUaccount(username);
+		userDTO.setUpwds(password);
 		userDTO.setToken(token);
 		userDTO = ybjkService.findUser(userDTO);
-		log.info("======info>>" + username + ">>>" + password);
+		log.info("======info>>" + username + ">>>");
 		if (null != userDTO) {
 			ActionContext.getContext().getSession().put("user", userDTO);
+			log.info("==========="+userDTO.getUserId()+"==========================");
+			List<MenuDTO> menus = ybjkService.findMenusByUser(userDTO);
+			log.info("===========²Ëµ¥ÊýÁ¿====="+menus.size()+"=========================="+menus.get(0).getMenuname());
 			return SUCCESS;
 		} else {
 			return "nouser";

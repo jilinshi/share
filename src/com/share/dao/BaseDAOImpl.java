@@ -6,10 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.share.model.SysMenus;
 
 @Repository("baseDAO")
 @SuppressWarnings("all")
@@ -37,13 +40,12 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	public void delete(T o) {
 		this.getCurrentSession().delete(o);
 	}
-	
 
 	public void update(T o) {
 		this.getCurrentSession().update(o);
 	}
-	
-	public int update(String hql, Object[] param){
+
+	public int update(String hql, Object[] param) {
 		Query q = this.getCurrentSession().createQuery(hql);
 		if (param != null && param.length > 0) {
 			for (int i = 0; i < param.length; i++) {
@@ -80,7 +82,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 		}
 		return q.list();
 	}
-	
+
 	public List<T> find_top(String hql, Object[] param, int fr, int maxr) {
 		Query q = this.getCurrentSession().createQuery(hql);
 		if (param != null && param.length > 0) {
@@ -197,11 +199,22 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	}
 
 	@Override
-	public List findJDBCSql(String sql, List<Object> param) {
+	public List<Object> findJDBCSql(String sql, List<Object> param) {
 		Query q = this.getCurrentSession().createSQLQuery(sql);
 		if (param != null && param.size() > 0) {
 			for (int i = 0; i < param.size(); i++) {
 				q.setParameter(i, param.get(i));
+			}
+		}
+		return q.list();
+	}
+
+	@Override
+	public List<Object> findJDBCSql(String sql, Object[] param) {
+		Query q = this.getCurrentSession().createSQLQuery(sql);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
 			}
 		}
 		return q.list();
@@ -220,6 +233,51 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 			b = (BigDecimal) iterator.next();
 		}
 		return b.longValue();
+	}
+
+	@Override
+	public Long countJDBCsql(String sql, Object[] param) {
+		Query q = this.getCurrentSession().createSQLQuery(sql);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		BigDecimal b = new BigDecimal(0);
+		for (Iterator iterator = q.list().iterator(); iterator.hasNext();) {
+			b = (BigDecimal) iterator.next();
+		}
+		return b.longValue();
+	}
+
+	@Override
+	public List<Object[]> findJDBCSql(String sql, Object[] param, Object[] clz) {
+		SQLQuery q = this.getCurrentSession().createSQLQuery(sql);
+
+		if (clz != null && clz.length > 0) {
+			for (int i = 0; i < clz.length; i++) {
+				q.addEntity((Class) clz[i]);
+			}
+		}
+
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		return q.list();
+	}
+
+	@Override
+	public List<T> findJDBCSql(String sql, Object[] param, Class clz) {
+		SQLQuery q = this.getCurrentSession().createSQLQuery(sql)
+				.addEntity(clz);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		return q.list();
 	}
 
 }

@@ -55,12 +55,12 @@ public class CheckAction extends ActionSupport {
 
 	@SuppressWarnings("rawtypes")
 	public String queryMemberInfoInit() {
-		log.info("进入人员信息核对页面---begin---queryMemberInfoInit");
+		/*log.info("进入人员信息核对页面---begin---queryMemberInfoInit");
 		Map session = ActionContext.getContext().getSession();
 		UserDTO user = (UserDTO) session.get("user");
-		String orgno = user.getOrganizationId();
+		//String orgno = user.getOrganizationId();
 		orgs = ybjkService.findOrganlist(orgno);
-		log.info("进入人员信息核对页面---end---queryMemberInfoInit");
+		log.info("进入人员信息核对页面---end---queryMemberInfoInit");*/
 		return SUCCESS;
 	}
 

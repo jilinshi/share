@@ -12,6 +12,16 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<!-- session filter -->
+	<filter>
+		<filter-name>sessionfilter</filter-name>
+		<filter-class>com.share.filter.SessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessionfilter</filter-name>
+		<url-pattern>/page/*</url-pattern>
+	</filter-mapping>
+
 	<!-- 添加对struts2的支持 -->
 	<filter>
 		<filter-name>struts2</filter-name>
@@ -44,6 +54,6 @@
 		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
 	</listener>
 	<welcome-file-list>
-		<welcome-file>login.jsp</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>  

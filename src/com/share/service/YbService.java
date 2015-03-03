@@ -5,6 +5,7 @@ import java.util.List;
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
 import com.share.dto.MemberDTO;
+import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
 
@@ -28,4 +29,6 @@ public interface YbService {
 	public List<BillCsDTO> findALLBillCsByFNO(BillCsDTO billCsDTO);
 	
 	public List<BillNcDTO> findALLBillNcByFNO(BillNcDTO billNcDTO);
+	
+	public List<MenuDTO> findMenusByUser(UserDTO userDTO);
 }
