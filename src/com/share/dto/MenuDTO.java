@@ -23,6 +23,8 @@ public class MenuDTO {
 
 	private Timestamp utime;
 
+	private String ico;
+
 	public long getMenuId() {
 		return menuId;
 	}
@@ -93,6 +95,14 @@ public class MenuDTO {
 
 	public void setUtime(Timestamp utime) {
 		this.utime = utime;
+	}
+
+	public String getIco() {
+		return ico;
+	}
+
+	public void setIco(String ico) {
+		this.ico = ico;
 	}
 
 }

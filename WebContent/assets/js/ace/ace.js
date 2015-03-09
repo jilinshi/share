@@ -97,11 +97,11 @@ jQuery(function($) {
 				//elements: {selectors: ['.page-content-area']}
 			}
 		}
-
+		//--------------------
 		var demo_ajax_options = {
 			 'close_active': true,
 			 
-			 'default_url': 'page/html/index.jsp',//default hash
+			 'default_url': 'page/html/content/index.html',//default hash
 			 'content_url': function(hash) {
 				//***NOTE***
 				//this is for Ace demo only, you should change it to return a valid URL

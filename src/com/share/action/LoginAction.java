@@ -18,6 +18,7 @@ import com.share.dto.SysLogDTO;
 import com.share.dto.UserDTO;
 import com.share.service.SysMgrService;
 import com.share.service.YbService;
+import com.share.util.GenMenu;
 
 @Controller
 public class LoginAction extends ActionSupport {
@@ -39,6 +40,10 @@ public class LoginAction extends ActionSupport {
 		HttpServletRequest request = (HttpServletRequest) ctx
 				.get(ServletActionContext.HTTP_REQUEST);
 
+		String path = request.getContextPath();
+		String basePath = request.getScheme() + "://" + request.getServerName()
+				+ ":" + request.getServerPort() + path + "/";
+
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUaccount(username);
 		userDTO.setUpwds(password);
@@ -47,34 +52,41 @@ public class LoginAction extends ActionSupport {
 		log.info("======info>>" + username + ">>>");
 		if (null != userDTO) {
 			ActionContext.getContext().getSession().put("user", userDTO);
+
 			log.info("===========" + userDTO.getUserId()
 					+ "==========================");
 			List<MenuDTO> menus = ybjkService.findMenusByUser(userDTO);
 			log.info("===========菜单数量=====" + menus.size()
 					+ "==========================" + menus.get(0).getMenuname());
 
-			SysLogDTO l = new SysLogDTO();
-			l.setIpaddr(request.getRemoteHost() + ":" + request.getRemotePort()
-					+ "<" + request.getRemoteAddr() + "-"
-					+ request.getRemoteUser() + ">");
-			l.setLogInfo("操作:用户登录-登录名:aaa-结果:成功");
-			l.setUrl(request.getServletPath());
-			l.setUserId(new BigDecimal(userDTO.getUserId()));
-			sysMgrService.saveSysLogs(l);
+			String info = "操作:用户登录-登录名:aaa-结果:成功";
+			saveSyslog(request, userDTO, info);
 
+			GenMenu gm = new GenMenu();
+			String menuinfo = gm.getMenuStr(menus);
+			menuinfo = menuinfo.replace("***", " ");
+			menuinfo = menuinfo.replace("*u*", basePath);
+			ActionContext.getContext().getSession().put("menuinfo", menuinfo);
 			return SUCCESS;
 		} else {
-			SysLogDTO l = new SysLogDTO();
-			l.setIpaddr(request.getRemoteHost() + ":" + request.getRemotePort()
-					+ "<" + request.getRemoteAddr() + "-"
-					+ request.getRemoteUser() + ">");
-			l.setLogInfo("操作:用户登录-登录名:aaa-结果:失败");
-			l.setUrl(request.getServletPath());
-			l.setUserId(null);
-			sysMgrService.saveSysLogs(l);
+
+			String info = "操作:用户登录-登录名:aaa-结果:失败";
+			saveSyslog(request, userDTO, info);
 			return "nouser";
 		}
 
+	}
+
+	private void saveSyslog(HttpServletRequest request, UserDTO userDTO,
+			String info) {
+		SysLogDTO l = new SysLogDTO();
+		l.setIpaddr(request.getRemoteHost() + ":" + request.getRemotePort()
+				+ "<" + request.getRemoteAddr() + "-" + request.getRemoteUser()
+				+ ">");
+		l.setLogInfo(info);
+		l.setUrl(request.getServletPath());
+		l.setUserId(new BigDecimal(userDTO.getUserId()));
+		sysMgrService.saveSysLogs(l);
 	}
 
 	public String getUsername() {
@@ -100,5 +112,4 @@ public class LoginAction extends ActionSupport {
 	public void setToken(String token) {
 		this.token = token;
 	}
-
 }
