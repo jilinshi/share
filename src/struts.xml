@@ -28,5 +28,5 @@
 			<result name="error">/logout.jsp</result>
 		</action>
 	</package>
-	<include file="com/in/action/check/struts-check.xml"></include>
+	<include file="/com/share/action/imp/struts-imp.xml"></include>
 </struts>   
