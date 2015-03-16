@@ -38,6 +38,10 @@ public class ImpAction extends ActionSupport {
 	private String singleContentType; // 文件类型
 
 	private String uptype;
+	
+	private String realname;
+	private String realpath;
+	private String fileid;
 
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
@@ -77,6 +81,7 @@ public class ImpAction extends ActionSupport {
 			Map jsonMap = new HashMap();
 			jsonMap.put("fileid", "111");// total键
 			jsonMap.put("realname", realname);
+			jsonMap.put("realpath", realpath);
 			map = jsonMap;		
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -157,7 +162,14 @@ public class ImpAction extends ActionSupport {
 		String extension = fileName.substring(position);
 		return formatDate + random + extension;
 	}
-
+	
+	public String removedfile(){
+		System.out.println(realpath);
+		File file =new File(realpath);
+		file.delete();
+		return SUCCESS;
+	}
+	
 	public File[] getEc() {
 		return ec;
 	}
@@ -213,5 +225,30 @@ public class ImpAction extends ActionSupport {
 	public void setUptype(String uptype) {
 		this.uptype = uptype;
 	}
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+
+	public String getRealpath() {
+		return realpath;
+	}
+
+	public void setRealpath(String realpath) {
+		this.realpath = realpath;
+	}
+
+	public String getFileid() {
+		return fileid;
+	}
+
+	public void setFileid(String fileid) {
+		this.fileid = fileid;
+	}
+	
 
 }

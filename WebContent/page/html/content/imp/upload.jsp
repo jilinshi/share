@@ -62,11 +62,23 @@
 		  init: function () {
 	            this.on("complete", function (data) {                
 	                var res = eval('(' + data.xhr.responseText + ')');
-	                alert(res.realname);
+	            });
+	            this.on("removedfile", function (data) {                
+	                var res = eval('(' + data.xhr.responseText + ')');
+	                remfile(res.fileid,res.realname,res.realpath);  
 	            });
 	        }
 
 	  });
+	  
+	  function remfile(fid,realname,realpath){
+		  $.ajax({url: "<%=basePath%>page/html/content/imp/removedfile.action",
+			  type:"GET",
+			  dataType:"JSON",
+			  data: {'fileid':fid, 'realname':realname, 'realpath':realpath},
+              success: function(){
+		 }});
+	  }
 	  
 	   $(document).one('ajaxloadstart.page', function(e) {
 			try {

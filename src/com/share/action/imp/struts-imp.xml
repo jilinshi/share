@@ -23,5 +23,11 @@
 			</result>
 			<!-- <result name="success">/page/common/success.jsp</result> -->
 		</action>
+		<action name="removedfile"  method="removedfile" class="impAction">
+			 <result type="json">
+				<param name="root">map</param>
+			</result>
+			<!-- <result name="success">/page/common/success.jsp</result> -->
+		</action>
 	</package>
 </struts>   
