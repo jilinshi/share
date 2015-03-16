@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 @NamedQuery(name = "SysVGmenu.findAll", query = "SELECT s FROM SysVGmenu s")
 public class SysVGmenu implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
+
 	@Column(length = 256)
 	private String idno;
-
+	@Id
 	@Column(precision = 22)
 	private BigDecimal idx;
 

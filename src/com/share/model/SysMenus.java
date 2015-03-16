@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -46,6 +47,10 @@ public class SysMenus implements Serializable {
 	private String remark;
 
 	private Timestamp utime;
+
+	//bi-directional many-to-many association to SysPrivilege
+	@ManyToMany(mappedBy="sysMenuses")
+	private List<SysPrivilege> sysPrivileges;
 
 	public SysMenus() {
 	}
@@ -128,6 +133,14 @@ public class SysMenus implements Serializable {
 
 	public void setUtime(Timestamp utime) {
 		this.utime = utime;
+	}
+
+	public List<SysPrivilege> getSysPrivileges() {
+		return this.sysPrivileges;
+	}
+
+	public void setSysPrivileges(List<SysPrivilege> sysPrivileges) {
+		this.sysPrivileges = sysPrivileges;
 	}
 
 }

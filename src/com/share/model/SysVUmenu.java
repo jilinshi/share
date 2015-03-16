@@ -1,9 +1,7 @@
 package com.share.model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 
 /**
@@ -15,10 +13,10 @@ import java.math.BigDecimal;
 @NamedQuery(name = "SysVUmenu.findAll", query = "SELECT s FROM SysVUmenu s")
 public class SysVUmenu implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
+
 	@Column(length = 256)
 	private String idno;
-
+	@Id
 	@Column(precision = 22)
 	private BigDecimal idx;
 
