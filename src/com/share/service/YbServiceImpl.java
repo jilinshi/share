@@ -79,11 +79,25 @@ public class YbServiceImpl implements YbService {
 	@Override
 	public String finMembersCount(String sql, List<Object> param) {
 
-		/*
-		 * Long cnt = memberBaseinfoDAO.countJDBCsql(sql, param); if (null !=
-		 * cnt) { return cnt + ""; } else { return "0"; }
-		 */
-		return null;
+		
+		 Long cnt = sysUserDAO.countJDBCsql(sql, param); if (null !=
+		 cnt) { return cnt + ""; } else { return "0"; }
+		 
+	}
+	
+	public List<UserDTO> finMemberstest(String sql, List<Object> param) {
+		List<UserDTO> resultlist = new ArrayList<UserDTO>();
+
+		
+		  List rs = sysUserDAO.findJDBCSql(sql, param); for (Iterator
+		  iterator = rs.iterator(); iterator.hasNext();) { UserDTO e = new
+				  UserDTO(); Object[] s = (Object[]) iterator.next();
+		  e.setFlag("" + s[7]);
+		  e.setUname("" + s[4]);
+		  resultlist.add(e); }
+		 
+
+		return resultlist;
 	}
 
 	public List<OrganizationDTO> findOrganlist(String onno) {

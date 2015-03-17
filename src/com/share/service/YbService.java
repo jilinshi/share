@@ -31,4 +31,6 @@ public interface YbService {
 	public List<BillNcDTO> findALLBillNcByFNO(BillNcDTO billNcDTO);
 	
 	public List<MenuDTO> findMenusByUser(UserDTO userDTO);
+	
+	public List<UserDTO> finMemberstest(String sql, List<Object> param);
 }
