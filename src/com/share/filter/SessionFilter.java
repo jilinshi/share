@@ -19,6 +19,7 @@ public class SessionFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest arg0, ServletResponse arg1,
 			FilterChain arg2) throws IOException, ServletException {
+
 		if (((HttpServletRequest) arg0).getSession().getAttribute("user") == null) {
 			String contextPath = ((HttpServletRequest) arg0).getContextPath();
 			((HttpServletResponse) arg1).sendRedirect(contextPath
