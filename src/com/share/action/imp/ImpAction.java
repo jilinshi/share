@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,12 +19,13 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.share.service.YbService;
+import com.share.dto.FileDTO;
+import com.share.service.ImpService;
 
 @Controller
 public class ImpAction extends ActionSupport {
 	@Resource
-	private YbService ybjkService;
+	private ImpService impService;
 	/**
 	 * 
 	 */
@@ -37,11 +39,7 @@ public class ImpAction extends ActionSupport {
 	private String singleFileName; // 文件名称
 	private String singleContentType; // 文件类型
 
-	private String uptype;
-	
-	private String realname;
-	private String realpath;
-	private String fileid;
+	private FileDTO fileDTO;
 
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
@@ -53,20 +51,21 @@ public class ImpAction extends ActionSupport {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String upload() {
-		
-		String displayname="";
-		String realname="";
-		String realpath="";
-		
+
+		String displayname = "";
+		String realname = "";
+		String realpath = "";
+
 		try {
 			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
 			// 取得需要上传的文件数组
 			File files = this.getSingle();
 			// 建立上传文件的输出流, getImageFileName()[i]
-			displayname=this.getSingleFileName();
-			realname=this.generateFileName(displayname);
-			realpath =savepath + "" + realname;
+			displayname = this.getSingleFileName();
+			realname = this.generateFileName(displayname);
+			realpath = savepath + "" + realname;
 			FileOutputStream fos = new FileOutputStream(realpath);
 			// 建立上传文件的输入流
 			FileInputStream fis = new FileInputStream(files);
@@ -77,12 +76,13 @@ public class ImpAction extends ActionSupport {
 			}
 			fos.close();
 			fis.close();
-			
+
 			Map jsonMap = new HashMap();
-			jsonMap.put("fileid", "111");// total键
+			jsonMap.put("fileid", "-1");// total键
 			jsonMap.put("realname", realname);
 			jsonMap.put("realpath", realpath);
-			map = jsonMap;		
+			jsonMap.put("displayname", displayname);
+			map = jsonMap;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -100,7 +100,6 @@ public class ImpAction extends ActionSupport {
 	 * @return
 	 */
 	public String uploadmulti() {
-		System.out.println("1111");
 		try {
 			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
 
@@ -133,7 +132,6 @@ public class ImpAction extends ActionSupport {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("2222");
 		return SUCCESS;
 	}
 
@@ -162,14 +160,34 @@ public class ImpAction extends ActionSupport {
 		String extension = fileName.substring(position);
 		return formatDate + random + extension;
 	}
-	
-	public String removedfile(){
-		System.out.println(realpath);
-		File file =new File(realpath);
+
+	public String removedfile() {
+		System.out.println(fileDTO.getFilename());
+		File file = new File(fileDTO.getRealpath());
 		file.delete();
 		return SUCCESS;
 	}
-	
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String addfile() {
+		System.out.println(fileDTO.getFilename());
+		fileDTO.setOpertime(new Timestamp(new Date().getTime()));
+		fileDTO.setOperstat("处理中");
+		// 有效记录
+		fileDTO.setFlag("1");
+		fileDTO.setFileId(null);
+		fileDTO=impService.saveFileinfo(fileDTO);
+		
+		Map jsonMap = new HashMap();
+		jsonMap.put("fileid", fileDTO.getFileId().toString());// total键
+		jsonMap.put("realname", fileDTO.getRealname());
+		jsonMap.put("realpath", fileDTO.getRealpath());
+		jsonMap.put("displayname", fileDTO.getRealpath());
+		map = jsonMap;
+		
+		return SUCCESS;
+	}
+
 	public File[] getEc() {
 		return ec;
 	}
@@ -218,37 +236,12 @@ public class ImpAction extends ActionSupport {
 		this.singleContentType = singleContentType;
 	}
 
-	public String getUptype() {
-		return uptype;
+	public FileDTO getFileDTO() {
+		return fileDTO;
 	}
 
-	public void setUptype(String uptype) {
-		this.uptype = uptype;
+	public void setFileDTO(FileDTO fileDTO) {
+		this.fileDTO = fileDTO;
 	}
-
-	public String getRealname() {
-		return realname;
-	}
-
-	public void setRealname(String realname) {
-		this.realname = realname;
-	}
-
-	public String getRealpath() {
-		return realpath;
-	}
-
-	public void setRealpath(String realpath) {
-		this.realpath = realpath;
-	}
-
-	public String getFileid() {
-		return fileid;
-	}
-
-	public void setFileid(String fileid) {
-		this.fileid = fileid;
-	}
-	
 
 }

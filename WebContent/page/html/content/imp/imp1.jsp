@@ -5,16 +5,22 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	session.invalidate();
-	System.out.println("session 超时");
-	//response.sendRedirect(basePath+"login.jsp");
 %>
-<div class="page-content-area" data-ajax-content="true">
-						<!-- ajax content goes here 页面加载这里-->
-					</div>
+<title>Blank Page - Ace Admin</title>
+
+<!-- ajax layout which only needs content area -->
+<div class="row">
+	<div class="col-xs-12">
+		<!-- PAGE CONTENT BEGINS -->
+		<h1>
+		<%= basePath%></h1>
+		<!-- PAGE CONTENT ENDS -->
+	</div><!-- /.col -->
+</div><!-- /.row -->
+
+<!-- page specific plugin scripts -->
 <script type="text/javascript">
 	var scripts = [null, null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-		window.location.href="<%=basePath%>login.jsp";
 	});
 </script>

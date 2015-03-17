@@ -5,6 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	String ftype="INSURANCE";
 %>
 <title>吉林市信息共享平台</title>
 
@@ -60,8 +61,10 @@
 		previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
 		,
 		  init: function () {
-	            this.on("complete", function (data) {                
+	            this.on("success", function (data) {                
 	                var res = eval('(' + data.xhr.responseText + ')');
+	                var ftype='<%=ftype%>';
+	                addfile(res.fileid,res.realname,res.realpath,res.displayname,ftype);
 	            });
 	            this.on("removedfile", function (data) {                
 	                var res = eval('(' + data.xhr.responseText + ')');
@@ -77,6 +80,17 @@
 			  dataType:"JSON",
 			  data: {'fileid':fid, 'realname':realname, 'realpath':realpath},
               success: function(){
+            	  alert("文件和文件所产生的记录已经删除");
+		 }});
+	  }
+	  
+	  function addfile(fid,realname,realpath,displayname,ftype){
+		  $.ajax({url: "<%=basePath%>page/html/content/imp/addfile.action",
+			  type:"GET",
+			  dataType:"JSON",
+			  data: {'fileDTO.fileid':fid, 'fileDTO.realname':realname, 'fileDTO.realpath':realpath, 'fileDTO.displayname':displayname,'fileDTO.ftype':ftype},
+              success: function(){
+            	  //alert("文件上传成功");
 		 }});
 	  }
 	  
