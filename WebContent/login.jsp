@@ -6,6 +6,7 @@
 			+ path + "/";
 	String token=request.getParameter("token");
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -92,7 +93,7 @@
 
 													<div class="clearfix">
 														<label class="inline">
-															<input type="checkbox" class="ace" />
+															<input name="ace" type="checkbox" class="ace" value="1"/>
 															<span class="lbl">记住我</span>
 														</label>
 
@@ -348,4 +349,9 @@
 			});
 		</script>
 	</body>
+	<script type="text/javascript">
+if(window.opener!=null){
+	window.opener.close();
+}
+</script>
 </html>

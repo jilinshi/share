@@ -2,11 +2,17 @@ package com.share.action;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,9 +27,15 @@ import com.share.service.YbService;
 import com.share.util.GenMenu;
 
 @Controller
-public class LoginAction extends ActionSupport {
+public class LoginAction extends ActionSupport implements ServletRequestAware,
+		ServletResponseAware, SessionAware {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = LoggerFactory.getLogger(LoginAction.class);
+
+	private HttpServletResponse response;
+	private HttpServletRequest request;
+	
+
 	@Resource
 	private YbService ybjkService;
 	@Resource
@@ -32,6 +44,7 @@ public class LoginAction extends ActionSupport {
 	private String username;
 	private String password;
 	private String token;
+	private String ace;
 
 	public String login() {
 
@@ -44,12 +57,13 @@ public class LoginAction extends ActionSupport {
 		String basePath = request.getScheme() + "://" + request.getServerName()
 				+ ":" + request.getServerPort() + path + "/";
 
+		operCookie(request);
+
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUaccount(username);
 		userDTO.setUpwds(password);
 		userDTO.setToken(token);
 		userDTO = ybjkService.findUser(userDTO);
-		log.info("======info>>" + username + ">>>");
 		if (null != userDTO) {
 			ActionContext.getContext().getSession().put("user", userDTO);
 
@@ -75,6 +89,30 @@ public class LoginAction extends ActionSupport {
 			return "nouser";
 		}
 
+	}
+
+	private void operCookie(HttpServletRequest request) {
+		if ("1".equals(ace)) {
+			Cookie cookie = new Cookie("user.cookie", username + "," + password);
+			// System.out.println("添加cookie");
+			cookie.setMaxAge(60 * 60 * 24 * 14);// cookie保存两周
+			response.addCookie(cookie);// 添加cookie到response中
+		} else {
+			Cookie[] cookies = request.getCookies();
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if ("user.cookie".equals(cookie.getName())) {
+						cookie.setValue("");
+						cookie.setMaxAge(0);
+					}
+				}
+			}
+
+		}
+	}
+
+	public String logout() {
+		return SUCCESS;
 	}
 
 	private void saveSyslog(HttpServletRequest request, UserDTO userDTO,
@@ -112,4 +150,47 @@ public class LoginAction extends ActionSupport {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public String getAce() {
+		return ace;
+	}
+
+	public void setAce(String ace) {
+		this.ace = ace;
+	}
+
+	public HttpServletResponse getResponse() {
+		return response;
+	}
+
+	public void setResponse(HttpServletResponse response) {
+		this.response = response;
+	}
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> arg0) {
+
+	}
+
+
+	@Override
+	public void setServletRequest(HttpServletRequest request ) {
+		this.request=request;
+
+	}
+
+	@Override
+	public void setServletResponse(HttpServletResponse response) {
+		this.response=response;
+		
+	}
+
 }

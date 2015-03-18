@@ -9,16 +9,5 @@
 		session.removeAttribute("user");
 	}
 	session.invalidate();
+	response.sendRedirect(basePath + "login.jsp");
 %>
-<script type="text/javascript">
-	var scripts = [null, null]
-	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-		 window.opener = null;
-
-		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
-		  window.open('', '_self');
-		  window.close();
-
-
-	});
-</script>

@@ -33,10 +33,6 @@ public class GenMenu {
 				.addAttribute("id", "aa" + -1);
 		// System.out.println(menudoc.asXML());
 		for (MenuDTO s : menus) {
-
-			System.out.println(">>" + s.getMenuId() + ">>" + s.getPmId() + ">>"
-					+ s.getMenucode());
-
 			if (s.getPmId().equals(new BigDecimal(-1))) {
 				Element li = root.addElement("li");
 				addMenuItem(s, li);

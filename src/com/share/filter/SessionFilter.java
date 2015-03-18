@@ -10,6 +10,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.share.dto.UserDTO;
 
 public class SessionFilter implements Filter {
 	@Override
@@ -19,13 +22,20 @@ public class SessionFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest arg0, ServletResponse arg1,
 			FilterChain arg2) throws IOException, ServletException {
-
-		if (((HttpServletRequest) arg0).getSession().getAttribute("user") == null) {
-			String contextPath = ((HttpServletRequest) arg0).getContextPath();
-			((HttpServletResponse) arg1).sendRedirect(contextPath
-					+ "/logout.jsp");
-		} else {
+		HttpServletRequest request = (HttpServletRequest) arg0;
+		HttpServletResponse response = (HttpServletResponse) arg1;
+		HttpSession session = ((HttpServletRequest) arg0).getSession();
+		UserDTO user = (UserDTO) session.getAttribute("user");
+		if (user != null) {
+			//System.out.println(user.getUaccount());
 			arg2.doFilter(arg0, arg1);
+		} else {
+			//System.out.println(request.getServletPath());
+			String path = request.getContextPath();
+			String basePath = request.getScheme() + "://"
+					+ request.getServerName() + ":" + request.getServerPort()
+					+ path + "/";
+			response.sendRedirect(basePath + "logout.jsp");
 		}
 	}
 

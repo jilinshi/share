@@ -29,6 +29,9 @@ public class OperationlogInterceptor extends AbstractInterceptor {
 		if (!"/login.action".equals(request.getServletPath())) {
 			HttpSession session = request.getSession();
 			UserDTO userDTO = (UserDTO) session.getAttribute("user");
+			if(null==userDTO){
+				return "nouser";
+			}
 			SysLogDTO l = new SysLogDTO();
 			l.setIpaddr(request.getRemoteHost() + ":" + request.getRemotePort()
 					+ "<" + request.getRemoteAddr() + "-"

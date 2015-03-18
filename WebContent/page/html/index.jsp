@@ -1,3 +1,4 @@
+<%@page import="com.share.dto.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -5,6 +6,8 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	UserDTO user =(UserDTO) session.getAttribute("user");
+	String uname=user.getUname();
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -293,24 +296,24 @@
 					<li class="light-blue"><a data-toggle="dropdown" href="#"
 						class="dropdown-toggle"> <img class="nav-user-photo"
 							src="../../assets/avatars/user.jpg" alt="Jason's Photo" /> <span
-							class="user-info"> <small>Welcome,</small> Jason
+							class="user-info"> <small>欢迎,</small> <%=uname%>
 						</span> <i class="ace-icon fa fa-caret-down"></i>
 					</a>
 
 						<ul
 							class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-							<li><a href="#"> <i class="ace-icon fa fa-cog"></i>
-									Settings
-							</a></li>
+							<!-- <li><a href="#"> <i class="ace-icon fa fa-cog"></i>
+									
+							</a></li>-->
 
 							<li><a href="#page/profile"> <i
-									class="ace-icon fa fa-user"></i> Profile
-							</a></li>
+									class="ace-icon fa fa-user"></i> 个人信息
+							</a></li> 
 
 							<li class="divider"></li>
 
-							<li><a href="#"> <i class="ace-icon fa fa-power-off"></i>
-									Logout
+							<li><a href="<%=basePath%>logout.action"> <i class="ace-icon fa fa-power-off"></i>
+									注销
 							</a></li>
 						</ul></li>
 
@@ -416,7 +419,7 @@
 					<!-- /.breadcrumb -->
 
 					<!-- #section:basics/content.searchbox -->
-					<div class="nav-search" id="nav-search">
+					<!-- <div class="nav-search" id="nav-search">
 						<form class="form-search">
 							<span class="input-icon"> <input type="text"
 								placeholder="Search ..." class="nav-search-input"
@@ -424,7 +427,7 @@
 								class="ace-icon fa fa-search nav-search-icon"></i>
 							</span>
 						</form>
-					</div>
+					</div> -->
 					<!-- /.nav-search -->
 
 					<!-- /section:basics/content.searchbox -->
