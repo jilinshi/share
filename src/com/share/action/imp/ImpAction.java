@@ -10,20 +10,30 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Resource;
 
 import org.apache.struts2.ServletActionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.FileDTO;
+import com.share.dto.InsuranceDTO;
+import com.share.dto.UserDTO;
+import com.share.model.VImpfile;
 import com.share.service.ImpService;
 
 @Controller
 public class ImpAction extends ActionSupport {
+
+	private static Logger log = LoggerFactory.getLogger(ImpAction.class);
+
 	@Resource
 	private ImpService impService;
 	/**
@@ -82,6 +92,7 @@ public class ImpAction extends ActionSupport {
 			jsonMap.put("realname", realname);
 			jsonMap.put("realpath", realpath);
 			jsonMap.put("displayname", displayname);
+			jsonMap.put("filename", displayname);
 			map = jsonMap;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -170,21 +181,63 @@ public class ImpAction extends ActionSupport {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String addfile() {
-		System.out.println(fileDTO.getFilename());
-		fileDTO.setOpertime(new Timestamp(new Date().getTime()));
-		fileDTO.setOperstat("处理中");
-		// 有效记录
-		fileDTO.setFlag("1");
-		fileDTO.setFileId(null);
-		fileDTO=impService.saveFileinfo(fileDTO);
-		
+		log.info("begin>>>>>>>>>>保存上传文件信息数据");
+		UserDTO userDTO = (UserDTO) ActionContext.getContext().getSession()
+				.get("user");
+		if (null != userDTO) {
+			fileDTO.setOpertime(new Timestamp(new Date().getTime()));
+			fileDTO.setOperstat("处理中");
+			// 有效记录
+			fileDTO.setFlag("1");
+			fileDTO.setFileId(null);
+			fileDTO.setFilename(fileDTO.getDisplayname());
+			fileDTO = impService.saveFileinfo(fileDTO, userDTO);
+
+			Map jsonMap = new HashMap();
+			jsonMap.put("fileid", fileDTO.getFileId().toString());// total键
+			jsonMap.put("realname", fileDTO.getRealname());
+			jsonMap.put("realpath", fileDTO.getRealpath());
+			jsonMap.put("displayname", fileDTO.getRealpath());
+			map = jsonMap;
+		}
+		log.info("end>>>>>>>>>>保存上传文件信息数据");
+		return SUCCESS;
+	}
+
+	/**
+	 * 查询上传文件列表 操作导入数据
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryFiles() {
+		List<VImpfile> rs = impService.queryFiles();
 		Map jsonMap = new HashMap();
-		jsonMap.put("fileid", fileDTO.getFileId().toString());// total键
-		jsonMap.put("realname", fileDTO.getRealname());
-		jsonMap.put("realpath", fileDTO.getRealpath());
-		jsonMap.put("displayname", fileDTO.getRealpath());
+		jsonMap.put("rows", rs);
 		map = jsonMap;
-		
+		return SUCCESS;
+	}
+
+	/**
+	 * 查询单个文件 以表格方式显示
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryFiletoGrid() {
+		List<InsuranceDTO> rs = impService.queryFiletoData(fileDTO);
+		Map jsonMap = new HashMap();
+		jsonMap.put("rows", rs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+
+	/**
+	 * 删除上传文件和文件所产生所有记录
+	 * 
+	 * @return
+	 */
+	public String removeUpFiles() {
 		return SUCCESS;
 	}
 

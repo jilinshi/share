@@ -33,5 +33,20 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="queryFiles" method="queryFiles" class="impAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryFiletoGrid" method="queryFiletoGrid" class="impAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="removeUpFiles" method="removeUpFiles" class="impAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

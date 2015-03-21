@@ -26,6 +26,18 @@ public class FileDTO {
 	private String remark;
 
 	private String flag;
+	
+	private String displayname;
+	
+	
+
+	public String getDisplayname() {
+		return displayname;
+	}
+
+	public void setDisplayname(String displayname) {
+		this.displayname = displayname;
+	}
 
 	public String getFlag() {
 		return flag;

@@ -75,13 +75,14 @@
 	  });
 	  
 	  function remfile(fid,realname,realpath){
+		  if(-1!=fid){
 		  $.ajax({url: "<%=basePath%>page/html/content/imp/removedfile.action",
 			  type:"GET",
 			  dataType:"JSON",
 			  data: {'fileid':fid, 'realname':realname, 'realpath':realpath},
               success: function(){
             	  alert("文件和文件所产生的记录已经删除");
-		 }});
+		 }});}
 	  }
 	  
 	  function addfile(fid,realname,realpath,displayname,ftype){
