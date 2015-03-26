@@ -72,6 +72,9 @@ public class HckFund implements Serializable {
 	@Column(length=18)
 	private String idno;
 
+	@Column(name="INFO_ID", precision=22)
+	private BigDecimal infoId;
+
 	@Column(length=12)
 	private String lasttime;
 
@@ -243,6 +246,14 @@ public class HckFund implements Serializable {
 
 	public void setIdno(String idno) {
 		this.idno = idno;
+	}
+
+	public BigDecimal getInfoId() {
+		return this.infoId;
+	}
+
+	public void setInfoId(BigDecimal infoId) {
+		this.infoId = infoId;
 	}
 
 	public String getLasttime() {

@@ -1,52 +1,55 @@
 package com.share.model;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 
 /**
  * The persistent class for the V_IMPFILES database table.
  * 
  */
 @Entity
-@Table(name="V_IMPFILES")
-@NamedQuery(name="VImpfile.findAll", query="SELECT v FROM VImpfile v")
+@Table(name = "V_IMPFILES")
+@NamedQuery(name = "VImpfile.findAll", query = "SELECT v FROM VImpfile v")
 public class VImpfile implements Serializable {
 	private static final long serialVersionUID = 1L;
-@Id
-	@Column(name="FILE_ID", precision=22)
+
+	@Column(name = "FILE_ID", precision = 22)
 	private BigDecimal fileId;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String filename;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String ftype;
-
-	@Column(name="INFO_ID1", nullable=false, precision=22)
+	@Id
+	@Column(name = "INFO_ID1", nullable = false, precision = 22)
 	private BigDecimal infoId1;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String operstat;
+
+	@Column(length = 6)
+	private String operstatval;
 
 	private Timestamp opertime;
 
-	@Column(length=256)
+	@Column(name = "ORG_ID", precision = 12)
+	private BigDecimal orgId;
+
+	@Column(length = 256)
 	private String realname;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String realpath;
+
+	@Column(length = 256)
+	private String uname;
 
 	private Timestamp uptime;
 
-	@Column(name="USER_ID", precision=22)
+	@Column(name = "USER_ID", precision = 22)
 	private BigDecimal userId;
 
 	public VImpfile() {
@@ -92,12 +95,28 @@ public class VImpfile implements Serializable {
 		this.operstat = operstat;
 	}
 
+	public String getOperstatval() {
+		return this.operstatval;
+	}
+
+	public void setOperstatval(String operstatval) {
+		this.operstatval = operstatval;
+	}
+
 	public Timestamp getOpertime() {
 		return this.opertime;
 	}
 
 	public void setOpertime(Timestamp opertime) {
 		this.opertime = opertime;
+	}
+
+	public BigDecimal getOrgId() {
+		return this.orgId;
+	}
+
+	public void setOrgId(BigDecimal orgId) {
+		this.orgId = orgId;
 	}
 
 	public String getRealname() {
@@ -116,6 +135,14 @@ public class VImpfile implements Serializable {
 		this.realpath = realpath;
 	}
 
+	public String getUname() {
+		return this.uname;
+	}
+
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+
 	public Timestamp getUptime() {
 		return this.uptime;
 	}
@@ -131,4 +158,5 @@ public class VImpfile implements Serializable {
 	public void setUserId(BigDecimal userId) {
 		this.userId = userId;
 	}
-	}
+
+}

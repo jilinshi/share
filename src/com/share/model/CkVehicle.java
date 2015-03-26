@@ -89,6 +89,11 @@ public class CkVehicle implements Serializable {
 	@Column(length=128)
 	private String vtype;
 
+	//bi-directional many-to-one association to Impdatainfo
+	@ManyToOne
+	@JoinColumn(name="INFO_ID")
+	private Impdatainfo impdatainfo;
+
 	public CkVehicle() {
 	}
 
@@ -282,6 +287,14 @@ public class CkVehicle implements Serializable {
 
 	public void setVtype(String vtype) {
 		this.vtype = vtype;
+	}
+
+	public Impdatainfo getImpdatainfo() {
+		return this.impdatainfo;
+	}
+
+	public void setImpdatainfo(Impdatainfo impdatainfo) {
+		this.impdatainfo = impdatainfo;
 	}
 
 }

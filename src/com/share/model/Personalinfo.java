@@ -18,8 +18,8 @@ public class Personalinfo implements Serializable {
 	@Id
 	@SequenceGenerator(name="PERSONALINFO_PIID_GENERATOR", sequenceName="SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSONALINFO_PIID_GENERATOR")
-	@Column(name="PI_ID", unique=true, nullable=false, precision=12)
-	private long piId;
+	@Column(name="PI_ID", unique=true, nullable=false, length=256)
+	private String piId;
 
 	@Column(length=256)
 	private String col1;
@@ -77,11 +77,11 @@ public class Personalinfo implements Serializable {
 	public Personalinfo() {
 	}
 
-	public long getPiId() {
+	public String getPiId() {
 		return this.piId;
 	}
 
-	public void setPiId(long piId) {
+	public void setPiId(String piId) {
 		this.piId = piId;
 	}
 

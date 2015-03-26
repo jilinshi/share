@@ -27,6 +27,7 @@
 
 		<div id="grid-pager"></div>
 
+
 		<script type="text/javascript">
 			var $path_base = "<%=basePath%>";//in Ace demo this will be used for editurl parameter
 		</script>
@@ -37,7 +38,17 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
+function impexcel(p1){
+	 $.ajax({url: "<%=basePath%>page/html/content/imp/impInfos.action",
+		  type:"GET",
+		  dataType:"JSON",
+		  data: {'fileDTO.fileId':p1,'fileDTO.ftype':'<%=ftype%>'},
+          success: function(){
+        	  //alert("文件上传成功"); 
+        	  }
+		  });
+}
+	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null];
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 	  //inline scripts related to this page
 		 var grid_data = 
@@ -130,37 +141,40 @@
 				openicon : "ace-icon fa fa-chevron-right center orange"
 			},
 			//for this example we are using local data
+			
+ 
 			subGridRowExpanded: function (subgridDivId, rowId) {
 				var subgridTableId = subgridDivId + "_t";
 				$("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
 				$("#" + subgridTableId).jqGrid({
+					autowidth:true,
 					datatype: 'json',
 					mtype:"POST",
-					postData:{'fileDTO.realpath':$(grid_selector).getCell(rowId,'realpath'),'fileDTO.ftype':'INSURANCE'},
+					postData:{'fileDTO.realpath':$(grid_selector).getCell(rowId,'realpath'),'fileDTO.ftype':'<%=ftype%>'},
 					url:"<%=basePath%>page/html/content/imp/queryFiletoGrid.action",
 					colNames: ['家庭编号','低保成员姓名','低保身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休时间','退休金'],
 					colModel: [
-						{ name: 'id', width: 50 },
-						{ name: 'name', width: 150 },
-						{ name: 'qty', width: 50 },
-						{ name: 'id', width: 50 },
-						{ name: 'name', width: 150 },
-						{ name: 'qty', width: 50 },
-						{ name: 'id', width: 50 },
-						{ name: 'name', width: 150 },
-						{ name: 'qty', width: 50 },
-						{ name: 'name', width: 150 },
-						{ name: 'qty', width: 50 }
+						{ name: 'fno'},
+						{ name: 'pname'},
+						{ name: 'idno' , width:160},
+						{ name: 'oo1', width:50},
+						{ name: 'oo2', width:50},
+						{ name: 'oo3' , width:50},
+						{ name: 'sbname'},
+						{ name: 'sbidno', width:160},
+						{ name: 'comp' },
+						{ name: 'txtime'},
+						{ name: 'txmoney' }
 					]
 				});
 			},
 			
-	
+			autowidth:true,
 			mtype:"POST",
 			url:"<%=basePath%>page/html/content/imp/queryFiles.action",
 			datatype: "json",
 			postData:{p:'a',g:'g'},
-			height: 250,
+			height: 450,
 			colNames:['','文档名称','文档路径','处理状态', '上传时间', '上传用户','最后操作时间'],
 			colModel:[
 				{name:'fileId',index:'fileId', width:80, fixed:true, sortable:false, resize:false},
@@ -171,10 +185,10 @@
 				//{name:'ship',index:'ship', width:90, editable: true,edittype:"select",editoptions:{value:"FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX"}},
 				//{name:'fileid',index:'fileid', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}} 
 				{ name: 'filename'},
-						{ name: 'realpath' },
-						{ name: 'operstat'},
+						{ name: 'realpath' ,width:300},
+						{ name: 'operstatval'},
 						{ name: 'uptime' ,unformat: pickDate},
-						{ name: 'userId' },
+						{ name: 'uname' },
 						{ name: 'opertime',unformat: pickDate}
 			], 
 			gridComplete: function(){
@@ -183,14 +197,20 @@
 				                 for(var i=0;i < ids.length;i++){
 				                    var cl = ids[i];
 				                    //alert($(grid_selector).getCell(cl,'fileId'));
-				                   var ppp= $(grid_selector).getCell(cl,'fileId');
-				                      be = "<input  type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\" onclick=\"impexcel('"+ppp+"')\" />";
+				                   var p1= $(grid_selector).getCell(cl,'fileId');
+				                   var p2= $(grid_selector).getCell(cl,'realpath');
+				                   var p3= '<%=ftype%>';
+				                     // be = "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\" />";
+				                      
+				                     // be="<input type=\"button\" value=\"导入\" class=\"btn btn-sm btn-danger btn-white btn-round\" onclick=\"impexcel('a','b','c')\" \/>";
+				                      
+				                      be ="<a href='#' style='color:#f60' onclick='impexcel("+ p1 +")'>导入</a>";
 				                      jQuery(grid_selector).jqGrid('setRowData',ids[i],{fileId:be});
 				                }
 				            },
 			viewrecords : true,
-			rowNum:10,
-			rowList:[10,20,30],
+			rowNum:15,
+			rowList:[10,15,20],
 			pager : pager_selector,
 			altRows: true,
 			//toppager: true,
@@ -253,9 +273,7 @@
 			}, 0);
 		}
 	 
-	    function impexcel(ofileid){
-	    	alert(ofileid);
-	    }
+	 
 		
 		 
 	

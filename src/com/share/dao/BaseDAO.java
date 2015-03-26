@@ -25,7 +25,7 @@ public interface BaseDAO<T> {
 	 * @param o
 	 */
 	public void update(T o);
-	
+
 	/**
 	 * 更新
 	 * 
@@ -66,7 +66,7 @@ public interface BaseDAO<T> {
 	 * @return
 	 */
 	public List<T> find(String hql, List<Object> param);
-	
+
 	/**
 	 * 查询集合
 	 * 
@@ -181,8 +181,8 @@ public interface BaseDAO<T> {
 	 * @param param
 	 * @return
 	 */
-	public List<Object> findJDBCSql(String sql,  List<Object> param);
-	
+	public List<Object> findJDBCSql(String sql, List<Object> param);
+
 	/**
 	 * 执行原生sQL语句
 	 * 
@@ -190,7 +190,7 @@ public interface BaseDAO<T> {
 	 * @param param
 	 * @return
 	 */
-	public List<Object> findJDBCSql(String sql,  Object[] param);
+	public List<Object> findJDBCSql(String sql, Object[] param);
 
 	/**
 	 * 执行原生sQL语句 查询总数
@@ -200,9 +200,9 @@ public interface BaseDAO<T> {
 	 * @return
 	 * 
 	 */
-	
-	public List<Object[]> findJDBCSql(String sql,  Object[] param, Object[] clz);
-	
+
+	public List<Object[]> findJDBCSql(String sql, Object[] param, Object[] clz);
+
 	/**
 	 * 执行原生sQL语句 查询总数
 	 * 
@@ -211,8 +211,9 @@ public interface BaseDAO<T> {
 	 * @return
 	 * 
 	 */
-	
-	public List<T> findJDBCSql(String sql,  Object[] param, Class<T> clz);
+
+	public List<T> findJDBCSql(String sql, Object[] param, Class<T> clz);
+
 	/**
 	 * 执行原生sQL语句 查询总数
 	 * 
@@ -221,8 +222,9 @@ public interface BaseDAO<T> {
 	 * @return
 	 * 
 	 */
-	
-	public Long countJDBCsql(String sql,  List<Object> param);
+
+	public Long countJDBCsql(String sql, List<Object> param);
+
 	/**
 	 * 执行原生sQL语句 查询总数
 	 * 
@@ -232,4 +234,11 @@ public interface BaseDAO<T> {
 	 * 
 	 */
 	public Long countJDBCsql(String sql, Object[] param);
+
+	/**
+	 * 批量保存
+	 * 
+	 * @param list
+	 */
+	public void saveBatch(List<T> list);
 }

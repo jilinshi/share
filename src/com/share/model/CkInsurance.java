@@ -86,6 +86,11 @@ public class CkInsurance implements Serializable {
 	@Column(length=128)
 	private String txtime;
 
+	//bi-directional many-to-one association to Impdatainfo
+	@ManyToOne
+	@JoinColumn(name="INFO_ID")
+	private Impdatainfo impdatainfo;
+
 	public CkInsurance() {
 	}
 
@@ -271,6 +276,14 @@ public class CkInsurance implements Serializable {
 
 	public void setTxtime(String txtime) {
 		this.txtime = txtime;
+	}
+
+	public Impdatainfo getImpdatainfo() {
+		return this.impdatainfo;
+	}
+
+	public void setImpdatainfo(Impdatainfo impdatainfo) {
+		this.impdatainfo = impdatainfo;
 	}
 
 }

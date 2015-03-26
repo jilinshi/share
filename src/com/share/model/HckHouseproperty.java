@@ -2,6 +2,7 @@ package com.share.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -64,6 +65,9 @@ public class HckHouseproperty implements Serializable {
 
 	@Column(length=18)
 	private String idno;
+
+	@Column(name="INFO_ID", precision=22)
+	private BigDecimal infoId;
 
 	@Column(length=128)
 	private String mianji;
@@ -229,6 +233,14 @@ public class HckHouseproperty implements Serializable {
 
 	public void setIdno(String idno) {
 		this.idno = idno;
+	}
+
+	public BigDecimal getInfoId() {
+		return this.infoId;
+	}
+
+	public void setInfoId(BigDecimal infoId) {
+		this.infoId = infoId;
 	}
 
 	public String getMianji() {

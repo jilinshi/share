@@ -93,6 +93,11 @@ public class CkFund implements Serializable {
 	@Column(length=256)
 	private String unitname;
 
+	//bi-directional many-to-one association to Impdatainfo
+	@ManyToOne
+	@JoinColumn(name="INFO_ID")
+	private Impdatainfo impdatainfo;
+
 	public CkFund() {
 	}
 
@@ -294,6 +299,14 @@ public class CkFund implements Serializable {
 
 	public void setUnitname(String unitname) {
 		this.unitname = unitname;
+	}
+
+	public Impdatainfo getImpdatainfo() {
+		return this.impdatainfo;
+	}
+
+	public void setImpdatainfo(Impdatainfo impdatainfo) {
+		this.impdatainfo = impdatainfo;
 	}
 
 }

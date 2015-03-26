@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -280,4 +281,17 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 		return q.list();
 	}
 
+	@Override
+	public void saveBatch(List<T> list) {
+
+		for (int i = 0; i < list.size(); i++) {
+			this.getCurrentSession().save(list.get(i));
+			if (i % 50 == 0) // 以每50个数据作为一个处理单元
+			{
+				this.getCurrentSession().flush(); // 保持与数据库数据的同步
+				this.getCurrentSession().clear(); // 清除内部缓存的全部数据，及时释放出占用的内存
+			}
+		}
+
+	}
 }

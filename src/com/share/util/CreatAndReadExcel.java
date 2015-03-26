@@ -65,7 +65,8 @@ public class CreatAndReadExcel {
 					continue;
 				}
 				for(int j =0;j< row.size();j++){
-					System.out.print( row.get(j)+";");
+					
+					System.out.print( "h"+i+"c"+j+"*" + row.get(j)+";");
 					
 				}
 				System.out.println( "/r/n");

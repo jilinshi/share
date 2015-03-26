@@ -48,5 +48,10 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="impInfos" method="impInfos" class="impAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

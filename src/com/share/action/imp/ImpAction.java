@@ -241,6 +241,17 @@ public class ImpAction extends ActionSupport {
 		return SUCCESS;
 	}
 
+	/**
+	 * 导入数据
+	 * 
+	 * @return
+	 */
+	public String impInfos() {
+
+		impService.saveFileGrid(fileDTO);
+		return SUCCESS;
+	}
+
 	public File[] getEc() {
 		return ec;
 	}

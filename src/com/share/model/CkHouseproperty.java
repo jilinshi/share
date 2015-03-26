@@ -95,6 +95,11 @@ public class CkHouseproperty implements Serializable {
 	@Column(length=128)
 	private String zuoluo;
 
+	//bi-directional many-to-one association to Impdatainfo
+	@ManyToOne
+	@JoinColumn(name="INFO_ID")
+	private Impdatainfo impdatainfo;
+
 	public CkHouseproperty() {
 	}
 
@@ -304,6 +309,14 @@ public class CkHouseproperty implements Serializable {
 
 	public void setZuoluo(String zuoluo) {
 		this.zuoluo = zuoluo;
+	}
+
+	public Impdatainfo getImpdatainfo() {
+		return this.impdatainfo;
+	}
+
+	public void setImpdatainfo(Impdatainfo impdatainfo) {
+		this.impdatainfo = impdatainfo;
 	}
 
 }

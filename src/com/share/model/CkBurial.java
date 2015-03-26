@@ -77,6 +77,11 @@ public class CkBurial implements Serializable {
 	@Column(length=1024)
 	private String remark;
 
+	//bi-directional many-to-one association to Impdatainfo
+	@ManyToOne
+	@JoinColumn(name="INFO_ID")
+	private Impdatainfo impdatainfo;
+
 	public CkBurial() {
 	}
 
@@ -238,6 +243,14 @@ public class CkBurial implements Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Impdatainfo getImpdatainfo() {
+		return this.impdatainfo;
+	}
+
+	public void setImpdatainfo(Impdatainfo impdatainfo) {
+		this.impdatainfo = impdatainfo;
 	}
 
 }

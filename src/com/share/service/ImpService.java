@@ -13,4 +13,6 @@ public interface ImpService {
 	public List<VImpfile> queryFiles();
 
 	public <T> List<T> queryFiletoData(FileDTO fileDTO);
+
+	public void saveFileGrid(FileDTO fileDTO);
 }

@@ -21,12 +21,16 @@
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
 		<global-results>
-			<result name="nouser" type="redirect">/logout.jsp</result>
+			<result name="nouser" >/logout.jsp</result>
 		</global-results>
 		<action name="login" method="login" class="loginAction">
 			<result name="success" type="redirect">/page/html/index.jsp</result>
-			<result name="error">/logout.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		<action name="logout" method="logout" class="loginAction">
+			<result name="success" >/page/common/logout.jsp</result>
 		</action>
 	</package>
 	<include file="/com/share/action/imp/struts-imp.xml"></include>
+	<include file="/com/share/action/query/struts-query.xml"></include>
 </struts>   
