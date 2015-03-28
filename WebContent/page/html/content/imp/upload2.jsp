@@ -5,7 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	String ftype="INSURANCE";
+	String ftype="FUND";
 %>
 <title>吉林市信息共享平台</title>
 

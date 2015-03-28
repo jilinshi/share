@@ -36,6 +36,7 @@ public class QueryAction extends ActionSupport {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryInit() {
 		Pager pager = new Pager(page, rows);
 		int start = pager.start;
@@ -72,9 +73,11 @@ public class QueryAction extends ActionSupport {
 		System.out.println(map.toString());
 		return SUCCESS;
 	}
+	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setMap(Map map) {
 		this.map = map;
 	}

@@ -28,6 +28,7 @@ import com.share.model.SysFile;
 import com.share.model.VImpfile;
 import com.share.util.CreatAndReadExcel;
 import com.share.util.IDCard;
+import com.share.util.Pager;
 
 @Service("impService")
 public class ImpServiceImpl<T> implements ImpService {
@@ -78,13 +79,35 @@ public class ImpServiceImpl<T> implements ImpService {
 
 	@Override
 	public FileDTO removedFileinfo(FileDTO fileDTO) {
-		return null;
+
+		Object[] param = new Object[1];
+		param[0] = fileDTO.getFileId();
+		Impdatainfo l = impdatainfoDAO.get(
+				"select e from Impdatainfo e where e.fileId=?", param);
+		setImpdatainfo(l);
+
+		String hql = "update Impdatainfo m set m.operstat=? where m.infoId=?";
+		Object[] params = new Object[2];
+		params[0] = "0";
+		params[1] = this.getImpdatainfo().getInfoId();
+		impdatainfoDAO.update(hql, params);
+
+		params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckInsuranceDAO.executeHql(
+				"delete CkInsurance t where t.impdatainfo= ?", params);
+
+		return fileDTO;
 	}
 
 	@Override
-	public List<VImpfile> queryFiles() {
+	public List<VImpfile> queryFiles(Pager pager, Object[] param) {
 		String hql = "select t from VImpfile t";
-		List<VImpfile> rs = vImpfileDAO.find(hql);
+		String hqlc = "select count(*) as cnt from VImpfile t";
+		Long cnt = vImpfileDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<VImpfile> rs = vImpfileDAO.find(hql, param, pager.pager,
+				pager.rows);
 		return rs;
 	}
 
@@ -239,6 +262,8 @@ public class ImpServiceImpl<T> implements ImpService {
 
 				}
 			}
+			l.setOperstat("1");
+			impdatainfoDAO.update(l);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -263,9 +288,10 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	private List<InsuranceDTO> savedata1(List<List<Object>> rs) {
-
-		ckInsuranceDAO.executeHql("delete CkInsurance t where t.impdatainfo='"
-				+ this.getImpdatainfo().getInfoId() + "' ", null);
+		Object[] params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckInsuranceDAO.executeHql(
+				"delete CkInsurance t where t.impdatainfo= ?", params);
 		List<InsuranceDTO> g = this.convert1(rs);
 		List<CkInsurance> r = new ArrayList<CkInsurance>();
 		for (InsuranceDTO s : g) {
@@ -277,5 +303,4 @@ public class ImpServiceImpl<T> implements ImpService {
 		ckInsuranceDAO.saveBatch(r);
 		return g;
 	}
-
 }

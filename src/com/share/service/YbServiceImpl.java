@@ -53,7 +53,6 @@ public class YbServiceImpl implements YbService {
 		return userDTO;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	/*
 	 * MEMBER_ID 121031 DS 1 FAMILYNO 22020102010247 MEMBERNAME ’≈≤© PAPERID
@@ -79,23 +78,27 @@ public class YbServiceImpl implements YbService {
 	@Override
 	public String finMembersCount(String sql, List<Object> param) {
 
-		
-		 Long cnt = sysUserDAO.countJDBCsql(sql, param); if (null !=
-		 cnt) { return cnt + ""; } else { return "0"; }
-		 
+		Long cnt = sysUserDAO.countJDBCsql(sql, param);
+		if (null != cnt) {
+			return cnt + "";
+		} else {
+			return "0";
+		}
+
 	}
-	
+
+	@SuppressWarnings("rawtypes")
 	public List<UserDTO> finMemberstest(String sql, List<Object> param) {
 		List<UserDTO> resultlist = new ArrayList<UserDTO>();
 
-		
-		  List rs = sysUserDAO.findJDBCSql(sql, param); for (Iterator
-		  iterator = rs.iterator(); iterator.hasNext();) { UserDTO e = new
-				  UserDTO(); Object[] s = (Object[]) iterator.next();
-		  e.setFlag("" + s[7]);
-		  e.setUname("" + s[4]);
-		  resultlist.add(e); }
-		 
+		List rs = sysUserDAO.findJDBCSql(sql, param);
+		for (Iterator iterator = rs.iterator(); iterator.hasNext();) {
+			UserDTO e = new UserDTO();
+			Object[] s = (Object[]) iterator.next();
+			e.setFlag("" + s[7]);
+			e.setUname("" + s[4]);
+			resultlist.add(e);
+		}
 
 		return resultlist;
 	}
@@ -215,7 +218,7 @@ public class YbServiceImpl implements YbService {
 				param, SysMenus.class);
 
 		for (Iterator iterator = rs.iterator(); iterator.hasNext();) {
-			MenuDTO e=new MenuDTO();
+			MenuDTO e = new MenuDTO();
 			BeanUtils.copyProperties(iterator.next(), e);
 			resultlist.add(e);
 		}

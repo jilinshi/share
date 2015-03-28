@@ -28,6 +28,7 @@ import com.share.dto.InsuranceDTO;
 import com.share.dto.UserDTO;
 import com.share.model.VImpfile;
 import com.share.service.ImpService;
+import com.share.util.Pager;
 
 @Controller
 public class ImpAction extends ActionSupport {
@@ -50,6 +51,11 @@ public class ImpAction extends ActionSupport {
 	private String singleContentType; // 文件类型
 
 	private FileDTO fileDTO;
+
+	/** 当前页面 */
+	private String page;
+	/** 每页的记录数 */
+	private String rows;
 
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
@@ -175,7 +181,9 @@ public class ImpAction extends ActionSupport {
 	public String removedfile() {
 		System.out.println(fileDTO.getFilename());
 		File file = new File(fileDTO.getRealpath());
-		file.delete();
+		if (file.exists() && file.isFile()) {
+			file.delete();
+		}
 		return SUCCESS;
 	}
 
@@ -211,8 +219,13 @@ public class ImpAction extends ActionSupport {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryFiles() {
-		List<VImpfile> rs = impService.queryFiles();
+		Pager pager = new Pager(page, rows, new Long(0));
+		Object[] param = null;
+		List<VImpfile> rs = impService.queryFiles(pager, param);
 		Map jsonMap = new HashMap();
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
 		jsonMap.put("rows", rs);
 		map = jsonMap;
 		return SUCCESS;
@@ -238,6 +251,7 @@ public class ImpAction extends ActionSupport {
 	 * @return
 	 */
 	public String removeUpFiles() {
+		impService.removedFileinfo(fileDTO);
 		return SUCCESS;
 	}
 
@@ -306,6 +320,22 @@ public class ImpAction extends ActionSupport {
 
 	public void setFileDTO(FileDTO fileDTO) {
 		this.fileDTO = fileDTO;
+	}
+
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
 	}
 
 }
