@@ -51,7 +51,6 @@ public class CheckAction extends ActionSupport {
 
 	private String u_result;
 
-	@SuppressWarnings("rawtypes")
 	public String queryMemberInfoInit() {
 		/*log.info("进入人员信息核对页面---begin---queryMemberInfoInit");
 		Map session = ActionContext.getContext().getSession();
@@ -124,7 +123,6 @@ public class CheckAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String checkSSNInit() {
 		MemberDTO m = new MemberDTO();
 		m.setMemberId(key.substring(0, key.length() - 1));

@@ -190,12 +190,8 @@ var _ftype='<%=ftype%>';
 				                   var p1= $(grid_selector).getCell(cl,'fileId');
 				                   var p2= $(grid_selector).getCell(cl,'realpath');
 				                   var p3= '<%=ftype%>';
-				                     // be = "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\" />";
-				                      
-				                     // be="<input type=\"button\" value=\"导入\" class=\"btn btn-sm btn-danger btn-white btn-round\" onclick=\"impexcel('a','b','c')\" \/>";
-				                      
-				                      be ="<a href='#' style='color:#f60' onclick='impexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'>导入</a>&nbsp;&nbsp;"+
-				                      "<a href='#' style='color:#f60' onclick='delexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'>删除</a>";
+				                       be = "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='impexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />"+"&nbsp;&nbsp;"+
+				                       "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='delexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />";
 				                      jQuery(grid_selector).jqGrid('setRowData',ids[i],{fileId:be});
 				                }
 				            },
