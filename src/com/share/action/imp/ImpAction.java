@@ -220,7 +220,8 @@ public class ImpAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryFiles() {
 		Pager pager = new Pager(page, rows, new Long(0));
-		Object[] param = null;
+		Object[] param =new Object[1]   ;
+		param[0]=this.fileDTO.getFtype();
 		List<VImpfile> rs = impService.queryFiles(pager, param);
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);

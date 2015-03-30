@@ -22,6 +22,7 @@ import com.share.dto.HousepropertyDTO;
 import com.share.dto.InsuranceDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.VehicleDTO;
+import com.share.model.CkFund;
 import com.share.model.CkInsurance;
 import com.share.model.Impdatainfo;
 import com.share.model.SysFile;
@@ -41,6 +42,8 @@ public class ImpServiceImpl<T> implements ImpService {
 	private BaseDAO<VImpfile> vImpfileDAO;
 	@Resource
 	private BaseDAO<CkInsurance> ckInsuranceDAO;
+	@Resource
+	private BaseDAO<CkFund> ckFundDAO;
 
 	private Impdatainfo impdatainfo;
 
@@ -102,8 +105,8 @@ public class ImpServiceImpl<T> implements ImpService {
 
 	@Override
 	public List<VImpfile> queryFiles(Pager pager, Object[] param) {
-		String hql = "select t from VImpfile t";
-		String hqlc = "select count(*) as cnt from VImpfile t";
+		String hql = "select t from VImpfile t where t.ftype=?";
+		String hqlc = "select count(*) as cnt from VImpfile t where t.ftype=?";
 		Long cnt = vImpfileDAO.count(hqlc, param);
 		pager.setRecords(cnt);
 		List<VImpfile> rs = vImpfileDAO.find(hql, param, pager.pager,
@@ -166,7 +169,61 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	private List<FundDTO> convert2(List<List<Object>> rs) {
-		return null;
+
+		List<FundDTO> g = new ArrayList<FundDTO>();
+		try {
+			for (int i = 0; i < rs.size(); i++) {
+				List<Object> row = rs.get(i);
+				int cls = row.size();
+				if (cls > 2) {
+					String idno = (String) row.get(1);
+
+					String iderr;
+
+					iderr = IDCard.IDCardValidate(idno);
+
+					if (null == iderr || "".equals(iderr)) {
+						// 姓名  身份证号  公积金账号  所有人姓名  所有人身份证号
+						// 缴存基数  最后缴款日  账户余额  单位名称  状态   开户日期   区
+
+						String IDNO = (String) row.get(1);
+						String PNAME = (String) row.get(0);
+						String BIDNO = (String) row.get(2);
+						String BNAME = (String) row.get(3);
+						String GJJACCOUNT = (String) row.get(4);
+						String CARDINAL = (String) row.get(5);
+						String LASTTIME = (String) row.get(6);
+						String BANLANCE = (String) row.get(7);
+						String UNITNAME = (String) row.get(8);
+						String STATE = (String) row.get(9);
+						String BEGINTIME = (String) row.get(10);
+						String AREA = (String) row.get(11);
+						 
+						FundDTO e = new FundDTO();
+						e.setIdno(IDNO);
+						e.setPname(PNAME);
+						e.setBidno(BIDNO);
+						e.setBname(BNAME);
+						e.setGjjaccount(GJJACCOUNT);
+						e.setCardinal(new BigDecimal(CARDINAL));
+						e.setLasttime(LASTTIME);
+						e.setBanlance(new BigDecimal(BANLANCE));
+						e.setUnitname(UNITNAME);
+						e.setState(STATE);
+						e.setBegintime(BEGINTIME);
+						e.setArea(AREA);
+						
+
+						g.add(e);
+					}
+				}
+
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+
+		return g;
 	}
 
 	private List<InsuranceDTO> convert1(List<List<Object>> rs) {
@@ -284,7 +341,20 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	private List<FundDTO> savedata2(List<List<Object>> rs) {
-		return null;
+		Object[] params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckInsuranceDAO.executeHql(
+				"delete CkFund t where t.impdatainfo= ?", params);
+		List<FundDTO> g = this.convert2(rs);
+		List<CkFund> r = new ArrayList<CkFund>();
+		for (FundDTO s : g) {
+			CkFund e = new CkFund();
+			BeanUtils.copyProperties(s, e);
+			e.setImpdatainfo(this.getImpdatainfo());
+			r.add(e);
+		}
+		ckFundDAO.saveBatch(r);
+		return g;
 	}
 
 	private List<InsuranceDTO> savedata1(List<List<Object>> rs) {

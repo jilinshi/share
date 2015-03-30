@@ -163,7 +163,7 @@ var _ftype='<%=ftype%>';
 			mtype:"POST",
 			url:"<%=basePath%>page/html/content/imp/queryFiles.action",
 			datatype: "json",
-			postData:{p:'a',g:'g'},
+			postData:{'fileDTO.ftype':'<%=ftype%>'},
 			height: 450,
 			colNames:['','文档名称','文档路径','处理状态', '上传时间', '上传用户','最后操作时间'],
 			colModel:[
@@ -191,7 +191,7 @@ var _ftype='<%=ftype%>';
 				                   var p2= $(grid_selector).getCell(cl,'realpath');
 				                   var p3= '<%=ftype%>';
 				                       be = "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='impexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />"+"&nbsp;&nbsp;"+
-				                       "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='delexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />";
+				                       "<input   type='button' value='删除' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='delexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />";
 				                      jQuery(grid_selector).jqGrid('setRowData',ids[i],{fileId:be});
 				                }
 				            },
