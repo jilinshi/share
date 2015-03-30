@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
+import com.share.dto.InsuranceDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
@@ -33,4 +34,8 @@ public interface YbService {
 	public List<MenuDTO> findMenusByUser(UserDTO userDTO);
 	
 	public List<UserDTO> finMemberstest(String sql, List<Object> param);
+	
+	public String finCkInsuranceCount(String sql, List<Object> param);
+	
+	public List<InsuranceDTO> finCkInsurances(String sql, List<Object> param);
 }

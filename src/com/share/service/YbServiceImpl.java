@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 import com.share.dao.BaseDAO;
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
+import com.share.dto.InsuranceDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.model.CkInsurance;
 import com.share.model.SysMenus;
 import com.share.model.SysUser;
 
@@ -26,6 +28,8 @@ public class YbServiceImpl implements YbService {
 	private BaseDAO<SysUser> sysUserDAO;
 	@Resource
 	private BaseDAO<SysMenus> sysMeunsDAO;
+	@Resource
+	private BaseDAO<CkInsurance> ckInsuranceDAO;
 
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
@@ -224,5 +228,38 @@ public class YbServiceImpl implements YbService {
 		}
 
 		return resultlist;
+	}
+	
+	@Override
+	public String finCkInsuranceCount(String sql, List<Object> param) {
+	  Long cnt = ckInsuranceDAO.countJDBCsql(sql, param); if (null !=
+	  cnt) { return cnt + ""; } else { return "0"; }
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List<InsuranceDTO> finCkInsurances(String sql, List<Object> param) {
+	  List<InsuranceDTO> resultlist = new ArrayList<InsuranceDTO>();
+	  List rs = ckInsuranceDAO.findJDBCSql(sql, param); 
+	  for (Iterator iterator = rs.iterator(); iterator.hasNext();) { 
+		  InsuranceDTO e = new InsuranceDTO(); 
+		  Object[] s = (Object[]) iterator.next();
+		  e.setInId(Long.parseLong(""+s[0]));
+		  e.setFno("" + s[1]);
+		  e.setIdno(""+s[2]);
+		  e.setPname(""+s[3]);
+		  e.setOo1(""+s[4]);
+		  e.setOo2(""+s[5]);
+		  e.setOo3(""+s[6]);
+		  e.setSbidno(""+s[7]);
+		  e.setSbname(""+s[8]);
+		  e.setComp(""+s[9]);
+		  e.setTxtime(""+s[10]);
+		  e.setTxmoney(""+s[11]);
+		  e.setSubject(""+s[12]);
+		  e.setRemark(""+s[13]);
+		  resultlist.add(e); 
+	  }
+	  return resultlist;
 	}
 }

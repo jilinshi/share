@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.share.dto.UserDTO;
+import com.share.dto.InsuranceDTO;
 import com.share.service.YbService;
 import com.share.util.Pager;
 
@@ -45,34 +45,27 @@ public class QueryAction extends ActionSupport {
 		String sqlwhere = "";
 		param.add(end);
 		param.add(start);
-		String sql = " SELECT *   FROM (SELECT a.*, ROWNUM rn FROM ( select user_id, org_id, uaccount, upwds, uname, mobilephone, idno, flag, ctime, utime from sys_users "
+		String sql = " SELECT *   FROM (SELECT a.*, ROWNUM rn FROM ( select in_id, fno, idno, pname, oo1, oo2, oo3, sbidno, sbname, comp, txtime, txmoney, subject, remark, col1, col2, col3, col4, col5, col6, col7, col8, col9 from ck_insurance "
 				+ "where 1=1 "
 				+ sqlwhere
 				+ " ) a WHERE ROWNUM <= ?)  WHERE rn >= ?";
 
-		String sqlcount = " SELECT count(1) as cnt FROM sys_users t  where 1=1 ";
+		String sqlcount = " SELECT count(1) as cnt FROM ck_insurance t  where 1=1 ";
 
-		List<UserDTO> list = ybjkService.finMemberstest(sql, param);
+		List<InsuranceDTO> list = ybjkService.finCkInsurances(sql, param);
 
 		param.remove(param.size() - 1);
 		param.remove(param.size() - 1);
-		String cnt = ybjkService.finMembersCount(sqlcount, param);
+		String cnt = ybjkService.finCkInsuranceCount(sqlcount, param);
 
 		Map jsonMap = new HashMap();
 		jsonMap.put("total", cnt);// total键
 		jsonMap.put("rows", list);// rows键 存放每页记录 list
-		// result = JSONObject.fromObject(jsonMap);// 格式化result 一定要是JSONObject
-		map = jsonMap;
-/*	            String json = "{ 'page': 1, 'total': 2, 'records': 15, 'rows': [{'cell':['aaa']},{'cell':['bbb']},{'cell':['vvcc']}]}";
-	            Map jsonMap = new HashMap();
-				jsonMap.put("page", "1");// total键
-				jsonMap.put("total", "1");
-				jsonMap.put("records", "10");
-				jsonMap.put("rows", "{'cell'=['aaa']},{'cell'=['bbb']},{'cell'=['vvcc']}");
-				map = jsonMap;	*/	
+		map = jsonMap;	
 		System.out.println(map.toString());
 		return SUCCESS;
 	}
+	
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;

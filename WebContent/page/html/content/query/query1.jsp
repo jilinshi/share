@@ -77,35 +77,36 @@
 			jQuery(grid_selector).jqGrid({
 				//direction: "rtl",
 				//url:"${pageContext.request.contextPath}/page/html/content/query/myjson.json",
-				url:"${pageContext.request.contextPath}/page/html/content/query/queryInit.action",
-				mtype: "POST", 
-				datatype: "json",
+				url : "${pageContext.request.contextPath}/page/html/content/query/queryInit.action",
+				mtype : "POST", 
+				datatype : "json",
 				//ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
-				height: 250,
-				colNames:['姓名','FLAG'],
-				colModel:[
-					/* {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-						formatter:'actions', 
-						formatoptions:{ 
-							//keys:true,
-							//delbutton: false,//disable delete button
-							
-							//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-							//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-						}
-					}, */
-					{name:'uname',index:'uname', width:150},
-					{name:'flag',index:'flag', width:150}
-
+				height : 250,
+				colNames : ['ID','家庭编号','姓名','身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休金','退休时间','科目','备注'],
+				colModel : [
+					{name:'inId',index:'inId'},
+					{name:'fno',index:'fno'},
+					{name:'pname',index:'pname'},
+					{name:'idno',index:'idno'},
+					{name:'oo1',index:'oo1'},
+					{name:'oo2',index:'oo2'},
+					{name:'oo3',index:'oo3'},
+					{name:'sbname',index:'sbname'},
+					{name:'sbidno',index:'sbidno'},
+					{name:'comp',index:'comp'},
+					{name:'txmoney',index:'txmoney'},
+					{name:'txtime',index:'txtime',formatter:'date',formatoptions: {newformat:'Y-m-d'}},
+					{name:'subject',index:'subject'},
+					{name:'remark',index:'remark'}
 				], 
-		
+				rownumbers: true,
+				autowidth : true,
 				viewrecords : true,
-				rowNum:10,
-				rowList:[10,20,30],
+				rowNum : 10,
+				rowList : [10,20,30],
 				pager : pager_selector,
-				altRows: true,
+				altRows : true,
 				//toppager: true,
-				
 				//multiselect: true,
 				//multikey: "ctrlKey",
 		        //multiboxonly: true,
@@ -117,7 +118,7 @@
 						updatePagerIcons(table);
 					}, 0);
 				}, 
-				caption: "数据信息显示"
+				caption : "数据信息显示"
 				//,autowidth: true
 		
 			});
