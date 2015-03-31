@@ -22,8 +22,11 @@ import com.share.dto.HousepropertyDTO;
 import com.share.dto.InsuranceDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.VehicleDTO;
+import com.share.model.CkBurial;
 import com.share.model.CkFund;
+import com.share.model.CkHouseproperty;
 import com.share.model.CkInsurance;
+import com.share.model.CkVehicle;
 import com.share.model.Impdatainfo;
 import com.share.model.SysFile;
 import com.share.model.VImpfile;
@@ -44,6 +47,12 @@ public class ImpServiceImpl<T> implements ImpService {
 	private BaseDAO<CkInsurance> ckInsuranceDAO;
 	@Resource
 	private BaseDAO<CkFund> ckFundDAO;
+	@Resource
+	private BaseDAO<CkBurial> ckBurialDAO;
+	@Resource
+	private BaseDAO<CkHouseproperty> ckHousepropertyDAO;
+	@Resource
+	private BaseDAO<CkVehicle> ckVehicleDAO;
 
 	private Impdatainfo impdatainfo;
 
@@ -157,15 +166,172 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	private List<VehicleDTO> convert5(List<List<Object>> rs) {
-		return null;
+		List<VehicleDTO> g = new ArrayList<VehicleDTO>();
+		try {
+			for (int i = 0; i < rs.size(); i++) {
+				List<Object> row = rs.get(i);
+				int cls = row.size();
+				if (cls > 2) {
+					String idno = (String) row.get(2);
+
+					String iderr;
+
+					iderr = IDCard.IDCardValidate(idno);
+
+					if (null == iderr || "".equals(iderr)) {
+						// 家庭编号 姓名 身份证号（18位） 区 街道 社区 归档日期 受理业务
+						// 房产证号 所有人 所有人身份证号 坐落 面积 办理日期 类型
+
+						String FNO = (String) row.get(0);
+						String PNAME = (String) row.get(1);
+						String IDNO = (String) row.get(2);
+						String OO1 = (String) row.get(3);
+						String OO2 = (String) row.get(4);
+						String OO3 = (String) row.get(5);
+						String VEHICAL_NO = (String) row.get(6);
+						String BRAND = (String) row.get(7);
+						String MOTO_NO = (String) row.get(8);
+						String BUYTIME = (String) row.get(9);
+						String VTYPE = (String) row.get(10);
+
+						VehicleDTO e = new VehicleDTO();
+
+						e.setFno(FNO);
+						e.setPname(PNAME);
+						e.setIdno(IDNO);
+						e.setOo1(OO1);
+						e.setOo2(OO2);
+						e.setOo3(OO3);
+						e.setVehicalNo(VEHICAL_NO);
+						e.setBrand(BRAND);
+						e.setMotoNo(MOTO_NO);
+						e.setBuytime(BUYTIME);
+						e.setVtype(VTYPE);
+						
+						g.add(e);
+					}
+				}
+
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+
+		return g;
 	}
 
 	private List<HousepropertyDTO> convert4(List<List<Object>> rs) {
-		return null;
+		List<HousepropertyDTO> g = new ArrayList<HousepropertyDTO>();
+		try {
+			for (int i = 0; i < rs.size(); i++) {
+				List<Object> row = rs.get(i);
+				int cls = row.size();
+				if (cls > 2) {
+					String idno = (String) row.get(2);
+
+					String iderr;
+
+					iderr = IDCard.IDCardValidate(idno);
+
+					if (null == iderr || "".equals(iderr)) {
+						// 家庭编号 姓名 身份证号（18位） 区 街道 社区 归档日期 受理业务
+						// 房产证号 所有人 所有人身份证号 坐落 面积 办理日期 类型
+
+						String IDNO = (String) row.get(2);
+						String PNAME = (String) row.get(1);
+						String OO1 = (String) row.get(3);
+						String OO2 = (String) row.get(4);
+						String OO3 = (String) row.get(5);
+						String GGTIME = (String) row.get(6);
+						String SLYW = (String) row.get(7);
+						String FCZH = (String) row.get(8);
+						String BNAME = (String) row.get(9);
+						String BIDNO = (String) row.get(10);
+						String ZUOLUO = (String) row.get(11);
+						String MIANJI = (String) row.get(12);
+						String BLTIME = (String) row.get(14);
+						String SUBJECT = (String) row.get(15);
+						String REMARK = (String) row.get(13);
+						String COL1 = (String) row.get(0);
+
+						HousepropertyDTO e = new HousepropertyDTO();
+
+						e.setIdno(IDNO);
+						e.setPname(PNAME);
+						e.setOo1(OO1);
+						e.setOo2(OO2);
+						e.setOo3(OO3);
+						e.setGgtime(GGTIME);
+						e.setSlyw(SLYW);
+						e.setFczh(FCZH);
+						e.setBname(BNAME);
+						e.setBidno(BIDNO);
+						e.setZuoluo(ZUOLUO);
+						e.setMianji(MIANJI);
+						e.setBltime(BLTIME);
+						e.setSubject(SUBJECT);
+						e.setRemark(REMARK);
+						e.setCol1(COL1);
+
+						g.add(e);
+					}
+				}
+
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+
+		return g;
 	}
 
 	private List<BurialDTO> convert3(List<List<Object>> rs) {
-		return null;
+		List<BurialDTO> g = new ArrayList<BurialDTO>();
+		try {
+			for (int i = 0; i < rs.size(); i++) {
+				List<Object> row = rs.get(i);
+				int cls = row.size();
+				if (cls > 2) {
+					String idno = (String) row.get(2);
+
+					String iderr;
+
+					iderr = IDCard.IDCardValidate(idno);
+
+					if (null == iderr || "".equals(iderr)) {
+						// 家庭编号 低保成员姓名 低保身份证号码
+						// 区 街道 社区 姓名_殡葬 身份证_殡葬 火化时间
+						// String FNO = (String) row.get(0);
+						String IDNO = (String) row.get(2);
+						String PNAME = (String) row.get(1);
+						String OO1 = (String) row.get(3);
+						String OO2 = (String) row.get(4);
+						String OO3 = (String) row.get(5);
+						String BIDNO = (String) row.get(7);
+						String BNAME = (String) row.get(6);
+						String HHTIME = (String) row.get(8);
+						String COL1 = (String) row.get(0);
+
+						BurialDTO e = new BurialDTO();
+						e.setIdno(IDNO);
+						e.setPname(PNAME);
+						e.setOo1(OO1);
+						e.setOo2(OO2);
+						e.setOo3(OO3);
+						e.setBidno(BIDNO);
+						e.setBname(BNAME);
+						e.setHhtime(HHTIME);
+						e.setCol1(COL1);
+						g.add(e);
+					}
+				}
+
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+
+		return g;
 	}
 
 	private List<FundDTO> convert2(List<List<Object>> rs) {
@@ -183,8 +349,8 @@ public class ImpServiceImpl<T> implements ImpService {
 					iderr = IDCard.IDCardValidate(idno);
 
 					if (null == iderr || "".equals(iderr)) {
-						// 姓名  身份证号  公积金账号  所有人姓名  所有人身份证号
-						// 缴存基数  最后缴款日  账户余额  单位名称  状态   开户日期   区
+						// 姓名 身份证号 公积金账号 所有人姓名 所有人身份证号
+						// 缴存基数 最后缴款日 账户余额 单位名称 状态 开户日期 区
 
 						String IDNO = (String) row.get(1);
 						String PNAME = (String) row.get(0);
@@ -198,7 +364,7 @@ public class ImpServiceImpl<T> implements ImpService {
 						String STATE = (String) row.get(9);
 						String BEGINTIME = (String) row.get(10);
 						String AREA = (String) row.get(11);
-						 
+
 						FundDTO e = new FundDTO();
 						e.setIdno(IDNO);
 						e.setPname(PNAME);
@@ -212,7 +378,6 @@ public class ImpServiceImpl<T> implements ImpService {
 						e.setState(STATE);
 						e.setBegintime(BEGINTIME);
 						e.setArea(AREA);
-						
 
 						g.add(e);
 					}
@@ -313,7 +478,7 @@ public class ImpServiceImpl<T> implements ImpService {
 						savedata5(rs);
 						break;
 					default:
-						System.out.println("default");
+						//System.out.println("default");
 						break;
 					}
 
@@ -328,23 +493,61 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	private List<VehicleDTO> savedata5(List<List<Object>> rs) {
-
-		return null;
+		Object[] params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckVehicleDAO.executeHql("delete CkVehicle t where t.impdatainfo= ?",
+				params);
+		List<VehicleDTO> g = this.convert5(rs);
+		List<CkVehicle> r = new ArrayList<CkVehicle>();
+		for (VehicleDTO s : g) {
+			CkVehicle e = new CkVehicle();
+			BeanUtils.copyProperties(s, e);
+			e.setImpdatainfo(this.getImpdatainfo());
+			r.add(e);
+		}
+		ckVehicleDAO.saveBatch(r);
+		return g;
 	}
 
 	private List<HousepropertyDTO> savedata4(List<List<Object>> rs) {
-		return null;
+		Object[] params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckHousepropertyDAO.executeHql(
+				"delete CkHouseproperty t where t.impdatainfo= ?", params);
+		List<HousepropertyDTO> g = this.convert4(rs);
+		List<CkHouseproperty> r = new ArrayList<CkHouseproperty>();
+		for (HousepropertyDTO s : g) {
+			CkHouseproperty e = new CkHouseproperty();
+			BeanUtils.copyProperties(s, e);
+			e.setImpdatainfo(this.getImpdatainfo());
+			r.add(e);
+		}
+		ckHousepropertyDAO.saveBatch(r);
+		return g;
 	}
 
 	private List<BurialDTO> savedata3(List<List<Object>> rs) {
-		return null;
+		Object[] params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckBurialDAO.executeHql("delete CkBurial t where t.impdatainfo= ?",
+				params);
+		List<BurialDTO> g = this.convert3(rs);
+		List<CkBurial> r = new ArrayList<CkBurial>();
+		for (BurialDTO s : g) {
+			CkBurial e = new CkBurial();
+			BeanUtils.copyProperties(s, e);
+			e.setImpdatainfo(this.getImpdatainfo());
+			r.add(e);
+		}
+		ckBurialDAO.saveBatch(r);
+		return g;
 	}
 
 	private List<FundDTO> savedata2(List<List<Object>> rs) {
 		Object[] params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql(
-				"delete CkFund t where t.impdatainfo= ?", params);
+		ckInsuranceDAO.executeHql("delete CkFund t where t.impdatainfo= ?",
+				params);
 		List<FundDTO> g = this.convert2(rs);
 		List<CkFund> r = new ArrayList<CkFund>();
 		for (FundDTO s : g) {

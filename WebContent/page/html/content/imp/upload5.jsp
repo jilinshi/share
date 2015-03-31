@@ -5,7 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	String ftype = "INSURANCE";
+	String ftype="VEHICLE";
 %>
 <title>吉林市信息共享平台</title>
 
@@ -19,9 +19,7 @@
 	<div class="col-xs-12">
 		<!-- PAGE CONTENT BEGINS -->
 		<div>
-			<form method="post"
-				action="${pageContext.request.contextPath}/page/html/content/imp/upload.action"
-				class="dropzone" id="dropzone">
+			<form method="post" action="${pageContext.request.contextPath}/page/html/content/imp/upload.action" class="dropzone" id="dropzone">
 				<div class="fallback">
 					<input name="single" type="file" multiple="" />
 				</div>
@@ -29,10 +27,8 @@
 		</div>
 
 		<!-- PAGE CONTENT ENDS -->
-	</div>
-	<!-- /.col -->
-</div>
-<!-- /.row -->
+	</div><!-- /.col -->
+</div><!-- /.row -->
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
@@ -85,33 +81,24 @@
 	  
 	  function addfile(fid,realname,realpath,displayname,ftype){
 		  $.ajax({url: "<%=basePath%>page/html/content/imp/addfile.action",
-												type : "GET",
-												dataType : "JSON",
-												data : {
-													'fileDTO.fileid' : fid,
-													'fileDTO.realname' : realname,
-													'fileDTO.realpath' : realpath,
-													'fileDTO.displayname' : displayname,
-													'fileDTO.ftype' : ftype
-												},
-												success : function() {
-													//alert("文件上传成功");
-												}
-											});
-								}
-
-								$(document).one('ajaxloadstart.page',
-										function(e) {
-											try {
-												myDropzone.destroy();
-											} catch (e) {
-											}
-										});
-
-							} catch (e) {
-								alert('不支持此浏览器!');
-							}
-
-						});
-					});
+			  type:"GET",
+			  dataType:"JSON",
+			  data: {'fileDTO.fileid':fid, 'fileDTO.realname':realname, 'fileDTO.realpath':realpath, 'fileDTO.displayname':displayname,'fileDTO.ftype':ftype},
+              success: function(){
+            	  //alert("文件上传成功");
+		 }});
+	  }
+	  
+	   $(document).one('ajaxloadstart.page', function(e) {
+			try {
+				myDropzone.destroy();
+			} catch(e) {}
+	   });
+	
+	} catch(e) {
+	  alert('不支持此浏览器!');
+	}
+	
+	});
+	});
 </script>

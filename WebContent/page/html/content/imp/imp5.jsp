@@ -5,7 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	String ftype="FUND";
+	String ftype="VEHICLE";
 %>
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
@@ -142,20 +142,19 @@ var _ftype='<%=ftype%>';
 					mtype:"POST",
 					postData:{'fileDTO.realpath':$(grid_selector).getCell(rowId,'realpath'),'fileDTO.ftype':'<%=ftype%>'},
 					url:"<%=basePath%>page/html/content/imp/queryFiletoGrid.action",
-					colNames: ['姓名','身份证号','公积金账号','所有人姓名','所有人身份证号','缴存基数',' 最后缴款日','账户余额 ','单位名称','状态','开户日期','区'],
+					colNames: ['家庭编号','姓名','身份证号（18位）','区','街道','社区','车牌号','品牌','发动机号','购置时间','类型'],
 					colModel: [
+						{ name: 'fno'},
 						{ name: 'pname'},
-						{ name: 'idno'},
-						{ name: 'gjjaccount' , width:160},
-						{ name: 'bname', width:50},
-						{ name: 'bidno', width:50},
-						{ name: 'cardinal' , width:50},
-						{ name: 'lasttime'},
-						{ name: 'banlance', width:160},
-						{ name: 'unitname' },
-						{ name: 'state'},
-						{ name: 'begintime' },
-						{ name: 'area' }
+						{ name: 'idno' , width:160},
+						{ name: 'oo1', width:50},
+						{ name: '002' , width:50},
+						{ name: '003'},
+						{ name: 'vehicalNo', width:160},
+						{ name: 'brand' },
+						{ name: 'motoNo'},
+						{ name: 'buytime' },
+						{ name: 'vtype' }
 					]
 				});
 			},

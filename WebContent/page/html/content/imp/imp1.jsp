@@ -190,7 +190,7 @@ var _ftype='<%=ftype%>';
 				                   var p1= $(grid_selector).getCell(cl,'fileId');
 				                   var p2= $(grid_selector).getCell(cl,'realpath');
 				                   var p3= '<%=ftype%>';
-				                       be = "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='impexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />"+"&nbsp;&nbsp;"+
+				                       be = "<input   type='button' value='导入' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='impexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />"+""+
 				                       "<input   type='button' value='删除' class=\"btn btn-sm btn-danger btn-white btn-round\"  onclick='delexcel("+ p1 +",\""+_basepath+"\",\""+_ftype+"\")'  />";
 				                      jQuery(grid_selector).jqGrid('setRowData',ids[i],{fileId:be});
 				                }

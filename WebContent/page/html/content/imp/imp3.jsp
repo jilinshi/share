@@ -5,7 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	String ftype="FUND";
+	String ftype="BURIAL";
 %>
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
@@ -142,20 +142,16 @@ var _ftype='<%=ftype%>';
 					mtype:"POST",
 					postData:{'fileDTO.realpath':$(grid_selector).getCell(rowId,'realpath'),'fileDTO.ftype':'<%=ftype%>'},
 					url:"<%=basePath%>page/html/content/imp/queryFiletoGrid.action",
-					colNames: ['姓名','身份证号','公积金账号','所有人姓名','所有人身份证号','缴存基数',' 最后缴款日','账户余额 ','单位名称','状态','开户日期','区'],
+					colNames: ['低保成员姓名','低保身份证号码','区','街道','社区','姓名_殡葬','身份证_殡葬','火化时间'],
 					colModel: [
 						{ name: 'pname'},
 						{ name: 'idno'},
-						{ name: 'gjjaccount' , width:160},
-						{ name: 'bname', width:50},
-						{ name: 'bidno', width:50},
-						{ name: 'cardinal' , width:50},
-						{ name: 'lasttime'},
-						{ name: 'banlance', width:160},
-						{ name: 'unitname' },
-						{ name: 'state'},
-						{ name: 'begintime' },
-						{ name: 'area' }
+						{ name: 'oo1', width:50},
+						{ name: 'oo2', width:50},
+						{ name: 'oo3' , width:50},
+						{ name: 'bname'},
+						{ name: 'bidno', width:160},
+						{ name: 'hhtime' } 
 					]
 				});
 			},
