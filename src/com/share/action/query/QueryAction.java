@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.InsuranceDTO;
+import com.share.model.CkInsurance;
 import com.share.service.YbService;
 import com.share.util.Pager;
 
@@ -22,15 +23,17 @@ public class QueryAction extends ActionSupport {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(QueryAction.class);
 	
+	@Resource
+	private YbService ybjkService;
+	
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
 	 /** 当前页面 */ 
 	private String page;  
-	   /** 每页的记录数 */ 
+	 /** 每页的记录数 */ 
 	private String rows;
 	
-	@Resource
-	private YbService ybjkService;
+	private InsuranceDTO insuranceDTO;
 	
 	/**
 	 * 
@@ -38,30 +41,26 @@ public class QueryAction extends ActionSupport {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryInit() {
-		Pager pager = new Pager(page, rows);
-		int start = pager.start;
-		int end = pager.end;
+		Pager pager = new Pager(page, rows, new Long(0));
 		List<Object> param = new ArrayList<Object>();
-		String sqlwhere = "";
-		param.add(end);
-		param.add(start);
-		String sql = " SELECT *   FROM (SELECT a.*, ROWNUM rn FROM ( select in_id, fno, idno, pname, oo1, oo2, oo3, sbidno, sbname, comp, txtime, txmoney, subject, remark, col1, col2, col3, col4, col5, col6, col7, col8, col9 from ck_insurance "
-				+ "where 1=1 "
-				+ sqlwhere
-				+ " ) a WHERE ROWNUM <= ?)  WHERE rn >= ?";
-
-		String sqlcount = " SELECT count(1) as cnt FROM ck_insurance t  where 1=1 ";
-
-		List<InsuranceDTO> list = ybjkService.finCkInsurances(sql, param);
-
-		param.remove(param.size() - 1);
-		param.remove(param.size() - 1);
-		String cnt = ybjkService.finCkInsuranceCount(sqlcount, param);
-
+		String jwhere = "";
+		if(this.insuranceDTO.getIdno()==null||"".equals(this.insuranceDTO.getIdno())){	
+		}else{
+			param.add(this.insuranceDTO.getIdno());
+			jwhere=jwhere + " and ci.idno=? "; 
+		}
+		if(this.insuranceDTO.getPname()==null||"".equals(this.insuranceDTO.getPname())){
+		}else{
+			param.add(this.insuranceDTO.getPname());
+			jwhere=jwhere + " and ci.pname=? ";
+		}
+		List<InsuranceDTO> rs = ybjkService.queryCkInsurances(pager, param, jwhere);
 		Map jsonMap = new HashMap();
-		jsonMap.put("total", cnt);// total键
-		jsonMap.put("rows", list);// rows键 存放每页记录 list
-		map = jsonMap;	
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
+		jsonMap.put("rows", rs);
+		map = jsonMap;
 		System.out.println(map.toString());
 		return SUCCESS;
 	}
@@ -85,6 +84,14 @@ public class QueryAction extends ActionSupport {
 	}
 	public void setRows(String rows) {
 		this.rows = rows;
+	}
+
+	public InsuranceDTO getInsuranceDTO() {
+		return insuranceDTO;
+	}
+
+	public void setInsuranceDTO(InsuranceDTO insuranceDTO) {
+		this.insuranceDTO = insuranceDTO;
 	}
 
 }

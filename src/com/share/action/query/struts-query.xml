@@ -16,12 +16,9 @@
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
-		<action name="queryInit" method="queryInit"
-			class="queryAction">
+		<action name="queryInit" method="queryInit" class="queryAction">
 			<result type="json">
-				<param name="root">
-					map
-                </param>
+				<param name="root">map</param>
 			</result>
 		</action>
 	</package>

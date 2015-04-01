@@ -20,6 +20,8 @@ import com.share.dto.UserDTO;
 import com.share.model.CkInsurance;
 import com.share.model.SysMenus;
 import com.share.model.SysUser;
+import com.share.model.VImpfile;
+import com.share.util.Pager;
 
 @Service("ybService")
 public class YbServiceImpl implements YbService {
@@ -231,35 +233,33 @@ public class YbServiceImpl implements YbService {
 	}
 	
 	@Override
-	public String finCkInsuranceCount(String sql, List<Object> param) {
-	  Long cnt = ckInsuranceDAO.countJDBCsql(sql, param); if (null !=
-	  cnt) { return cnt + ""; } else { return "0"; }
+	public List<InsuranceDTO> queryCkInsurances(Pager pager, List<Object> param , String jwhere) {
+		List<InsuranceDTO> resultlist = new ArrayList<InsuranceDTO>();
+		String hql = "select ci from CkInsurance ci where 1=1 "+jwhere;
+		String hqlc = "select count(*) as cnt from CkInsurance ci where 1=1 "+jwhere;
+		Long cnt = ckInsuranceDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<CkInsurance> rs = ckInsuranceDAO.find(hql, param, pager.pager,
+				pager.rows);
+		 for (CkInsurance s:rs) {
+			 InsuranceDTO e = new InsuranceDTO(); 
+			 e.setInId(s.getInId());
+			  e.setFno(s.getFno());
+			  e.setIdno(s.getIdno());
+			  e.setPname(s.getPname());
+			  e.setOo1(s.getOo1());
+			  e.setOo2(s.getOo2());
+			  e.setOo3(s.getOo3());
+			  e.setSbidno(s.getSbidno());
+			  e.setSbname(s.getSbname());
+			  e.setComp(s.getComp());
+			  e.setTxtime(s.getTxtime());
+			  e.setTxmoney(s.getTxmoney());
+			  e.setSubject(s.getSubject());
+			  e.setRemark(s.getRemark());
+			 resultlist.add(e);
+		 }
+		return resultlist;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public List<InsuranceDTO> finCkInsurances(String sql, List<Object> param) {
-	  List<InsuranceDTO> resultlist = new ArrayList<InsuranceDTO>();
-	  List rs = ckInsuranceDAO.findJDBCSql(sql, param); 
-	  for (Iterator iterator = rs.iterator(); iterator.hasNext();) { 
-		  InsuranceDTO e = new InsuranceDTO(); 
-		  Object[] s = (Object[]) iterator.next();
-		  e.setInId(Long.parseLong(""+s[0]));
-		  e.setFno("" + s[1]);
-		  e.setIdno(""+s[2]);
-		  e.setPname(""+s[3]);
-		  e.setOo1(""+s[4]);
-		  e.setOo2(""+s[5]);
-		  e.setOo3(""+s[6]);
-		  e.setSbidno(""+s[7]);
-		  e.setSbname(""+s[8]);
-		  e.setComp(""+s[9]);
-		  e.setTxtime(""+s[10]);
-		  e.setTxmoney(""+s[11]);
-		  e.setSubject(""+s[12]);
-		  e.setRemark(""+s[13]);
-		  resultlist.add(e); 
-	  }
-	  return resultlist;
-	}
 }

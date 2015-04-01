@@ -6,59 +6,45 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<title>Blank Page - Ace Admin</title>
-<link rel="stylesheet" href="../../assets/css/jquery-ui.css" />
-<link rel="stylesheet" href="../../assets/css/datepicker.css" />
-<link rel="stylesheet" href="../../assets/css/ui.jqgrid.css" />
+<title>社保数据查询</title>
+<link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
 <!-- ajax layout which only needs content area -->
 <div class="row">
 	<div class="col-xs-12">
-		<!-- PAGE CONTENT BEGINS -->
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4 class="widget-title">查询</h4>
+			</div>
+			<div class="widget-body">
+			<div class="widget-main">
+				<form class="form-inline" id="searchform">
+					<label>姓名</label>
+					<input type="text" class="input-large" placeholder="姓名" name="insuranceDTO.pname"/>
+					<label>身份证号码</label>
+					<input type="text" class="input-large" placeholder="身份证号码" name="insuranceDTO.idno"/>
+					<button type="button" class="btn btn-info btn-sm">
+						<i class="ace-icon fa fa-search bigger-110"></i>查询
+					</button>
+				</form>
+			</div>
+		</div>
+		</div>
 		<table id="grid-table"></table>
 		<div id="grid-pager"></div>
 		<script type="text/javascript">
-			var $path_base = "../..";//in Ace demo this will be used for editurl parameter
+			var $path_base = "<%=basePath%>";//in Ace demo this will be used for editurl parameter
 		</script>
-		<!-- PAGE CONTENT ENDS -->
-	</div><!-- /.col -->
-</div><!-- /.row -->
-
-<!-- page specific plugin scripts -->
+	</div>
+</div>
 <script type="text/javascript">
-	var scripts = [null,"../../assets/js/date-time/bootstrap-datepicker.js","../../assets/js/jqGrid/jquery.jqGrid.src.js","../../assets/js/jqGrid/i18n/grid.locale-cn.js", null]
+	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
- 		var grid_data = 
-			[ 
-				{id:"1",name:"Desktop Computer",note:"note",stock:"Yes",ship:"FedEx", sdate:"2007-12-03"},
-				{id:"2",name:"Laptop",note:"Long text ",stock:"Yes",ship:"InTime",sdate:"2007-12-03"},
-				{id:"3",name:"LCD Monitor",note:"note3",stock:"Yes",ship:"TNT",sdate:"2007-12-03"},
-				{id:"4",name:"Speakers",note:"note",stock:"No",ship:"ARAMEX",sdate:"2007-12-03"},
-				{id:"5",name:"Laser Printer",note:"note2",stock:"Yes",ship:"FedEx",sdate:"2007-12-03"},
-				{id:"6",name:"Play Station",note:"note3",stock:"No", ship:"FedEx",sdate:"2007-12-03"},
-				{id:"7",name:"Mobile Telephone",note:"note",stock:"Yes",ship:"ARAMEX",sdate:"2007-12-03"},
-				{id:"8",name:"Server",note:"note2",stock:"Yes",ship:"TNT",sdate:"2007-12-03"},
-				{id:"9",name:"Matrix Printer",note:"note3",stock:"No", ship:"FedEx",sdate:"2007-12-03"},
-				{id:"10",name:"Desktop Computer",note:"note",stock:"Yes",ship:"FedEx", sdate:"2007-12-03"},
-				{id:"11",name:"Laptop",note:"Long text ",stock:"Yes",ship:"InTime",sdate:"2007-12-03"},
-				{id:"12",name:"LCD Monitor",note:"note3",stock:"Yes",ship:"TNT",sdate:"2007-12-03"},
-				{id:"13",name:"Speakers",note:"note",stock:"No",ship:"ARAMEX",sdate:"2007-12-03"},
-				{id:"14",name:"Laser Printer",note:"note2",stock:"Yes",ship:"FedEx",sdate:"2007-12-03"},
-				{id:"15",name:"Play Station",note:"note3",stock:"No", ship:"FedEx",sdate:"2007-12-03"},
-				{id:"16",name:"Mobile Telephone",note:"note",stock:"Yes",ship:"ARAMEX",sdate:"2007-12-03"},
-				{id:"17",name:"Server",note:"note2",stock:"Yes",ship:"TNT",sdate:"2007-12-03"},
-				{id:"18",name:"Matrix Printer",note:"note3",stock:"No", ship:"FedEx",sdate:"2007-12-03"},
-				{id:"19",name:"Matrix Printer",note:"note3",stock:"No", ship:"FedEx",sdate:"2007-12-03"},
-				{id:"20",name:"Desktop Computer",note:"note",stock:"Yes",ship:"FedEx", sdate:"2007-12-03"},
-				{id:"21",name:"Laptop",note:"Long text ",stock:"Yes",ship:"InTime",sdate:"2007-12-03"},
-				{id:"22",name:"LCD Monitor",note:"note3",stock:"Yes",ship:"TNT",sdate:"2007-12-03"},
-				{id:"23",name:"Speakers",note:"note",stock:"No",ship:"ARAMEX",sdate:"2007-12-03"}
-			];
-		
 		jQuery(function($) {
 			var grid_selector = "#grid-table";
 			var pager_selector = "#grid-pager";
-			var pageIndex = 1;
-			var pageSize = 10;
+			var formData=$("#searchform").serialize();
 			//resize to fit page size
 			$(window).on('resize.jqGrid', function () {
 				$(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
@@ -75,29 +61,28 @@
 		    })
 			
 			jQuery(grid_selector).jqGrid({
-				//direction: "rtl",
 				//url:"${pageContext.request.contextPath}/page/html/content/query/myjson.json",
-				url : "${pageContext.request.contextPath}/page/html/content/query/queryInit.action",
+				url : "<%=basePath%>page/html/content/query/queryInit.action?"+formData,
 				mtype : "POST", 
 				datatype : "json",
 				//ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
 				height : 250,
-				colNames : ['ID','家庭编号','姓名','身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休金','退休时间','科目','备注'],
+				colNames : ['ID' ,'家庭编号','姓名','身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休金','退休时间','科目','备注' ],
 				colModel : [
 					{name:'inId',index:'inId'},
-					{name:'fno',index:'fno'},
-					{name:'pname',index:'pname'},
-					{name:'idno',index:'idno'},
-					{name:'oo1',index:'oo1'},
-					{name:'oo2',index:'oo2'},
-					{name:'oo3',index:'oo3'},
-					{name:'sbname',index:'sbname'},
-					{name:'sbidno',index:'sbidno'},
-					{name:'comp',index:'comp'},
-					{name:'txmoney',index:'txmoney'},
-					{name:'txtime',index:'txtime',formatter:'date',formatoptions: {newformat:'Y-m-d'}},
-					{name:'subject',index:'subject'},
-					{name:'remark',index:'remark'}
+					{name:'fno',index:'fno',hidden:true,formatter:"actionFormatter"},
+					{name:'pname',index:'pname',formatter:"actionFormatter"},
+					{name:'idno',index:'idno',formatter:"actionFormatter"},
+					{name:'oo1',index:'oo1',formatter:"actionFormatter"},
+					{name:'oo2',index:'oo2',formatter:"actionFormatter"},
+					{name:'oo3',index:'oo3',formatter:"actionFormatter"},
+					{name:'sbname',index:'sbname',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'sbidno',index:'sbidno',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'comp',index:'comp',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'txmoney',index:'txmoney',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'txtime',index:'txtime',formatter:'date',formatoptions: {newformat:'Y-m-d'},cellattr: addCellAttr_bgcolor},
+					{name:'subject',index:'subject',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'remark',index:'remark',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
 				], 
 				rownumbers: true,
 				autowidth : true,
@@ -116,14 +101,32 @@
 					setTimeout(function(){
 						styleCheckbox(table);
 						updatePagerIcons(table);
+						//formatetext(table);
 					}, 0);
 				}, 
 				caption : "数据信息显示"
-				//,autowidth: true
 		
 			});
 			$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 			
+ 			 $.extend($.fn.fmatter, {
+		        actionFormatter: function(cellvalue, options, rowObject) {
+		        	var retVal = cellvalue;
+		        	if(cellvalue==null){
+		        		 retVal = " ";
+		       		}
+		        	return retVal;
+		        }
+		    } );
+			//改变列字体颜色
+			function addCellAttr_color(rowId, val, rawObject, cm, rdata) {
+				return "style='color:red'";
+			}
+ 			//改变列背景颜色
+ 			function addCellAttr_bgcolor(rowId, val, rawObject, cm, rdata) {
+ 				return "style='background-color:pink'";
+ 			}
+			 
 			function styleCheckbox(table) {
 				
 	/* 				$(table).find('input:checkbox').addClass('ace')
@@ -154,5 +157,4 @@
 		
 		});
 	});
-	
 </script>

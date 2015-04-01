@@ -9,6 +9,8 @@ import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.model.CkInsurance;
+import com.share.util.Pager;
 
 public interface YbService {
 	public UserDTO findUser(UserDTO userDTO);
@@ -35,7 +37,5 @@ public interface YbService {
 	
 	public List<UserDTO> finMemberstest(String sql, List<Object> param);
 	
-	public String finCkInsuranceCount(String sql, List<Object> param);
-	
-	public List<InsuranceDTO> finCkInsurances(String sql, List<Object> param);
+	public List<InsuranceDTO> queryCkInsurances(Pager pager, List<Object> param , String jwhere);
 }
