@@ -24,7 +24,7 @@
 					<input type="text" class="input-large" placeholder="姓名" name="insuranceDTO.pname"/>
 					<label>身份证号码</label>
 					<input type="text" class="input-large" placeholder="身份证号码" name="insuranceDTO.idno"/>
-					<button type="button" class="btn btn-info btn-sm">
+					<button type="button" class="btn btn-info btn-sm" onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
 				</form>
@@ -44,7 +44,7 @@
 		jQuery(function($) {
 			var grid_selector = "#grid-table";
 			var pager_selector = "#grid-pager";
-			var formData=$("#searchform").serialize();
+			var formData = $("#searchform").serializeObject();
 			//resize to fit page size
 			$(window).on('resize.jqGrid', function () {
 				$(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
@@ -61,28 +61,22 @@
 		    })
 			
 			jQuery(grid_selector).jqGrid({
-				//url:"${pageContext.request.contextPath}/page/html/content/query/myjson.json",
-				url : "<%=basePath%>page/html/content/query/queryInit.action?"+formData,
+				url : "<%=basePath%>page/html/content/query/queryInit.action",
 				mtype : "POST", 
 				datatype : "json",
-				//ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
-				height : 250,
-				colNames : ['ID' ,'家庭编号','姓名','身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休金','退休时间','科目','备注' ],
+				postData : formData,
+				height : 321,
+				colNames : ['姓名','身份证号码','户主姓名','来源','低保状态','分类施保状态','再保障状态','社保姓名','社保身份证号码'],
 				colModel : [
-					{name:'inId',index:'inId'},
-					{name:'fno',index:'fno',hidden:true,formatter:"actionFormatter"},
-					{name:'pname',index:'pname',formatter:"actionFormatter"},
-					{name:'idno',index:'idno',formatter:"actionFormatter"},
-					{name:'oo1',index:'oo1',formatter:"actionFormatter"},
-					{name:'oo2',index:'oo2',formatter:"actionFormatter"},
-					{name:'oo3',index:'oo3',formatter:"actionFormatter"},
-					{name:'sbname',index:'sbname',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'sbidno',index:'sbidno',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'comp',index:'comp',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'txmoney',index:'txmoney',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'txtime',index:'txtime',formatter:'date',formatoptions: {newformat:'Y-m-d'},cellattr: addCellAttr_bgcolor},
-					{name:'subject',index:'subject',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'remark',index:'remark',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
+					{name:'pname',index:'pname',width:'120px',formatter:"actionFormatter"},
+				    {name:'idno',index:'idno',width:'250px',formatter:"actionFormatter"},
+				    {name:'mastername',index:'mastername',width:'120px',formatter:'actionFormatter'},
+					{name:'ds',index:'ds',width:'120px',formatter:"actionFormatter"},
+					{name:'col4',index:'col4',width:'170px',formatter:"actionFormatter"},
+					{name:'col5',index:'col5',width:'170px',formatter:"actionFormatter"},
+					{name:'col6',index:'col6',width:'170px',formatter:"actionFormatter"},
+					{name:'sbname',index:'sbname',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'sbidno',index:'sbidno',width:'250px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
 				], 
 				rownumbers: true,
 				autowidth : true,
@@ -128,16 +122,12 @@
  			}
 			 
 			function styleCheckbox(table) {
-				
 	/* 				$(table).find('input:checkbox').addClass('ace')
 					.wrap('<label />')
 					.after('<span class="lbl align-top" />')
-			
-			
 					$('.ui-jqgrid-labels th[id*="_cb"]:first-child')
 					.find('input.cbox[type=checkbox]').addClass('ace')
 					.wrap('<label />').after('<span class="lbl align-top" />'); */
-				
 			}
 			function updatePagerIcons(table) {
 				var replacement = 
@@ -154,7 +144,30 @@
 					if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 				})
 			}
-		
+			
 		});
+		
 	});
+	//form 序列化转json
+	$.fn.serializeObject = function()    
+	{    
+	   var o = {};    
+	   var a = this.serializeArray();    
+	   $.each(a, function() {    
+	       if (o[this.name]) {    
+	           if (!o[this.name].push) {    
+	               o[this.name] = [o[this.name]];    
+	           }    
+	           o[this.name].push(this.value || '');    
+	       } else {    
+	           o[this.name] = this.value || '';    
+	       }    
+	   });    
+	   return o;    
+	};  
+	
+	function onClik(){
+        var jsonuserinfo = $('#searchform').serializeObject();  
+        jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
+	}
 </script>

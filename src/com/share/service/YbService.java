@@ -4,12 +4,11 @@ import java.util.List;
 
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
-import com.share.dto.InsuranceDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
-import com.share.model.CkInsurance;
+import com.share.model.VCkinsurance;
 import com.share.util.Pager;
 
 public interface YbService {
@@ -37,5 +36,5 @@ public interface YbService {
 	
 	public List<UserDTO> finMemberstest(String sql, List<Object> param);
 	
-	public List<InsuranceDTO> queryCkInsurances(Pager pager, List<Object> param , String jwhere);
+	public List<VCkinsurance> queryCkInsurances(Pager pager, List<Object> param , String jwhere);
 }

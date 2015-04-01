@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.InsuranceDTO;
-import com.share.model.CkInsurance;
+import com.share.model.VCkinsurance;
 import com.share.service.YbService;
 import com.share.util.Pager;
 
@@ -54,7 +54,7 @@ public class QueryAction extends ActionSupport {
 			param.add(this.insuranceDTO.getPname());
 			jwhere=jwhere + " and ci.pname=? ";
 		}
-		List<InsuranceDTO> rs = ybjkService.queryCkInsurances(pager, param, jwhere);
+		List<VCkinsurance> rs = ybjkService.queryCkInsurances(pager, param, jwhere);
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);
 		jsonMap.put("total", pager.total);
@@ -64,6 +64,32 @@ public class QueryAction extends ActionSupport {
 		System.out.println(map.toString());
 		return SUCCESS;
 	}
+	
+	/*@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryInit() {
+		Pager pager = new Pager(page, rows, new Long(0));
+		List<Object> param = new ArrayList<Object>();
+		String jwhere = "";
+		if(this.insuranceDTO.getIdno()==null||"".equals(this.insuranceDTO.getIdno())){	
+		}else{
+			param.add(this.insuranceDTO.getIdno());
+			jwhere=jwhere + " and ci.idno=? "; 
+		}
+		if(this.insuranceDTO.getPname()==null||"".equals(this.insuranceDTO.getPname())){
+		}else{
+			param.add(this.insuranceDTO.getPname());
+			jwhere=jwhere + " and ci.pname=? ";
+		}
+		List<InsuranceDTO> rs = ybjkService.queryCkInsurances(pager, param, jwhere);
+		Map jsonMap = new HashMap();
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
+		jsonMap.put("rows", rs);
+		map = jsonMap;
+		System.out.println(map.toString());
+		return SUCCESS;
+	}*/
 	
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
