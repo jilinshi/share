@@ -2,13 +2,16 @@ package com.share.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
@@ -20,8 +23,9 @@ import com.share.dto.UserDTO;
 import com.share.model.CkInsurance;
 import com.share.model.SysMenus;
 import com.share.model.SysUser;
-import com.share.model.VImpfile;
+import com.share.model.VCkinsurance;
 import com.share.util.Pager;
+import com.share.util.XmlExcel;
 
 @Service("ybService")
 public class YbServiceImpl implements YbService {
@@ -31,7 +35,7 @@ public class YbServiceImpl implements YbService {
 	@Resource
 	private BaseDAO<SysMenus> sysMeunsDAO;
 	@Resource
-	private BaseDAO<CkInsurance> ckInsuranceDAO;
+	private BaseDAO<VCkinsurance> vCkinsuranceDAO;
 
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
@@ -232,7 +236,24 @@ public class YbServiceImpl implements YbService {
 		return resultlist;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
+	public List<VCkinsurance> queryCkInsurances(Pager pager, List<Object> param , String jwhere) {
+		Map session = ActionContext.getContext().getSession();
+		String hql = "select ci from VCkinsurance ci where 1=1 "+jwhere;
+		String hqlc = "select count(*) as cnt from VCkinsurance ci where 1=1 "+jwhere;
+		Long cnt = vCkinsuranceDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<VCkinsurance> rs = vCkinsuranceDAO.find(hql, param, pager.pager,
+				pager.rows);
+		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckinsurance");
+		session.put("hql", hql);
+		session.put("param", param);
+		session.put("title", title);
+		return rs;
+	}
+	
+	/*@Override
 	public List<InsuranceDTO> queryCkInsurances(Pager pager, List<Object> param , String jwhere) {
 		List<InsuranceDTO> resultlist = new ArrayList<InsuranceDTO>();
 		String hql = "select ci from CkInsurance ci where 1=1 "+jwhere;
@@ -261,5 +282,5 @@ public class YbServiceImpl implements YbService {
 		 }
 		return resultlist;
 	}
-	
+	*/
 }

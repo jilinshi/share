@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excel>
+	<table id="vckinsurance" title="社保" name="vckinsurance">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号码</col>
+	</table>
+</excel>
