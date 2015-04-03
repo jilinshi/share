@@ -27,6 +27,9 @@
 					<button type="button" class="btn btn-info btn-sm" onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
+					<a href="<%=basePath%>downloadExcel.action?fileName=社保" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
+					</a>
 				</form>
 			</div>
 		</div>
@@ -169,5 +172,6 @@
 	function onClik(){
         var jsonuserinfo = $('#searchform').serializeObject();  
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
-	}
+	};
+	
 </script>

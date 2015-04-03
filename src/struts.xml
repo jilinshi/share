@@ -30,6 +30,14 @@
 		<action name="logout" method="logout" class="loginAction">
 			<result name="success" >/page/common/logout.jsp</result>
 		</action>
+		<!-- 公共导出方法 -->
+	  	<action name="downloadExcel" class="downloadExcelAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="contentDisposition">${fileName}</param>
+				<param name="inputName">excelFile</param>
+			</result>
+		</action>
 	</package>
 	<include file="/com/share/action/imp/struts-imp.xml"></include>
 	<include file="/com/share/action/query/struts-query.xml"></include>
