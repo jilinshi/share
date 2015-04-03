@@ -3,5 +3,7 @@
 	<table id="vckinsurance" title="社保" name="vckinsurance">
 		<col id="pname">姓名</col>
 		<col id="idno">身份证号码</col>
+		<col id="oo">地址</col>
+		<col id="ds">来源</col>
 	</table>
 </excel>
