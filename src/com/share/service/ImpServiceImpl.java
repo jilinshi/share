@@ -20,6 +20,7 @@ import com.share.dto.FileDTO;
 import com.share.dto.FundDTO;
 import com.share.dto.HousepropertyDTO;
 import com.share.dto.InsuranceDTO;
+import com.share.dto.ResburialDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.VehicleDTO;
 import com.share.model.CkBurial;
@@ -28,8 +29,11 @@ import com.share.model.CkHouseproperty;
 import com.share.model.CkInsurance;
 import com.share.model.CkVehicle;
 import com.share.model.Impdatainfo;
+import com.share.model.ResBurial;
+import com.share.model.ResInsurance;
 import com.share.model.SysFile;
 import com.share.model.VImpfile;
+import com.share.util.BigTxt;
 import com.share.util.CreatAndReadExcel;
 import com.share.util.IDCard;
 import com.share.util.Pager;
@@ -53,6 +57,10 @@ public class ImpServiceImpl<T> implements ImpService {
 	private BaseDAO<CkHouseproperty> ckHousepropertyDAO;
 	@Resource
 	private BaseDAO<CkVehicle> ckVehicleDAO;
+	@Resource
+	private BaseDAO<ResInsurance> resInsuranceDAO;
+	@Resource
+	private BaseDAO<ResBurial> resBurialDAO;
 
 	private Impdatainfo impdatainfo;
 
@@ -108,6 +116,28 @@ public class ImpServiceImpl<T> implements ImpService {
 		params[0] = this.getImpdatainfo();
 		ckInsuranceDAO.executeHql(
 				"delete CkInsurance t where t.impdatainfo= ?", params);
+
+		params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckInsuranceDAO.executeHql("delete CkFund t where t.impdatainfo= ?",
+				params);
+
+		params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckInsuranceDAO.executeHql(
+				"delete CkHouseproperty t where t.impdatainfo= ?", params);
+		params = new Object[1];
+		params[0] = this.getImpdatainfo();
+		ckInsuranceDAO.executeHql("delete CkVehicle t where t.impdatainfo= ?",
+				params);
+		params = new Object[1];
+		params[0] = this.getImpdatainfo().getFileId().toString();
+		ckInsuranceDAO.executeHql("delete ResBurial t where t.fileId= ?",
+				params);
+		params = new Object[1];
+		params[0] = this.getImpdatainfo().getFileId().toString();
+		ckInsuranceDAO.executeHql("delete ResInsurance t where t.fileId= ?",
+				params);
 
 		return fileDTO;
 	}
@@ -165,6 +195,48 @@ public class ImpServiceImpl<T> implements ImpService {
 		return list;
 	}
 
+	private List<ResburialDTO> convert7(List<List<Object>> rs) {
+		List<ResburialDTO> g = new ArrayList<ResburialDTO>();
+		try {
+			for (int i = 0; i < rs.size(); i++) {
+				List<Object> row = rs.get(i);
+				int cls = row.size();
+				if (cls > 2) {
+					String idno = (String) row.get(4);
+					String iderr;
+					iderr = IDCard.IDCardValidate(idno);
+					if (null == iderr || "".equals(iderr)) {
+						// 家庭编号 姓名 身份证号（18位） 区 街道 社区 归档日期 受理业务
+						// 房产证号 所有人 所有人身份证号 坐落 面积 办理日期 类型
+						String PNAME = (String) row.get(0);
+						String PSEX = (String) row.get(1);
+						String PAGE = (String) row.get(2);
+						String ADDRESS = (String) row.get(3);
+						String IDNO = (String) row.get(4);
+						String DEATHREASON = (String) row.get(5);
+						String TELEPHONE = (String) row.get(6);
+						String HHTIME = (String) row.get(7);
+
+						ResburialDTO e = new ResburialDTO();
+						e.setPname(PNAME);
+						e.setPsex(PSEX);
+						e.setPage(PAGE);
+						e.setAddress(ADDRESS);
+						e.setIdno(IDNO);
+						e.setDeathreason(DEATHREASON);
+						e.setTelephone(TELEPHONE);
+						e.setHhtime(HHTIME);
+						g.add(e);
+					}
+
+				}
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		return g;
+	}
+
 	private List<VehicleDTO> convert5(List<List<Object>> rs) {
 		List<VehicleDTO> g = new ArrayList<VehicleDTO>();
 		try {
@@ -207,7 +279,7 @@ public class ImpServiceImpl<T> implements ImpService {
 						e.setMotoNo(MOTO_NO);
 						e.setBuytime(BUYTIME);
 						e.setVtype(VTYPE);
-						
+
 						g.add(e);
 					}
 				}
@@ -447,8 +519,9 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	@Override
-	public void saveFileGrid(FileDTO fileDTO) {
-
+	public String saveFileGrid(FileDTO fileDTO) {
+		String result = "导入文件成功";
+		log.info("begin saveFileGrid");
 		Object[] param = new Object[1];
 		param[0] = fileDTO.getFileId();
 		Impdatainfo l = impdatainfoDAO.get(
@@ -459,37 +532,119 @@ public class ImpServiceImpl<T> implements ImpService {
 			if (null != fileDTO) {
 				File file = new File(fileDTO.getRealpath());
 				if (file.exists()) {
-					List<List<Object>> rs = CreatAndReadExcel.readExcel(file);
+					String name = file.getName();
+					if (name.trim().toLowerCase().endsWith(".txt")) {
+						log.info("txt  " + fileDTO.getFtype() + " is starting");
+						BigTxt bt = new BigTxt();
+						List<String> rs = bt.readFile(file.getAbsolutePath());
+						switch (fileDTO.getFtype()) {
 
-					switch (fileDTO.getFtype()) {
-					case "INSURANCE": // 社保
-						savedata1(rs);
-						break;
-					case "FUND": // 公积金
-						savedata2(rs);
-						break;
-					case "BURIAL": // 殡葬
-						savedata3(rs);
-						break;
-					case "HOUSEPROPERTY": // 房产
-						savedata4(rs);
-						break;
-					case "VEHICLE": // 车辆
-						savedata5(rs);
-						break;
-					default:
-						//System.out.println("default");
-						break;
+						case "RESINSURANCE": // 车辆
+							savedata6(rs);
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						default:
+							l.setOperstat("0");
+							impdatainfoDAO.update(l);
+							result = "不支持此数据文件";
+							break;
+						}
+					} else {
+						log.info("excel " + fileDTO.getFtype() + " is starting");
+						// List<List<Object>> rs = CreatAndReadExcel
+						// .readExcel(file);
+						// System.out.println(rs.size());
+						switch (fileDTO.getFtype()) {
+						case "INSURANCE": // 社保
+							savedata1(CreatAndReadExcel.readExcel(file));
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						case "FUND": // 公积金
+							savedata2(CreatAndReadExcel.readExcel(file));
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						case "BURIAL": // 殡葬
+							savedata3(CreatAndReadExcel.readExcel(file));
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						case "HOUSEPROPERTY": // 房产
+							savedata4(CreatAndReadExcel.readExcel(file));
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						case "VEHICLE": // 车辆
+							savedata5(CreatAndReadExcel.readExcel(file));
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						case "RESBURIAL": // 车辆
+							savedata7(CreatAndReadExcel.readExcel(file));
+							l.setOperstat("1");
+							impdatainfoDAO.update(l);
+							break;
+						default:
+							// System.out.println("default");
+							l.setOperstat("0");
+							impdatainfoDAO.update(l);
+							result = "不支持此数据文件";
+							break;
+						}
+
 					}
-
+				} else {
+					result = "数据文件不存在，请重新上传文件。";
+					log.info("文件不存在");
 				}
 			}
-			l.setOperstat("1");
-			impdatainfoDAO.update(l);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return result;
 
+	}
+
+	private List<String> savedata6(List<String> rs) {
+		List<ResInsurance> r = new ArrayList<ResInsurance>();
+		resInsuranceDAO.executeHql("delete ResInsurance t", null);
+		for (String s : rs) {
+			String[] o = s.split("	");
+			// 220204194908081249 王桂仙 204023 吉林远东药业集团股份有限公司 1949-8-8 00:00:00
+			// 1968-11-1 00:00:00 2001-1-8 00:00:00 1633.28
+			ResInsurance e = new ResInsurance();
+			e.setIdno(o[0]);
+			e.setPname(o[1]);
+			e.setInno(o[2]);
+			e.setDanwei(o[3]);
+			e.setBirthday(o[4]);
+			e.setJfBegin(o[5]);
+			e.setLqBegin(o[6]);
+			e.setLqMoney(o[7]);
+			e.setFileId(this.getImpdatainfo().getFileId().toString());
+			r.add(e);
+		}
+		resInsuranceDAO.saveBatch(r);
+		return rs;
+	}
+
+	private List<ResburialDTO> savedata7(List<List<Object>> rs) {
+		Object[] params = new Object[1];
+		params[0] = this.getImpdatainfo().getFileId().toString();
+		resBurialDAO.executeHql("delete ResBurial t where t.fileId= ?", params);
+		List<ResburialDTO> g = this.convert7(rs);
+		List<ResBurial> r = new ArrayList<ResBurial>();
+		for (ResburialDTO s : g) {
+			ResBurial e = new ResBurial();
+			BeanUtils.copyProperties(s, e);
+			e.setFileId(this.getImpdatainfo().getFileId().toString());
+			r.add(e);
+		}
+		resBurialDAO.saveBatch(r);
+		return g;
 	}
 
 	private List<VehicleDTO> savedata5(List<List<Object>> rs) {

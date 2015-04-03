@@ -50,7 +50,7 @@ public class CreatAndReadExcel {
 		 * TODO Auto-generated catch block e.printStackTrace(); }
 		 */
 
-		String path2007 = "C:\\uploadfiles\\201503191519117708.xlsx";// 获取项目文件路径
+		String path2007 = "C:\\uploadfiles\\20150402164521379.xlsx";// 获取项目文件路径
 																		// +2007版文件名
 		System.out.println("路径：" + path2007);
 		File f2007 = new File(path2007);
