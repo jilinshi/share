@@ -111,11 +111,48 @@ public class ImpAction extends ActionSupport {
 		return SUCCESS;
 	}
 
+	public String upload1() {
+
+		String displayname = "";
+		String realname = "";
+		String realpath = "";
+
+		try {
+			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
+			// 取得需要上传的文件数组
+			File files = this.getSingle();
+			// 建立上传文件的输出流, getImageFileName()[i]
+			displayname = this.getSingleFileName();
+			realname = this.generateFileName(displayname);
+			realpath = savepath + "" + realname;
+			FileOutputStream fos = new FileOutputStream(realpath);
+			// 建立上传文件的输入流
+			FileInputStream fis = new FileInputStream(files);
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) > 0) {
+				fos.write(buffer, 0, len);
+			}
+			fos.close();
+			fis.close();
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return SUCCESS;
+	}
+
 	/**
 	 * 多文件上传 input type=file name=ec
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String uploadmulti() {
 		try {
 			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
@@ -142,6 +179,11 @@ public class ImpAction extends ActionSupport {
 					fis.close();
 				}
 			}
+
+			Map jsonMap = new HashMap();
+			jsonMap.put("fileid", "-1");// total
+			jsonMap.put("status", "OK");// total
+			map = jsonMap;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -220,8 +262,8 @@ public class ImpAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryFiles() {
 		Pager pager = new Pager(page, rows, new Long(0));
-		Object[] param =new Object[1]   ;
-		param[0]=this.fileDTO.getFtype();
+		Object[] param = new Object[1];
+		param[0] = this.fileDTO.getFtype();
 		List<VImpfile> rs = impService.queryFiles(pager, param);
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);
@@ -261,9 +303,18 @@ public class ImpAction extends ActionSupport {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String impInfos() {
+		log.info("begin:" + System.currentTimeMillis() + ">>>>>文件路径："
+				+ fileDTO.getRealpath() + ";文件类型：" + fileDTO.getFtype());
+		String r = impService.saveFileGrid(fileDTO);
 
-		impService.saveFileGrid(fileDTO);
+		Map jsonMap = new HashMap();
+		jsonMap.put("info", r);
+		map = jsonMap;
+
+		log.info("end:" + System.currentTimeMillis() + "文件路径："
+				+ fileDTO.getRealpath() + ";文件类型：" + fileDTO.getFtype());
 		return SUCCESS;
 	}
 

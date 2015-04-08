@@ -14,7 +14,7 @@ public interface ImpService {
 	
 	public <T> List<T> queryFiletoData(FileDTO fileDTO);
 
-	public void saveFileGrid(FileDTO fileDTO);
+	public String saveFileGrid(FileDTO fileDTO);
 
 	public List<VImpfile> queryFiles(Pager pager, Object[] param);
 }

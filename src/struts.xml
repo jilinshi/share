@@ -10,6 +10,7 @@
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.action.extension" value="action" />
 	<constant name="struts.serve.static.browserCache" value="false" />
+	<constant name="struts.multipart.maxSize" value="125829120"/> 
 	<package name="login" namespace="/" extends="struts-default">
 		<interceptors>
 			<interceptor name="operationlogInterceptor"

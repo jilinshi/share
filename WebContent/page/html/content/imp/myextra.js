@@ -10,7 +10,8 @@ function delexcel(p1, basepath, ftype) {
 		 error : function() {
 	          alert("异常！");     
 	     },
-		success : function() {
+		success : function(data) {
+			alert("删除数据");
 			$("#grid-table").jqGrid().trigger('reloadGrid'); 
 		}
 	});
@@ -30,8 +31,8 @@ function impexcel(p1, basepath, ftype) {
 		 error : function() {
 	          alert("异常:检查所上传的文档格式");     
 	     },
-		success : function() {
-			alert("数据导入成功");
+		success : function(data) {
+			alert(data.info);
 			$("#grid-table").jqGrid().trigger('reloadGrid'); 
 		}
 	});
