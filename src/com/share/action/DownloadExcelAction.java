@@ -28,14 +28,16 @@ import com.share.util.ExportExcel;
 public class DownloadExcelAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(DownloadExcelAction.class);
+	private static Logger log = LoggerFactory
+			.getLogger(DownloadExcelAction.class);
 	private String sql;
 	private String hql;
 	private List<Object> param;
+	private Object[] param1;
 	private LinkedHashMap<String, String> title = new LinkedHashMap<String, String>();
 	private String fileName;
 	private InputStream excelFile;
-	
+
 	@Resource
 	private SysMgrService sysMgrService;
 	@Resource
@@ -52,36 +54,46 @@ public class DownloadExcelAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String execute() throws Exception {
 		Map session = ActionContext.getContext().getSession();
-		title =(LinkedHashMap<String, String>) session.get("title");
+		title = (LinkedHashMap<String, String>) session.get("title");
 		sql = (String) session.get("sql");
 		hql = (String) session.get("hql");
 		param = (List<Object>) session.get("param");
-		SimpleDateFormat bartDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+		param1 = (Object[]) session.get("param1");
+
+		SimpleDateFormat bartDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd-HH-mm-ss");
 		String nowdate = bartDateFormat.format(new Date());
-		
-		if(fileName == null ||"".equals(fileName)){
-			fileName = "导出EXCEL" ;
+
+		if (fileName == null || "".equals(fileName)) {
+			fileName = "EXCEL";
 		}
-		//String fn = new String(fileName.getBytes("ISO-8859-1"),"UTF-8");
+		// String fn = new String(fileName.getBytes("ISO-8859-1"),"UTF-8");
 		String fn = fileName;
-		String f = new String((fn+"("+nowdate+")").getBytes("gb2312"), "ISO8859-1");
+		String f = new String((fn + "(" + nowdate + ")").getBytes("gb2312"),
+				"ISO8859-1");
 		fileName = "attachment; filename=" + f + ".xls";
 		return super.execute();
 	}
 
 	@SuppressWarnings("rawtypes")
 	public InputStream getExcelFile() {
-		List<HashMap> rs = sysMgrService.queryData(hql, param);
+		List<HashMap> rs = null;
+		if (null != param) {
+			rs = sysMgrService.queryData(hql, param);
+		}
+		if (null != param1) {
+			rs = sysMgrService.queryData(hql, param1);
+		}
 		ByteArrayInputStream bais = null;
 		ExportExcel ee = new ExportExcel();
-		ByteArrayOutputStream baos = ee.genExcelData(title, rs); //参数为  题目，结果，excel卷标
+		ByteArrayOutputStream baos = ee.genExcelData(title, rs); // 鍙傛暟涓�
+																	// 棰樼洰锛岀粨鏋滐紝excel鍗锋爣
 		if (null != baos) {
 			byte[] ba = baos.toByteArray();
 			bais = new ByteArrayInputStream(ba);
 		}
 		return bais;
 	}
-	
 
 	public String getSql() {
 		return sql;
@@ -90,7 +102,6 @@ public class DownloadExcelAction extends ActionSupport {
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
-
 
 	public void setExcelFile(InputStream excelFile) {
 		this.excelFile = excelFile;
@@ -112,6 +123,20 @@ public class DownloadExcelAction extends ActionSupport {
 		this.hql = hql;
 	}
 
+	public List<Object> getParam() {
+		return param;
+	}
 
+	public void setParam(List<Object> param) {
+		this.param = param;
+	}
+
+	public Object[] getParam1() {
+		return param1;
+	}
+
+	public void setParam1(Object[] param1) {
+		this.param1 = param1;
+	}
 
 }

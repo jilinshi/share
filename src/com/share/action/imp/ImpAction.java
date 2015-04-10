@@ -347,7 +347,19 @@ public class ImpAction extends ActionSupport {
 
 		}
 		if (impkind.equals("1")) {
-			temphql = " and t.lqMoney>0";
+			switch (this.getPagetype()) {
+			case "PpBurial":
+				temphql = " and t.hhtime is not null";
+				break;
+			case "PpInsurance":
+				temphql = " and t.lqMoney>0";
+				break;
+			default:
+				temphql = "";
+				break;
+			}
+
+		} else {
 
 		}
 
@@ -358,9 +370,9 @@ public class ImpAction extends ActionSupport {
 					+ temphql + " and t.remark=?";
 		}
 		if ("2".equals(imptype)) {
-			 
-			hql = "select t from " + this.getPagetype()
-					+ " t where 1=1 "+ temphql +" and t.remark in ('保障金调整','停保恢复') ";
+
+			hql = "select t from " + this.getPagetype() + " t where 1=1 "
+					+ temphql + " and t.remark in ('保障金调整','停保恢复') ";
 		}
 		if ("3".equals(imptype)) {
 			param = new Object[1];

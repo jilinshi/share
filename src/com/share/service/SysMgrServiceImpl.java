@@ -42,4 +42,12 @@ public class SysMgrServiceImpl implements SysMgrService {
 		return rs;
 	}
 	
+	 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List<HashMap> queryData(String hql,Object[] param){
+		List<HashMap> rs = baseDAO.find(hql, param);
+		return rs;
+	}
+	
 }

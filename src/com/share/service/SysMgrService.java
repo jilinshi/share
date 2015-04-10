@@ -9,4 +9,7 @@ public interface SysMgrService {
 	public void saveSysLogs(SysLogDTO l);
 	@SuppressWarnings("rawtypes")
 	public List<HashMap> queryData(String hql,List<Object> param);
+	
+	@SuppressWarnings("rawtypes")
+	public List<HashMap> queryData(String hql,Object[] param);
 }

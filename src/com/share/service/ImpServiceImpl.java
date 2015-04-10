@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
 import com.share.dto.BurialDTO;
 import com.share.dto.FileDTO;
@@ -29,7 +32,11 @@ import com.share.model.CkHouseproperty;
 import com.share.model.CkInsurance;
 import com.share.model.CkVehicle;
 import com.share.model.Impdatainfo;
+import com.share.model.PpBurial;
+import com.share.model.PpFund;
+import com.share.model.PpHouseproperty;
 import com.share.model.PpInsurance;
+import com.share.model.PpVehicle;
 import com.share.model.ResBurial;
 import com.share.model.ResInsurance;
 import com.share.model.SysFile;
@@ -38,6 +45,7 @@ import com.share.util.BigTxt;
 import com.share.util.CreatAndReadExcel;
 import com.share.util.IDCard;
 import com.share.util.Pager;
+import com.share.util.XmlExcel;
 
 @Service("impService")
 public class ImpServiceImpl<T> implements ImpService {
@@ -64,6 +72,14 @@ public class ImpServiceImpl<T> implements ImpService {
 	private BaseDAO<ResBurial> resBurialDAO;
 	@Resource
 	private BaseDAO<PpInsurance> ppInsuranceDAO;
+	@Resource
+	private BaseDAO<PpFund> ppFundDAO;
+	@Resource
+	private BaseDAO<PpBurial> ppBurialDAO;
+	@Resource
+	private BaseDAO<PpHouseproperty> ppHousepropertyDAO;
+	@Resource
+	private BaseDAO<PpVehicle> ppVehicleDAO;
 
 	private Impdatainfo impdatainfo;
 
@@ -735,7 +751,7 @@ public class ImpServiceImpl<T> implements ImpService {
 		return g;
 	}
 
-	@SuppressWarnings({ "hiding", "unchecked" })
+	@SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
 	@Override
 	public <T> List<T> queryCheckData(Pager pager, String hql, Object[] param,
 			Class<T> clz) {
@@ -743,10 +759,10 @@ public class ImpServiceImpl<T> implements ImpService {
 		String table = clz.getName();
 		log.info("查询>>>>>" + table);
 		if ("com.share.model.PpInsurance".equals(table)) {
-			
-			int end = hql.indexOf("from");			
-			String hqlc	="select count(*) as cnt  " + hql.substring(end);
- 
+
+			int end = hql.indexOf("from");
+			String hqlc = "select count(*) as cnt  " + hql.substring(end);
+
 			log.info("查询>>>>>" + hql);
 			log.info("查询>>>>>" + hqlc);
 			Long cnt = ppInsuranceDAO.count(hqlc, param);
@@ -755,7 +771,65 @@ public class ImpServiceImpl<T> implements ImpService {
 					pager.rows);
 
 		}
+		if ("com.share.model.PpFund".equals(table)) {
 
+			int end = hql.indexOf("from");
+			String hqlc = "select count(*) as cnt  " + hql.substring(end);
+
+			log.info("查询>>>>>" + hql);
+			log.info("查询>>>>>" + hqlc);
+			Long cnt = ppFundDAO.count(hqlc, param);
+			pager.setRecords(cnt);
+			list = (List<T>) ppFundDAO.find(hql, param, pager.pager,
+					pager.rows);
+
+		}
+		if ("com.share.model.PpBurial".equals(table)) {
+
+			int end = hql.indexOf("from");
+			String hqlc = "select count(*) as cnt  " + hql.substring(end);
+
+			log.info("查询>>>>>" + hql);
+			log.info("查询>>>>>" + hqlc);
+			Long cnt = ppBurialDAO.count(hqlc, param);
+			pager.setRecords(cnt);
+			list = (List<T>) ppBurialDAO.find(hql, param, pager.pager,
+					pager.rows);
+
+		}
+		if ("com.share.model.PpHouseproperty".equals(table)) {
+
+			int end = hql.indexOf("from");
+			String hqlc = "select count(*) as cnt  " + hql.substring(end);
+
+			log.info("查询>>>>>" + hql);
+			log.info("查询>>>>>" + hqlc);
+			Long cnt = ppHousepropertyDAO.count(hqlc, param);
+			pager.setRecords(cnt);
+			list = (List<T>) ppHousepropertyDAO.find(hql, param, pager.pager,
+					pager.rows);
+
+		}
+		if ("com.share.model.PpVehicle".equals(table)) {
+
+			int end = hql.indexOf("from");
+			String hqlc = "select count(*) as cnt  " + hql.substring(end);
+
+			log.info("查询>>>>>" + hql);
+			log.info("查询>>>>>" + hqlc);
+			Long cnt = ppVehicleDAO.count(hqlc, param);
+			pager.setRecords(cnt);
+			list = (List<T>) ppVehicleDAO.find(hql, param, pager.pager,
+					pager.rows);
+
+		}
+		Map session =ActionContext.getContext().getSession();
+		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("ppinsurance");
+		
+		session.put("hql", hql);
+		session.put("param1", param);
+		session.put("param", null);
+		session.put("title", title);
 		return list;
 
 	}

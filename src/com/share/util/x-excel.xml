@@ -6,4 +6,17 @@
 		<col id="oo">地址</col>
 		<col id="ds">来源</col>
 	</table>
+	<table id="ppinsurance" title="社保核对数据" name="ppinsurance">
+		<col id="col1"> 家庭编号</col>
+		<col id="pname"> 低保成员姓名</col>
+		<col id="idno"> 低保身份证号码</col>
+		<col id="o1"> 区</col>
+		<col id="o2"> 街道</col>
+		<col id="o3"> 社区</col>
+		<col id="pname1"> 社保姓名</col>
+		<col id="idno1"> 社保身份证号码</col>
+		<col id="danwei"> 工作单位</col>
+		<col id="lqBegin"> 退休时间</col>
+		<col id="lqMoney"> 退休金</col>
+	</table>
 </excel>
