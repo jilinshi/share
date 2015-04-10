@@ -29,6 +29,7 @@ import com.share.model.CkHouseproperty;
 import com.share.model.CkInsurance;
 import com.share.model.CkVehicle;
 import com.share.model.Impdatainfo;
+import com.share.model.PpInsurance;
 import com.share.model.ResBurial;
 import com.share.model.ResInsurance;
 import com.share.model.SysFile;
@@ -61,6 +62,8 @@ public class ImpServiceImpl<T> implements ImpService {
 	private BaseDAO<ResInsurance> resInsuranceDAO;
 	@Resource
 	private BaseDAO<ResBurial> resBurialDAO;
+	@Resource
+	private BaseDAO<PpInsurance> ppInsuranceDAO;
 
 	private Impdatainfo impdatainfo;
 
@@ -731,4 +734,30 @@ public class ImpServiceImpl<T> implements ImpService {
 		ckInsuranceDAO.saveBatch(r);
 		return g;
 	}
+
+	@SuppressWarnings({ "hiding", "unchecked" })
+	@Override
+	public <T> List<T> queryCheckData(Pager pager, String hql, Object[] param,
+			Class<T> clz) {
+		List<T> list = new ArrayList<T>();
+		String table = clz.getName();
+		log.info("²éÑ¯>>>>>" + table);
+		if ("com.share.model.PpInsurance".equals(table)) {
+			
+			int end = hql.indexOf("from");			
+			String hqlc	="select count(*) as cnt  " + hql.substring(end);
+ 
+			log.info("²éÑ¯>>>>>" + hql);
+			log.info("²éÑ¯>>>>>" + hqlc);
+			Long cnt = ppInsuranceDAO.count(hqlc, param);
+			pager.setRecords(cnt);
+			list = (List<T>) ppInsuranceDAO.find(hql, param, pager.pager,
+					pager.rows);
+
+		}
+
+		return list;
+
+	}
+
 }

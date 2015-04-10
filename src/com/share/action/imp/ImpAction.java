@@ -26,6 +26,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.FileDTO;
 import com.share.dto.InsuranceDTO;
 import com.share.dto.UserDTO;
+import com.share.model.PpInsurance;
 import com.share.model.VImpfile;
 import com.share.service.ImpService;
 import com.share.util.Pager;
@@ -56,6 +57,12 @@ public class ImpAction extends ActionSupport {
 	private String page;
 	/** 每页的记录数 */
 	private String rows;
+
+	private String imptype;
+
+	private String impkind;
+
+	private String pagetype;
 
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
@@ -318,6 +325,85 @@ public class ImpAction extends ActionSupport {
 		return SUCCESS;
 	}
 
+	/**
+	 * 查询数据
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryCheckData() {
+		log.info("begin>>>>>>>>>>queryCheckData.action");
+		String hql = "";
+		String temphql = "";
+		Object[] param = null;
+		Pager pager = new Pager(page, rows, new Long(0));
+
+		if (null == imptype || "".equals(imptype)) {
+			imptype = "1";
+
+		}
+		if (null == impkind || "".equals(impkind)) {
+			impkind = "1";
+
+		}
+		if (impkind.equals("1")) {
+			temphql = " and t.lqMoney>0";
+
+		}
+
+		if ("1".equals(imptype)) {
+			param = new Object[1];
+			param[0] = "新录入";
+			hql = "select t from " + this.getPagetype() + " t where 1=1 "
+					+ temphql + " and t.remark=?";
+		}
+		if ("2".equals(imptype)) {
+			 
+			hql = "select t from " + this.getPagetype()
+					+ " t where 1=1 "+ temphql +" and t.remark in ('保障金调整','停保恢复') ";
+		}
+		if ("3".equals(imptype)) {
+			param = new Object[1];
+			param[0] = "在保户";
+			hql = "select t from " + this.getPagetype() + " t where  1=1 "
+					+ temphql + " and t.col3=?";
+		}
+		if ("4".equals(imptype)) {
+			param = new Object[1];
+			param[0] = "在保户";
+			hql = "select t from " + this.getPagetype() + " t where  1=1 "
+					+ temphql + " and t.col7=?";
+		}
+		if ("5".equals(imptype)) {
+			param = new Object[1];
+			param[0] = "在保户";
+			hql = "select t from " + this.getPagetype() + " t where  1=1 "
+					+ temphql + " and t.col4=?";
+		}
+		if ("6".equals(imptype)) {
+			param = new Object[1];
+			param[0] = "在保户";
+			hql = "select t from " + this.getPagetype() + " t where  1=1 "
+					+ temphql + " and t.col6=?";
+		}
+		if ("-1".equals(imptype)) {
+
+			hql = "select t from " + this.getPagetype() + " t where  1=1 "
+					+ temphql + " and 1=1";
+		}
+		List rs = impService.queryCheckData(pager, hql, param,
+				PpInsurance.class);
+
+		Map jsonMap = new HashMap();
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
+		jsonMap.put("rows", rs);
+		map = jsonMap;
+		log.info("end>>>>>>>>>>queryCheckData.action");
+		return SUCCESS;
+	}
+
 	public File[] getEc() {
 		return ec;
 	}
@@ -388,6 +474,30 @@ public class ImpAction extends ActionSupport {
 
 	public void setRows(String rows) {
 		this.rows = rows;
+	}
+
+	public String getImptype() {
+		return imptype;
+	}
+
+	public void setImptype(String imptype) {
+		this.imptype = imptype;
+	}
+
+	public String getImpkind() {
+		return impkind;
+	}
+
+	public void setImpkind(String impkind) {
+		this.impkind = impkind;
+	}
+
+	public String getPagetype() {
+		return pagetype;
+	}
+
+	public void setPagetype(String pagetype) {
+		this.pagetype = pagetype;
 	}
 
 }
