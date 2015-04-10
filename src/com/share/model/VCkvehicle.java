@@ -12,14 +12,20 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the V_CKINSURANCE database table.
+ * The persistent class for the V_CKVEHICLE database table.
  * 
  */
 @Entity
-@Table(name="V_CKINSURANCE")
-@NamedQuery(name="VCkinsurance.findAll", query="SELECT v FROM VCkinsurance v")
-public class VCkinsurance implements Serializable {
+@Table(name="V_CKVEHICLE")
+@NamedQuery(name="VCkvehicle.findAll", query="SELECT v FROM VCkvehicle v")
+public class VCkvehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Column(length=128)
+	private String brand;
+
+	@Column(length=128)
+	private String buytime;
 
 	@Column(length=256)
 	private String ckcol1;
@@ -87,8 +93,8 @@ public class VCkinsurance implements Serializable {
 	@Column(length=256)
 	private String col9;
 
-	@Column(length=128)
-	private String comp;
+	@Column(length=256)
+	private String ctime;
 
 	@Column(length=4)
 	private String ds;
@@ -104,18 +110,15 @@ public class VCkinsurance implements Serializable {
 
 	@Column(length=18)
 	private String idno;
-	@Id
-	@Column(name="IN_ID", nullable=false, precision=12)
-	private BigDecimal inId;
-
-	@Column(name="INFO_ID", precision=22)
-	private BigDecimal infoId;
 
 	@Column(length=20)
 	private String masterid;
 
 	@Column(length=256)
 	private String mastername;
+
+	@Column(name="MOTO_NO", length=128)
+	private String motoNo;
 
 	@Column(length=384)
 	private String oo;
@@ -128,7 +131,7 @@ public class VCkinsurance implements Serializable {
 
 	@Column(length=128)
 	private String oo3;
-
+	
 	@Column(name="PI_ID", nullable=false, length=256)
 	private String piId;
 
@@ -138,21 +141,34 @@ public class VCkinsurance implements Serializable {
 	@Column(length=1024)
 	private String remark;
 
-	@Column(length=128)
-	private String sbidno;
-
-	@Column(length=128)
-	private String sbname;
-
-	@Column(length=128)
-	private String txmoney;
-
-	@Column(length=128)
-	private String txtime;
-
 	private Timestamp updatetime;
+	@Id
+	@Column(name="V_ID", nullable=false, precision=12)
+	private BigDecimal vId;
 
-	public VCkinsurance() {
+	@Column(name="VEHICAL_NO", length=128)
+	private String vehicalNo;
+
+	@Column(length=128)
+	private String vtype;
+
+	public VCkvehicle() {
+	}
+
+	public String getBrand() {
+		return this.brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getBuytime() {
+		return this.buytime;
+	}
+
+	public void setBuytime(String buytime) {
+		this.buytime = buytime;
 	}
 
 	public String getCkcol1() {
@@ -331,12 +347,12 @@ public class VCkinsurance implements Serializable {
 		this.col9 = col9;
 	}
 
-	public String getComp() {
-		return this.comp;
+	public String getCtime() {
+		return this.ctime;
 	}
 
-	public void setComp(String comp) {
-		this.comp = comp;
+	public void setCtime(String ctime) {
+		this.ctime = ctime;
 	}
 
 	public String getDs() {
@@ -379,22 +395,6 @@ public class VCkinsurance implements Serializable {
 		this.idno = idno;
 	}
 
-	public BigDecimal getInId() {
-		return this.inId;
-	}
-
-	public void setInId(BigDecimal inId) {
-		this.inId = inId;
-	}
-
-	public BigDecimal getInfoId() {
-		return this.infoId;
-	}
-
-	public void setInfoId(BigDecimal infoId) {
-		this.infoId = infoId;
-	}
-
 	public String getMasterid() {
 		return this.masterid;
 	}
@@ -409,6 +409,14 @@ public class VCkinsurance implements Serializable {
 
 	public void setMastername(String mastername) {
 		this.mastername = mastername;
+	}
+
+	public String getMotoNo() {
+		return this.motoNo;
+	}
+
+	public void setMotoNo(String motoNo) {
+		this.motoNo = motoNo;
 	}
 
 	public String getOo() {
@@ -467,44 +475,36 @@ public class VCkinsurance implements Serializable {
 		this.remark = remark;
 	}
 
-	public String getSbidno() {
-		return this.sbidno;
-	}
-
-	public void setSbidno(String sbidno) {
-		this.sbidno = sbidno;
-	}
-
-	public String getSbname() {
-		return this.sbname;
-	}
-
-	public void setSbname(String sbname) {
-		this.sbname = sbname;
-	}
-
-	public String getTxmoney() {
-		return this.txmoney;
-	}
-
-	public void setTxmoney(String txmoney) {
-		this.txmoney = txmoney;
-	}
-
-	public String getTxtime() {
-		return this.txtime;
-	}
-
-	public void setTxtime(String txtime) {
-		this.txtime = txtime;
-	}
-
 	public Timestamp getUpdatetime() {
 		return this.updatetime;
 	}
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public BigDecimal getVId() {
+		return this.vId;
+	}
+
+	public void setVId(BigDecimal vId) {
+		this.vId = vId;
+	}
+
+	public String getVehicalNo() {
+		return this.vehicalNo;
+	}
+
+	public void setVehicalNo(String vehicalNo) {
+		this.vehicalNo = vehicalNo;
+	}
+
+	public String getVtype() {
+		return this.vtype;
+	}
+
+	public void setVtype(String vtype) {
+		this.vtype = vtype;
 	}
 
 }

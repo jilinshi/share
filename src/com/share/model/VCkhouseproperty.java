@@ -12,14 +12,23 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the V_CKINSURANCE database table.
+ * The persistent class for the V_CKHOUSEPROPERTY database table.
  * 
  */
 @Entity
-@Table(name="V_CKINSURANCE")
-@NamedQuery(name="VCkinsurance.findAll", query="SELECT v FROM VCkinsurance v")
-public class VCkinsurance implements Serializable {
+@Table(name="V_CKHOUSEPROPERTY")
+@NamedQuery(name="VCkhouseproperty.findAll", query="SELECT v FROM VCkhouseproperty v")
+public class VCkhouseproperty implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Column(length=128)
+	private String bidno;
+
+	@Column(length=128)
+	private String bltime;
+
+	@Column(length=128)
+	private String bname;
 
 	@Column(length=256)
 	private String ckcol1;
@@ -87,14 +96,20 @@ public class VCkinsurance implements Serializable {
 	@Column(length=256)
 	private String col9;
 
-	@Column(length=128)
-	private String comp;
+	@Column(length=256)
+	private String ctime;
 
 	@Column(length=4)
 	private String ds;
+	@Id
+	@Column(name="F_ID", nullable=false, precision=12)
+	private BigDecimal fId;
 
 	@Column(length=128)
-	private String fno;
+	private String fczh;
+
+	@Column(length=128)
+	private String ggtime;
 
 	@Column(length=15)
 	private String id15;
@@ -104,18 +119,15 @@ public class VCkinsurance implements Serializable {
 
 	@Column(length=18)
 	private String idno;
-	@Id
-	@Column(name="IN_ID", nullable=false, precision=12)
-	private BigDecimal inId;
-
-	@Column(name="INFO_ID", precision=22)
-	private BigDecimal infoId;
 
 	@Column(length=20)
 	private String masterid;
 
 	@Column(length=256)
 	private String mastername;
+
+	@Column(length=128)
+	private String mianji;
 
 	@Column(length=384)
 	private String oo;
@@ -139,20 +151,38 @@ public class VCkinsurance implements Serializable {
 	private String remark;
 
 	@Column(length=128)
-	private String sbidno;
-
-	@Column(length=128)
-	private String sbname;
-
-	@Column(length=128)
-	private String txmoney;
-
-	@Column(length=128)
-	private String txtime;
+	private String slyw;
 
 	private Timestamp updatetime;
 
-	public VCkinsurance() {
+	@Column(length=128)
+	private String zuoluo;
+
+	public VCkhouseproperty() {
+	}
+
+	public String getBidno() {
+		return this.bidno;
+	}
+
+	public void setBidno(String bidno) {
+		this.bidno = bidno;
+	}
+
+	public String getBltime() {
+		return this.bltime;
+	}
+
+	public void setBltime(String bltime) {
+		this.bltime = bltime;
+	}
+
+	public String getBname() {
+		return this.bname;
+	}
+
+	public void setBname(String bname) {
+		this.bname = bname;
 	}
 
 	public String getCkcol1() {
@@ -331,12 +361,12 @@ public class VCkinsurance implements Serializable {
 		this.col9 = col9;
 	}
 
-	public String getComp() {
-		return this.comp;
+	public String getCtime() {
+		return this.ctime;
 	}
 
-	public void setComp(String comp) {
-		this.comp = comp;
+	public void setCtime(String ctime) {
+		this.ctime = ctime;
 	}
 
 	public String getDs() {
@@ -347,12 +377,28 @@ public class VCkinsurance implements Serializable {
 		this.ds = ds;
 	}
 
-	public String getFno() {
-		return this.fno;
+	public BigDecimal getFId() {
+		return this.fId;
 	}
 
-	public void setFno(String fno) {
-		this.fno = fno;
+	public void setFId(BigDecimal fId) {
+		this.fId = fId;
+	}
+
+	public String getFczh() {
+		return this.fczh;
+	}
+
+	public void setFczh(String fczh) {
+		this.fczh = fczh;
+	}
+
+	public String getGgtime() {
+		return this.ggtime;
+	}
+
+	public void setGgtime(String ggtime) {
+		this.ggtime = ggtime;
 	}
 
 	public String getId15() {
@@ -379,22 +425,6 @@ public class VCkinsurance implements Serializable {
 		this.idno = idno;
 	}
 
-	public BigDecimal getInId() {
-		return this.inId;
-	}
-
-	public void setInId(BigDecimal inId) {
-		this.inId = inId;
-	}
-
-	public BigDecimal getInfoId() {
-		return this.infoId;
-	}
-
-	public void setInfoId(BigDecimal infoId) {
-		this.infoId = infoId;
-	}
-
 	public String getMasterid() {
 		return this.masterid;
 	}
@@ -409,6 +439,14 @@ public class VCkinsurance implements Serializable {
 
 	public void setMastername(String mastername) {
 		this.mastername = mastername;
+	}
+
+	public String getMianji() {
+		return this.mianji;
+	}
+
+	public void setMianji(String mianji) {
+		this.mianji = mianji;
 	}
 
 	public String getOo() {
@@ -467,36 +505,12 @@ public class VCkinsurance implements Serializable {
 		this.remark = remark;
 	}
 
-	public String getSbidno() {
-		return this.sbidno;
+	public String getSlyw() {
+		return this.slyw;
 	}
 
-	public void setSbidno(String sbidno) {
-		this.sbidno = sbidno;
-	}
-
-	public String getSbname() {
-		return this.sbname;
-	}
-
-	public void setSbname(String sbname) {
-		this.sbname = sbname;
-	}
-
-	public String getTxmoney() {
-		return this.txmoney;
-	}
-
-	public void setTxmoney(String txmoney) {
-		this.txmoney = txmoney;
-	}
-
-	public String getTxtime() {
-		return this.txtime;
-	}
-
-	public void setTxtime(String txtime) {
-		this.txtime = txtime;
+	public void setSlyw(String slyw) {
+		this.slyw = slyw;
 	}
 
 	public Timestamp getUpdatetime() {
@@ -505,6 +519,14 @@ public class VCkinsurance implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getZuoluo() {
+		return this.zuoluo;
+	}
+
+	public void setZuoluo(String zuoluo) {
+		this.zuoluo = zuoluo;
 	}
 
 }

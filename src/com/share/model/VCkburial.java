@@ -12,14 +12,23 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the V_CKINSURANCE database table.
+ * The persistent class for the V_CKBURIAL database table.
  * 
  */
 @Entity
-@Table(name="V_CKINSURANCE")
-@NamedQuery(name="VCkinsurance.findAll", query="SELECT v FROM VCkinsurance v")
-public class VCkinsurance implements Serializable {
+@Table(name="V_CKBURIAL")
+@NamedQuery(name="VCkburial.findAll", query="SELECT v FROM VCkburial v")
+public class VCkburial implements Serializable {
 	private static final long serialVersionUID = 1L;
+	@Id
+	@Column(name="B_ID", nullable=false, precision=12)
+	private BigDecimal bId;
+
+	@Column(length=18)
+	private String bidno;
+
+	@Column(length=128)
+	private String bname;
 
 	@Column(length=256)
 	private String ckcol1;
@@ -54,11 +63,8 @@ public class VCkinsurance implements Serializable {
 	@Column(length=128)
 	private String ckpname;
 
-	@Column(length=256)
+	@Column(length=1024)
 	private String ckremark;
-
-	@Column(length=256)
-	private String cksubject;
 
 	@Column(length=256)
 	private String col1;
@@ -87,14 +93,13 @@ public class VCkinsurance implements Serializable {
 	@Column(length=256)
 	private String col9;
 
-	@Column(length=128)
-	private String comp;
+	private Timestamp ctime;
 
 	@Column(length=4)
 	private String ds;
 
 	@Column(length=128)
-	private String fno;
+	private String hhtime;
 
 	@Column(length=15)
 	private String id15;
@@ -104,12 +109,6 @@ public class VCkinsurance implements Serializable {
 
 	@Column(length=18)
 	private String idno;
-	@Id
-	@Column(name="IN_ID", nullable=false, precision=12)
-	private BigDecimal inId;
-
-	@Column(name="INFO_ID", precision=22)
-	private BigDecimal infoId;
 
 	@Column(length=20)
 	private String masterid;
@@ -138,21 +137,33 @@ public class VCkinsurance implements Serializable {
 	@Column(length=1024)
 	private String remark;
 
-	@Column(length=128)
-	private String sbidno;
-
-	@Column(length=128)
-	private String sbname;
-
-	@Column(length=128)
-	private String txmoney;
-
-	@Column(length=128)
-	private String txtime;
-
 	private Timestamp updatetime;
 
-	public VCkinsurance() {
+	public VCkburial() {
+	}
+
+	public BigDecimal getBId() {
+		return this.bId;
+	}
+
+	public void setBId(BigDecimal bId) {
+		this.bId = bId;
+	}
+
+	public String getBidno() {
+		return this.bidno;
+	}
+
+	public void setBidno(String bidno) {
+		this.bidno = bidno;
+	}
+
+	public String getBname() {
+		return this.bname;
+	}
+
+	public void setBname(String bname) {
+		this.bname = bname;
 	}
 
 	public String getCkcol1() {
@@ -251,14 +262,6 @@ public class VCkinsurance implements Serializable {
 		this.ckremark = ckremark;
 	}
 
-	public String getCksubject() {
-		return this.cksubject;
-	}
-
-	public void setCksubject(String cksubject) {
-		this.cksubject = cksubject;
-	}
-
 	public String getCol1() {
 		return this.col1;
 	}
@@ -331,12 +334,12 @@ public class VCkinsurance implements Serializable {
 		this.col9 = col9;
 	}
 
-	public String getComp() {
-		return this.comp;
+	public Timestamp getCtime() {
+		return this.ctime;
 	}
 
-	public void setComp(String comp) {
-		this.comp = comp;
+	public void setCtime(Timestamp ctime) {
+		this.ctime = ctime;
 	}
 
 	public String getDs() {
@@ -347,12 +350,12 @@ public class VCkinsurance implements Serializable {
 		this.ds = ds;
 	}
 
-	public String getFno() {
-		return this.fno;
+	public String getHhtime() {
+		return this.hhtime;
 	}
 
-	public void setFno(String fno) {
-		this.fno = fno;
+	public void setHhtime(String hhtime) {
+		this.hhtime = hhtime;
 	}
 
 	public String getId15() {
@@ -377,22 +380,6 @@ public class VCkinsurance implements Serializable {
 
 	public void setIdno(String idno) {
 		this.idno = idno;
-	}
-
-	public BigDecimal getInId() {
-		return this.inId;
-	}
-
-	public void setInId(BigDecimal inId) {
-		this.inId = inId;
-	}
-
-	public BigDecimal getInfoId() {
-		return this.infoId;
-	}
-
-	public void setInfoId(BigDecimal infoId) {
-		this.infoId = infoId;
 	}
 
 	public String getMasterid() {
@@ -465,38 +452,6 @@ public class VCkinsurance implements Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
-	}
-
-	public String getSbidno() {
-		return this.sbidno;
-	}
-
-	public void setSbidno(String sbidno) {
-		this.sbidno = sbidno;
-	}
-
-	public String getSbname() {
-		return this.sbname;
-	}
-
-	public void setSbname(String sbname) {
-		this.sbname = sbname;
-	}
-
-	public String getTxmoney() {
-		return this.txmoney;
-	}
-
-	public void setTxmoney(String txmoney) {
-		this.txmoney = txmoney;
-	}
-
-	public String getTxtime() {
-		return this.txtime;
-	}
-
-	public void setTxtime(String txtime) {
-		this.txtime = txtime;
 	}
 
 	public Timestamp getUpdatetime() {

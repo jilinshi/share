@@ -12,14 +12,32 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the V_CKINSURANCE database table.
+ * The persistent class for the V_CKFUND database table.
  * 
  */
 @Entity
-@Table(name="V_CKINSURANCE")
-@NamedQuery(name="VCkinsurance.findAll", query="SELECT v FROM VCkinsurance v")
-public class VCkinsurance implements Serializable {
+@Table(name="V_CKFUND")
+@NamedQuery(name="VCkfund.findAll", query="SELECT v FROM VCkfund v")
+public class VCkfund implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Column(length=256)
+	private String area;
+
+	@Column(precision=10, scale=2)
+	private BigDecimal banlance;
+
+	@Column(length=256)
+	private String begintime;
+
+	@Column(length=256)
+	private String bidno;
+
+	@Column(length=256)
+	private String bname;
+
+	@Column(precision=10, scale=2)
+	private BigDecimal cardinal;
 
 	@Column(length=256)
 	private String ckcol1;
@@ -51,7 +69,7 @@ public class VCkinsurance implements Serializable {
 	@Column(length=18)
 	private String ckidno;
 
-	@Column(length=128)
+	@Column(length=256)
 	private String ckpname;
 
 	@Column(length=256)
@@ -87,14 +105,17 @@ public class VCkinsurance implements Serializable {
 	@Column(length=256)
 	private String col9;
 
-	@Column(length=128)
-	private String comp;
+	@Column(length=256)
+	private String ctime;
 
 	@Column(length=4)
 	private String ds;
+	@Id
+	@Column(name="GJJ_ID", nullable=false, precision=12)
+	private BigDecimal gjjId;
 
-	@Column(length=128)
-	private String fno;
+	@Column(length=256)
+	private String gjjaccount;
 
 	@Column(length=15)
 	private String id15;
@@ -104,30 +125,15 @@ public class VCkinsurance implements Serializable {
 
 	@Column(length=18)
 	private String idno;
-	@Id
-	@Column(name="IN_ID", nullable=false, precision=12)
-	private BigDecimal inId;
 
-	@Column(name="INFO_ID", precision=22)
-	private BigDecimal infoId;
+	@Column(length=12)
+	private String lasttime;
 
 	@Column(length=20)
 	private String masterid;
 
 	@Column(length=256)
 	private String mastername;
-
-	@Column(length=384)
-	private String oo;
-
-	@Column(length=128)
-	private String oo1;
-
-	@Column(length=128)
-	private String oo2;
-
-	@Column(length=128)
-	private String oo3;
 
 	@Column(name="PI_ID", nullable=false, length=256)
 	private String piId;
@@ -138,21 +144,63 @@ public class VCkinsurance implements Serializable {
 	@Column(length=1024)
 	private String remark;
 
-	@Column(length=128)
-	private String sbidno;
+	@Column(name="\"STATE\"", length=256)
+	private String state;
 
-	@Column(length=128)
-	private String sbname;
-
-	@Column(length=128)
-	private String txmoney;
-
-	@Column(length=128)
-	private String txtime;
+	@Column(length=256)
+	private String unitname;
 
 	private Timestamp updatetime;
 
-	public VCkinsurance() {
+	public VCkfund() {
+	}
+
+	public String getArea() {
+		return this.area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public BigDecimal getBanlance() {
+		return this.banlance;
+	}
+
+	public void setBanlance(BigDecimal banlance) {
+		this.banlance = banlance;
+	}
+
+	public String getBegintime() {
+		return this.begintime;
+	}
+
+	public void setBegintime(String begintime) {
+		this.begintime = begintime;
+	}
+
+	public String getBidno() {
+		return this.bidno;
+	}
+
+	public void setBidno(String bidno) {
+		this.bidno = bidno;
+	}
+
+	public String getBname() {
+		return this.bname;
+	}
+
+	public void setBname(String bname) {
+		this.bname = bname;
+	}
+
+	public BigDecimal getCardinal() {
+		return this.cardinal;
+	}
+
+	public void setCardinal(BigDecimal cardinal) {
+		this.cardinal = cardinal;
 	}
 
 	public String getCkcol1() {
@@ -331,12 +379,12 @@ public class VCkinsurance implements Serializable {
 		this.col9 = col9;
 	}
 
-	public String getComp() {
-		return this.comp;
+	public String getCtime() {
+		return this.ctime;
 	}
 
-	public void setComp(String comp) {
-		this.comp = comp;
+	public void setCtime(String ctime) {
+		this.ctime = ctime;
 	}
 
 	public String getDs() {
@@ -347,12 +395,20 @@ public class VCkinsurance implements Serializable {
 		this.ds = ds;
 	}
 
-	public String getFno() {
-		return this.fno;
+	public BigDecimal getGjjId() {
+		return this.gjjId;
 	}
 
-	public void setFno(String fno) {
-		this.fno = fno;
+	public void setGjjId(BigDecimal gjjId) {
+		this.gjjId = gjjId;
+	}
+
+	public String getGjjaccount() {
+		return this.gjjaccount;
+	}
+
+	public void setGjjaccount(String gjjaccount) {
+		this.gjjaccount = gjjaccount;
 	}
 
 	public String getId15() {
@@ -379,20 +435,12 @@ public class VCkinsurance implements Serializable {
 		this.idno = idno;
 	}
 
-	public BigDecimal getInId() {
-		return this.inId;
+	public String getLasttime() {
+		return this.lasttime;
 	}
 
-	public void setInId(BigDecimal inId) {
-		this.inId = inId;
-	}
-
-	public BigDecimal getInfoId() {
-		return this.infoId;
-	}
-
-	public void setInfoId(BigDecimal infoId) {
-		this.infoId = infoId;
+	public void setLasttime(String lasttime) {
+		this.lasttime = lasttime;
 	}
 
 	public String getMasterid() {
@@ -409,38 +457,6 @@ public class VCkinsurance implements Serializable {
 
 	public void setMastername(String mastername) {
 		this.mastername = mastername;
-	}
-
-	public String getOo() {
-		return this.oo;
-	}
-
-	public void setOo(String oo) {
-		this.oo = oo;
-	}
-
-	public String getOo1() {
-		return this.oo1;
-	}
-
-	public void setOo1(String oo1) {
-		this.oo1 = oo1;
-	}
-
-	public String getOo2() {
-		return this.oo2;
-	}
-
-	public void setOo2(String oo2) {
-		this.oo2 = oo2;
-	}
-
-	public String getOo3() {
-		return this.oo3;
-	}
-
-	public void setOo3(String oo3) {
-		this.oo3 = oo3;
 	}
 
 	public String getPiId() {
@@ -467,36 +483,20 @@ public class VCkinsurance implements Serializable {
 		this.remark = remark;
 	}
 
-	public String getSbidno() {
-		return this.sbidno;
+	public String getState() {
+		return this.state;
 	}
 
-	public void setSbidno(String sbidno) {
-		this.sbidno = sbidno;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	public String getSbname() {
-		return this.sbname;
+	public String getUnitname() {
+		return this.unitname;
 	}
 
-	public void setSbname(String sbname) {
-		this.sbname = sbname;
-	}
-
-	public String getTxmoney() {
-		return this.txmoney;
-	}
-
-	public void setTxmoney(String txmoney) {
-		this.txmoney = txmoney;
-	}
-
-	public String getTxtime() {
-		return this.txtime;
-	}
-
-	public void setTxtime(String txtime) {
-		this.txtime = txtime;
+	public void setUnitname(String unitname) {
+		this.unitname = unitname;
 	}
 
 	public Timestamp getUpdatetime() {

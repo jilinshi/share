@@ -1,5 +1,6 @@
 package com.share.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -15,14 +16,15 @@ import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
+import com.share.dto.HousepropertyDTO;
 import com.share.dto.InsuranceDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
-import com.share.model.CkInsurance;
 import com.share.model.SysMenus;
 import com.share.model.SysUser;
+import com.share.model.VCkhouseproperty;
 import com.share.model.VCkinsurance;
 import com.share.util.Pager;
 import com.share.util.XmlExcel;
@@ -36,6 +38,8 @@ public class YbServiceImpl implements YbService {
 	private BaseDAO<SysMenus> sysMeunsDAO;
 	@Resource
 	private BaseDAO<VCkinsurance> vCkinsuranceDAO;
+	@Resource
+	private BaseDAO<VCkhouseproperty> vCkhousepropertyDAO;
 
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
@@ -253,34 +257,42 @@ public class YbServiceImpl implements YbService {
 		return rs;
 	}
 	
-	/*@Override
-	public List<InsuranceDTO> queryCkInsurances(Pager pager, List<Object> param , String jwhere) {
-		List<InsuranceDTO> resultlist = new ArrayList<InsuranceDTO>();
-		String hql = "select ci from CkInsurance ci where 1=1 "+jwhere;
-		String hqlc = "select count(*) as cnt from CkInsurance ci where 1=1 "+jwhere;
-		Long cnt = ckInsuranceDAO.count(hqlc, param);
-		pager.setRecords(cnt);
-		List<CkInsurance> rs = ckInsuranceDAO.find(hql, param, pager.pager,
-				pager.rows);
-		 for (CkInsurance s:rs) {
-			 InsuranceDTO e = new InsuranceDTO(); 
-			 e.setInId(s.getInId());
-			  e.setFno(s.getFno());
-			  e.setIdno(s.getIdno());
-			  e.setPname(s.getPname());
-			  e.setOo1(s.getOo1());
-			  e.setOo2(s.getOo2());
-			  e.setOo3(s.getOo3());
-			  e.setSbidno(s.getSbidno());
-			  e.setSbname(s.getSbname());
-			  e.setComp(s.getComp());
-			  e.setTxtime(s.getTxtime());
-			  e.setTxmoney(s.getTxmoney());
-			  e.setSubject(s.getSubject());
-			  e.setRemark(s.getRemark());
-			 resultlist.add(e);
-		 }
-		return resultlist;
+	@Override
+	public List<VCkinsurance> queryCkInsuranceById(InsuranceDTO insuranceDTO){
+		Object[] param = new Object[1];
+		BigDecimal id = new BigDecimal(insuranceDTO.getInId());
+		param[0] = id;
+		String hql = "select ci from VCkinsurance ci where ci.inId=?";
+		List<VCkinsurance> rs = vCkinsuranceDAO.find(hql, param);
+		return rs;
 	}
-	*/
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<VCkhouseproperty> queryCkHousepropertys(Pager pager, List<Object> param , String jwhere) {
+		Map session = ActionContext.getContext().getSession();
+		String hql = "select ch from VCkhouseproperty ch where 1=1 "+jwhere;
+		String hqlc = "select count(*) as cnt from VCkhouseproperty ch where 1=1 "+jwhere;
+		Long cnt = vCkhousepropertyDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<VCkhouseproperty> rs = vCkhousepropertyDAO.find(hql, param, pager.pager,
+				pager.rows);
+		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckhouseproperty");
+		session.put("hql", hql);
+		session.put("param", param);
+		session.put("param1", null);
+		session.put("title", title);
+		return rs;
+	}
+	
+	@Override
+	public List<VCkhouseproperty> queryCkhousepropertyById(HousepropertyDTO housepropertyDTO){
+		Object[] param = new Object[1];
+		BigDecimal id = new BigDecimal(housepropertyDTO.getHid());
+		param[0] = id;
+		String hql = "select ch from VCkhouseproperty ch where ch.fId=?";
+		List<VCkhouseproperty> rs = vCkhousepropertyDAO.find(hql, param);
+		return rs;
+	}
+
 }

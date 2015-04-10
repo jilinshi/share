@@ -16,7 +16,22 @@
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
-		<action name="queryInit" method="queryInit" class="queryAction">
+		<action name="queryInsurances" method="queryInsurances" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryInsurance" method="queryInsurance" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryHousepropertys" method="queryHousepropertys" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryHouseproperty" method="queryHouseproperty" class="queryAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>

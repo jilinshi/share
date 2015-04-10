@@ -54,6 +54,8 @@ public class HousepropertyDTO {
 	private String subject;
 
 	private String zuoluo;
+	
+	private long hid;
 
 	public long getfId() {
 		return fId;
@@ -261,6 +263,14 @@ public class HousepropertyDTO {
 
 	public void setZuoluo(String zuoluo) {
 		this.zuoluo = zuoluo;
+	}
+
+	public long getHid() {
+		return hid;
+	}
+
+	public void setHid(long hid) {
+		this.hid = hid;
 	}
 
 }

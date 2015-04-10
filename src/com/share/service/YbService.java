@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
+import com.share.dto.HousepropertyDTO;
+import com.share.dto.InsuranceDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.model.VCkhouseproperty;
 import com.share.model.VCkinsurance;
 import com.share.util.Pager;
 
@@ -30,6 +33,8 @@ public interface YbService {
 	
 	public List<BillCsDTO> findALLBillCsByFNO(BillCsDTO billCsDTO);
 	
+	public List<VCkinsurance> queryCkInsuranceById(InsuranceDTO insuranceDTO);
+	
 	public List<BillNcDTO> findALLBillNcByFNO(BillNcDTO billNcDTO);
 	
 	public List<MenuDTO> findMenusByUser(UserDTO userDTO);
@@ -37,4 +42,8 @@ public interface YbService {
 	public List<UserDTO> finMemberstest(String sql, List<Object> param);
 	
 	public List<VCkinsurance> queryCkInsurances(Pager pager, List<Object> param , String jwhere);
+	
+	public List<VCkhouseproperty> queryCkHousepropertys(Pager pager, List<Object> param , String jwhere);
+	
+	public List<VCkhouseproperty> queryCkhousepropertyById(HousepropertyDTO housepropertyDTO);
 }

@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<title>社保数据查询</title>
+<title>房产数据查询</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
@@ -21,13 +21,13 @@
 			<div class="widget-main">
 				<form class="form-inline" id="searchform">
 					<label>姓名</label>
-					<input type="text" class="input-large" placeholder="姓名" name="insuranceDTO.pname"/>
+					<input type="text" class="input-large" placeholder="姓名" name="housepropertyDTO.pname"/>
 					<label>身份证号码</label>
-					<input type="text" class="input-large" placeholder="身份证号码" name="insuranceDTO.idno"/>
+					<input type="text" class="input-large" placeholder="身份证号码" name="housepropertyDTO.idno"/>
 					<button type="button" class="btn btn-info btn-sm" onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
-					<a href="<%=basePath%>downloadExcel.action?fileName=社保" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadExcel.action?fileName=房产" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
 					</a>
 				</form>
@@ -74,30 +74,27 @@
 					var subgridTableId = subgridDivId + "_t";
 					$("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
 					$("#" + subgridTableId).jqGrid({
-						url : "<%=basePath%>page/html/content/query/queryInsurance.action",
+						url : "<%=basePath%>page/html/content/query/queryHouseproperty.action",
 						mtype : "POST", 
 						datatype : "json",
-						postData : {'insuranceDTO.inId': $(grid_selector).getCell(rowId,'inId')},
+						postData : {'housepropertyDTO.hid': $(grid_selector).getCell(rowId,'FId')},
 						autowidth:true,
-						colNames : ['区','街道','社区','工作单位','退休时间','退休金额'],
+						colNames : ['区','街道','社区'],
 						colModel : [
 							{name:'oo1',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
 							{name:'oo2',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-							{name:'oo3',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-							{name:'comp',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-							{name:'txtime',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-							{name:'txmoney',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
+							{name:'oo3',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
 						]
 					});
 				},
-				url : "<%=basePath%>page/html/content/query/queryInsurances.action",
+				url : "<%=basePath%>page/html/content/query/queryHousepropertys.action",
 				mtype : "POST", 
 				datatype : "json",
 				postData : formData,
 				height : 321,
-				colNames : ['','姓名','身份证号码','户主姓名','来源','低保状态','分类施保状态','再保障状态','社保姓名','社保身份证号码'],
+				colNames : ['','姓名','身份证号码','户主姓名','来源','低保状态','分类施保状态','再保障状态','姓名','身份证号码'],
 				colModel : [
-				    {name:'inId',width:'120px',hidden:true},
+				    {name:'FId',width:'120px',hidden:false},
 					{name:'pname',width:'120px',formatter:"actionFormatter"},
 				    {name:'idno',width:'250px',formatter:"actionFormatter"},
 				    {name:'mastername',width:'120px',formatter:'actionFormatter'},
@@ -105,8 +102,8 @@
 					{name:'col4',width:'170px',formatter:"actionFormatter"},
 					{name:'col5',width:'170px',formatter:"actionFormatter"},
 					{name:'col6',width:'170px',formatter:"actionFormatter"},
-					{name:'sbname',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'sbidno',width:'250px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
+					{name:'ckpname',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+					{name:'ckidno',width:'250px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
 				], 
 				rownumbers: true,
 				autowidth : true,
@@ -123,7 +120,7 @@
 						//formatetext(table);
 					}, 0);
 				}, 
-				caption : "社保数据信息显示"
+				caption : "房产数据信息显示"
 		
 			});
 			$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
