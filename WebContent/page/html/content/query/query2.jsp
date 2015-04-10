@@ -79,11 +79,19 @@
 						datatype : "json",
 						postData : {'housepropertyDTO.hid': $(grid_selector).getCell(rowId,'FId')},
 						autowidth:true,
-						colNames : ['区','街道','社区'],
+						colNames : [/* '区','街道','社区', */'归档日期','房产证号','所有人','所有人身份证号','坐落','面积','办理日期','建立日期'],
 						colModel : [
-							{name:'oo1',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							/* {name:'oo1',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
 							{name:'oo2',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-							{name:'oo3',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
+							{name:'oo3',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}, */
+							{name:'ggtime',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'fczh',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'bname',width:'80px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'bidno',width:'250px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'zuoluo',width:'350px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'mianji',width:'80px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'bltime',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
+							{name:'ctime',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
 						]
 					});
 				},
@@ -94,7 +102,7 @@
 				height : 321,
 				colNames : ['','姓名','身份证号码','户主姓名','来源','低保状态','分类施保状态','再保障状态','姓名','身份证号码'],
 				colModel : [
-				    {name:'FId',width:'120px',hidden:false},
+				    {name:'FId',width:'120px',hidden:true},
 					{name:'pname',width:'120px',formatter:"actionFormatter"},
 				    {name:'idno',width:'250px',formatter:"actionFormatter"},
 				    {name:'mastername',width:'120px',formatter:'actionFormatter'},
