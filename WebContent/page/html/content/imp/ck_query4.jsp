@@ -42,7 +42,7 @@
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
-					<a href="<%=basePath%>downloadExcel.action?fileName=社保" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadExcel.action?fileName=房产数据" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
 					</a>
       		</div>
@@ -95,7 +95,7 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 			datatype: "json",
 			postData:{'pagetype':'<%=_pagetype%>','imptype':'1','impkind':'1'},
 			height: 450,
-			colNames: ['','家庭编号','姓名','身份证号（18位）','区','街道','社区','归档日期','受理业务','房产证号','所有人','所有人身份证号','坐落','面积','办理日期','类型'],
+			colNames: ['','家庭编号','姓名','身份证号（18位）','区','街道','社区','归档日期','受理业务','房产证号','所有人','所有人身份证号','坐落','面积','备注','办理日期','类型'],
 			colModel:[
 				{name:'piId',index:'piId', width:80, fixed:true, sortable:false, resize:false,hidden:true},
 				{ name: 'col1'},
@@ -104,15 +104,16 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 						{ name: 'o1'},
 						{ name: 'o2' },
 						{ name: 'o3'},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''}
+						{ name: 'ggtime'},
+						{ name: 'slyw',},
+						{ name: 'fczh' },
+						{ name: 'bname'},
+						{ name: 'bidno' },
+						{ name: 'zuoluo'},
+						{ name: 'mianji' },
+						{ name: 'remark' },
+						{ name: 'bltime' },
+						{ name: 'subject'}
 			], 
 			gridComplete: function(){
 				                //在Grid的第一列（Actions）中添加按钮E、S、C，添加增、删、查、改按钮；

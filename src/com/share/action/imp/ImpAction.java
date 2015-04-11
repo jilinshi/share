@@ -375,8 +375,9 @@ public class ImpAction extends ActionSupport {
 					+ temphql + " and t.remark=?";
 		}
 		if ("2".equals(imptype)) {
-
-			hql = "select t from " + this.getPagetype() + " t where 1=1 "
+			param = new Object[1];
+			param[0] = 1;
+			hql = "select t from " + this.getPagetype() + " t where 1=? "
 					+ temphql + " and t.remark in ('保障金调整','停保恢复') ";
 		}
 		if ("3".equals(imptype)) {
@@ -404,8 +405,9 @@ public class ImpAction extends ActionSupport {
 					+ temphql + " and t.col6=?";
 		}
 		if ("-1".equals(imptype)) {
-
-			hql = "select t from " + this.getPagetype() + " t where  1=1 "
+			param = new Object[1];
+			param[0] = 1;
+			hql = "select t from " + this.getPagetype() + " t where  1=? "
 					+ temphql + " and 1=1";
 		}
 		List rs = impService.queryCheckData(pager, hql, param,

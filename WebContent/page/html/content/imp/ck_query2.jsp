@@ -102,16 +102,16 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 				{name:'piId',index:'piId', width:80, fixed:true, sortable:false, resize:false,hidden:true},
 						{ name: 'pname'},
 						{ name: 'idno'},
-						{ name: ''},
-						{ name: '' },
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''}
+						{ name: 'gjjaccount'},
+						{ name: 'bname'},
+						{ name: 'bidno'},
+						{ name: 'cardinal'},
+						{ name: 'lasttime'},
+						{ name: 'banlance'},
+						{ name: 'unitname'},
+						{ name: 'state'},
+						{ name: 'begintime'},
+						{ name: 'area'}
 			], 
 			gridComplete: function(){
 				                //在Grid的第一列（Actions）中添加按钮E、S、C，添加增、删、查、改按钮；

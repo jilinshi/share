@@ -42,7 +42,7 @@
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
-					<a href="<%=basePath%>downloadExcel.action?fileName=社保" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadExcel.action?fileName=车辆" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
 					</a>
       		</div>
@@ -104,11 +104,11 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 						{ name: 'o1'},
 						{ name: 'o2' },
 						{ name: 'o3'},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''},
-						{ name: ''}
+						{ name: 'vehicalNo'},
+						{ name: 'brand' },
+						{ name: 'motoNo'},
+						{ name: 'buytime' },
+						{ name: 'vtype' }
 			], 
 			gridComplete: function(){
 				                //在Grid的第一列（Actions）中添加按钮E、S、C，添加增、删、查、改按钮；
