@@ -68,7 +68,7 @@ public class PpBurial implements Serializable {
 
 	@Column(length = 256)
 	private String idno1;
-	@Id
+	
 	@Column(name = "IN_ID", precision = 12)
 	private BigDecimal inId;
 
@@ -89,7 +89,7 @@ public class PpBurial implements Serializable {
 
 	@Column(name = "\"PAGE\"", length = 256)
 	private String page;
-
+	@Id
 	@Column(name = "PI_ID", nullable = false, length = 256)
 	private String piId;
 

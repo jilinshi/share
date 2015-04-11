@@ -95,7 +95,7 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 			datatype: "json",
 			postData:{'pagetype':'<%=_pagetype%>','imptype':'1','impkind':'1'},
 			height: 450,
-			colNames: ['','家庭编号','低保成员姓名','低保身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休时间','退休金'],
+			colNames: ['','家庭编号','低保成员姓名','低保身份证号码','区','街道','社区','车牌号','品牌','发动机号','购置时间','类型'],
 			colModel:[
 				{name:'piId',index:'piId', width:80, fixed:true, sortable:false, resize:false,hidden:true},
 				{ name: 'col1'},
@@ -104,11 +104,11 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 						{ name: 'o1'},
 						{ name: 'o2' },
 						{ name: 'o3'},
-						{ name: 'pname1'},
-						{ name: 'idno1'},
-						{ name: 'danwei'},
-						{ name: 'lqBegin'},
-						{ name: 'lqMoney'}
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''}
 			], 
 			gridComplete: function(){
 				                //在Grid的第一列（Actions）中添加按钮E、S、C，添加增、删、查、改按钮；

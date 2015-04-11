@@ -26,7 +26,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.FileDTO;
 import com.share.dto.InsuranceDTO;
 import com.share.dto.UserDTO;
-import com.share.model.PpInsurance;
 import com.share.model.VImpfile;
 import com.share.service.ImpService;
 import com.share.util.Pager;
@@ -333,6 +332,12 @@ public class ImpAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryCheckData() {
 		log.info("begin>>>>>>>>>>queryCheckData.action");
+		Map session = ActionContext.getContext().getSession();
+		session.remove("hql");
+		session.remove("param1");
+		session.remove("param");
+		session.remove("title");
+
 		String hql = "";
 		String temphql = "";
 		Object[] param = null;
@@ -360,7 +365,7 @@ public class ImpAction extends ActionSupport {
 			}
 
 		} else {
-
+			temphql = "";
 		}
 
 		if ("1".equals(imptype)) {
@@ -404,7 +409,7 @@ public class ImpAction extends ActionSupport {
 					+ temphql + " and 1=1";
 		}
 		List rs = impService.queryCheckData(pager, hql, param,
-				PpInsurance.class);
+				this.getPagetype());
 
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);

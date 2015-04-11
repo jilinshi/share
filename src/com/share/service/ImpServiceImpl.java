@@ -754,11 +754,11 @@ public class ImpServiceImpl<T> implements ImpService {
 	@SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
 	@Override
 	public <T> List<T> queryCheckData(Pager pager, String hql, Object[] param,
-			Class<T> clz) {
+			String clz) {
 		List<T> list = new ArrayList<T>();
-		String table = clz.getName();
+		String table = clz;
 		log.info("²éÑ¯>>>>>" + table);
-		if ("com.share.model.PpInsurance".equals(table)) {
+		if ("PpInsurance".equals(table)) {
 
 			int end = hql.indexOf("from");
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
@@ -769,9 +769,17 @@ public class ImpServiceImpl<T> implements ImpService {
 			pager.setRecords(cnt);
 			list = (List<T>) ppInsuranceDAO.find(hql, param, pager.pager,
 					pager.rows);
+			Map session = ActionContext.getContext().getSession();
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+					.getTableMap("ppinsurance");
+
+			session.put("hql", hql);
+			session.put("param1", param);
+			session.put("param", null);
+			session.put("title", title);
 
 		}
-		if ("com.share.model.PpFund".equals(table)) {
+		if ("PpFund".equals(table)) {
 
 			int end = hql.indexOf("from");
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
@@ -780,11 +788,18 @@ public class ImpServiceImpl<T> implements ImpService {
 			log.info("²éÑ¯>>>>>" + hqlc);
 			Long cnt = ppFundDAO.count(hqlc, param);
 			pager.setRecords(cnt);
-			list = (List<T>) ppFundDAO.find(hql, param, pager.pager,
-					pager.rows);
+			list = (List<T>) ppFundDAO
+					.find(hql, param, pager.pager, pager.rows);
+			Map session = ActionContext.getContext().getSession();
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+					.getTableMap("ppfund");
+			session.put("hql", hql);
+			session.put("param1", param);
+			session.put("param", null);
+			session.put("title", title);
 
 		}
-		if ("com.share.model.PpBurial".equals(table)) {
+		if ("PpBurial".equals(table)) {
 
 			int end = hql.indexOf("from");
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
@@ -795,9 +810,17 @@ public class ImpServiceImpl<T> implements ImpService {
 			pager.setRecords(cnt);
 			list = (List<T>) ppBurialDAO.find(hql, param, pager.pager,
 					pager.rows);
+			Map session = ActionContext.getContext().getSession();
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+					.getTableMap("ppburial");
+
+			session.put("hql", hql);
+			session.put("param1", param);
+			session.put("param", null);
+			session.put("title", title);
 
 		}
-		if ("com.share.model.PpHouseproperty".equals(table)) {
+		if ("PpHouseproperty".equals(table)) {
 
 			int end = hql.indexOf("from");
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
@@ -808,9 +831,17 @@ public class ImpServiceImpl<T> implements ImpService {
 			pager.setRecords(cnt);
 			list = (List<T>) ppHousepropertyDAO.find(hql, param, pager.pager,
 					pager.rows);
+			Map session = ActionContext.getContext().getSession();
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+					.getTableMap("pphouseproperty");
+
+			session.put("hql", hql);
+			session.put("param1", param);
+			session.put("param", null);
+			session.put("title", title);
 
 		}
-		if ("com.share.model.PpVehicle".equals(table)) {
+		if ("PpVehicle".equals(table)) {
 
 			int end = hql.indexOf("from");
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
@@ -821,15 +852,17 @@ public class ImpServiceImpl<T> implements ImpService {
 			pager.setRecords(cnt);
 			list = (List<T>) ppVehicleDAO.find(hql, param, pager.pager,
 					pager.rows);
+			Map session = ActionContext.getContext().getSession();
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+					.getTableMap("ppvehicle");
+
+			session.put("hql", hql);
+			session.put("param1", param);
+			session.put("param", null);
+			session.put("title", title);
 
 		}
-		Map session =ActionContext.getContext().getSession();
-		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("ppinsurance");
-		
-		session.put("hql", hql);
-		session.put("param1", param);
-		session.put("param", null);
-		session.put("title", title);
+
 		return list;
 
 	}

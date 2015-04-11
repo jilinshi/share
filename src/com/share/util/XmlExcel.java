@@ -14,7 +14,7 @@ public class XmlExcel {
 	private static String filepath = "com/share/util/x-excel.xml";
 	private static XmlExcel xmlexcel;
 	
-	public static XmlExcel getXmlexcel() {
+	public static   XmlExcel getXmlexcel() {
 		if (null == xmlexcel) {
 			xmlexcel = new XmlExcel();
 		}
@@ -41,6 +41,7 @@ public class XmlExcel {
 		Element root = excel.getRootElement();
 		Node tableNode = root.selectSingleNode("/excel/table[@id='" + tableid
 				+ "']");
+		
 		if (null != tableNode) {
 			Element etable = (Element) tableNode;
 			tname = etable.attributeValue("title");
@@ -83,8 +84,9 @@ public class XmlExcel {
 	}
 
 	public static void main(String args[]) throws Exception {
-		LinkedHashMap<String, String>  map = XmlExcel.getXmlexcel().getTableMap("vckinsurance");
-		String name = XmlExcel.getXmlexcel().getTableName("vckinsurance");
-		System.out.println(name);
+		XmlExcel xe=new XmlExcel();
+	// 	LinkedHashMap<String, String>  map = xe.getXmlexcel().getTableMap("ppfund");
+		String name = xe.getXmlexcel().getTableName("ppfund");
+		System.out.println(name); 
 	}
 }

@@ -7,16 +7,30 @@
 		<col id="ds">来源</col>
 	</table>
 	<table id="ppinsurance" title="社保核对数据" name="ppinsurance">
-		<col id="col1"> 家庭编号</col>
-		<col id="pname"> 低保成员姓名</col>
-		<col id="idno"> 低保身份证号码</col>
-		<col id="o1"> 区</col>
-		<col id="o2"> 街道</col>
-		<col id="o3"> 社区</col>
-		<col id="pname1"> 社保姓名</col>
-		<col id="idno1"> 社保身份证号码</col>
-		<col id="danwei"> 工作单位</col>
-		<col id="lqBegin"> 退休时间</col>
-		<col id="lqMoney"> 退休金</col>
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+		<col id="pname1">社保姓名</col>
+		<col id="idno1">社保身份证号码</col>
+		<col id="danwei">工作单位</col>
+		<col id="lqBegin">退休时间</col>
+		<col id="lqMoney">退休金</col>
+	</table>
+	<table id="ppfund" title="公积金核对数据" name="ppfund">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号</col>
+		<col id="n1">公积金账号</col>
+		<col id="n2">所有人姓名</col>
+		<col id="n3">所有人身份证号</col>
+		<col id="n3">缴存基数</col>
+		<col id="n4">最后缴款日</col>
+		<col id="n5">账户余额</col>
+		<col id="n6">单位名称</col>
+		<col id="n7">状态</col>
+		<col id="n8">开户日期</col>
+		<col id="n9">区</col>
 	</table>
 </excel>

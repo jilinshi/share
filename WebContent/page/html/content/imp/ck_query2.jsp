@@ -5,7 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	String _title = "社保数据查询";
+	String _title = "公积金数据查询";
 	String _pagetype="PpFund";
 %>
 <title>核对结果导出</title>
@@ -42,7 +42,7 @@
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
-					<a href="<%=basePath%>downloadExcel.action?fileName=社保" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadExcel.action?fileName=公积金数据查询" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
 					</a>
       		</div>
@@ -95,20 +95,23 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 			datatype: "json",
 			postData:{'pagetype':'<%=_pagetype%>','imptype':'1','impkind':'1'},
 			height: 450,
-			colNames: ['','家庭编号','低保成员姓名','低保身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休时间','退休金'],
+			 											
+
+			colNames: ['','姓名','身份证号','公积金账号','所有人姓名','所有人身份证号','缴存基数','最后缴款日','账户余额','单位名称','状态','开户日期','区'],
 			colModel:[
 				{name:'piId',index:'piId', width:80, fixed:true, sortable:false, resize:false,hidden:true},
-				{ name: 'col1'},
 						{ name: 'pname'},
 						{ name: 'idno'},
-						{ name: 'o1'},
-						{ name: 'o2' },
-						{ name: 'o3'},
-						{ name: 'pname1'},
-						{ name: 'idno1'},
-						{ name: 'danwei'},
-						{ name: 'lqBegin'},
-						{ name: 'lqMoney'}
+						{ name: ''},
+						{ name: '' },
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''},
+						{ name: ''}
 			], 
 			gridComplete: function(){
 				                //在Grid的第一列（Actions）中添加按钮E、S、C，添加增、删、查、改按钮；

@@ -18,5 +18,5 @@ public interface ImpService {
 
 	public List<VImpfile> queryFiles(Pager pager, Object[] param);
 
-	public <T> List<T> queryCheckData(Pager pager,String hql, Object[] param, Class<T> clz);
+	public <T> List<T> queryCheckData(Pager pager,String hql, Object[] param, String string);
 }
