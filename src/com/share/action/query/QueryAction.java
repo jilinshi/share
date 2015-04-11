@@ -188,7 +188,6 @@ public class QueryAction extends ActionSupport {
 		Map jsonMap = new HashMap();
 		jsonMap.put("rows", rs);
 		map = jsonMap;
-		System.out.println(map.toString());
 		return SUCCESS;
 	}
 	
@@ -223,7 +222,6 @@ public class QueryAction extends ActionSupport {
 		Map jsonMap = new HashMap();
 		jsonMap.put("rows", rs);
 		map = jsonMap;
-		System.out.println(map.toString());
 		return SUCCESS;
 	}
 	
