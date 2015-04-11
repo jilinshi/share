@@ -358,7 +358,7 @@ public class YbServiceImpl implements YbService {
 		Object[] param = new Object[1];
 		BigDecimal id = new BigDecimal(burialDTO.getBid());
 		param[0] = id;
-		String hql = "select cb from VCkburial cb where cb.vId=?";
+		String hql = "select cb from VCkburial cb where cb.bId=?";
 		List<VCkburial> rs = vCkburialDAO.find(hql, param);
 		return rs;
 	}
