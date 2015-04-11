@@ -43,6 +43,8 @@ public class BurialDTO {
 	private String pname;
 
 	private String remark;
+	
+	private long bid;
 
 	public long getbId() {
 		return bId;
@@ -202,6 +204,14 @@ public class BurialDTO {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public long getBid() {
+		return bid;
+	}
+
+	public void setBid(long bid) {
+		this.bid = bid;
 	}
 
 }

@@ -3,7 +3,8 @@
     "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
     "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
-	<package name="query" namespace="/page/html/content/query" extends="json-default">
+	<package name="query" namespace="/page/html/content/query"
+		extends="json-default">
 		<interceptors>
 			<interceptor name="operationlogInterceptor"
 				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
@@ -26,12 +27,44 @@
 				<param name="root">map</param>
 			</result>
 		</action>
-		<action name="queryHousepropertys" method="queryHousepropertys" class="queryAction">
+		<action name="queryHousepropertys" method="queryHousepropertys"
+			class="queryAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>
 		</action>
-		<action name="queryHouseproperty" method="queryHouseproperty" class="queryAction">
+		<action name="queryHouseproperty" method="queryHouseproperty"
+			class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryVehicles" method="queryVehicles" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryVehicle" method="queryVehicle" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryBurials" method="queryBurials" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryBurial" method="queryBurial" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryFunds" method="queryFunds" class="queryAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryFund" method="queryFund" class="queryAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>

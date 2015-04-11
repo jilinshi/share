@@ -16,16 +16,22 @@ import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
 import com.share.dto.BillCsDTO;
 import com.share.dto.BillNcDTO;
+import com.share.dto.BurialDTO;
+import com.share.dto.FundDTO;
 import com.share.dto.HousepropertyDTO;
 import com.share.dto.InsuranceDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.dto.VehicleDTO;
 import com.share.model.SysMenus;
 import com.share.model.SysUser;
+import com.share.model.VCkburial;
+import com.share.model.VCkfund;
 import com.share.model.VCkhouseproperty;
 import com.share.model.VCkinsurance;
+import com.share.model.VCkvehicle;
 import com.share.util.Pager;
 import com.share.util.XmlExcel;
 
@@ -40,7 +46,13 @@ public class YbServiceImpl implements YbService {
 	private BaseDAO<VCkinsurance> vCkinsuranceDAO;
 	@Resource
 	private BaseDAO<VCkhouseproperty> vCkhousepropertyDAO;
-
+	@Resource
+	private BaseDAO<VCkvehicle> vCkvehicleDAO;
+	@Resource
+	private BaseDAO<VCkburial> vCkburialDAO;
+	@Resource
+	private BaseDAO<VCkfund> vCkfundDAO;
+	
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
 		Object[] param = null;
@@ -294,5 +306,88 @@ public class YbServiceImpl implements YbService {
 		List<VCkhouseproperty> rs = vCkhousepropertyDAO.find(hql, param);
 		return rs;
 	}
-
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<VCkvehicle> queryCkvehicles(Pager pager, List<Object> param , String jwhere) {
+		Map session = ActionContext.getContext().getSession();
+		String hql = "select cv from VCkvehicle cv where 1=1 "+jwhere;
+		String hqlc = "select count(*) as cnt from VCkvehicle cv where 1=1 "+jwhere;
+		Long cnt = vCkhousepropertyDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<VCkvehicle> rs = vCkvehicleDAO.find(hql, param, pager.pager,
+				pager.rows);
+		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckvehicle");
+		session.put("hql", hql);
+		session.put("param", param);
+		session.put("param1", null);
+		session.put("title", title);
+		return rs;
+	}
+	
+	@Override
+	public List<VCkvehicle> queryCkvehicleById(VehicleDTO vehicleDTO){
+		Object[] param = new Object[1];
+		BigDecimal id = new BigDecimal(vehicleDTO.getVid());
+		param[0] = id;
+		String hql = "select cv from VCkvehicle cv where cv.vId=?";
+		List<VCkvehicle> rs = vCkvehicleDAO.find(hql, param);
+		return rs;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<VCkburial> queryCkburials(Pager pager, List<Object> param , String jwhere) {
+		Map session = ActionContext.getContext().getSession();
+		String hql = "select cb from VCkburial cb where 1=1 "+jwhere;
+		String hqlc = "select count(*) as cnt from VCkburial cb where 1=1 "+jwhere;
+		Long cnt = vCkburialDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<VCkburial> rs = vCkburialDAO.find(hql, param, pager.pager,
+				pager.rows);
+		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckburial");
+		session.put("hql", hql);
+		session.put("param", param);
+		session.put("param1", null);
+		session.put("title", title);
+		return rs;
+	}
+	
+	@Override
+	public List<VCkburial> queryCkburialById(BurialDTO burialDTO){
+		Object[] param = new Object[1];
+		BigDecimal id = new BigDecimal(burialDTO.getBid());
+		param[0] = id;
+		String hql = "select cb from VCkburial cb where cb.vId=?";
+		List<VCkburial> rs = vCkburialDAO.find(hql, param);
+		return rs;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<VCkfund> queryCkfunds(Pager pager, List<Object> param , String jwhere) {
+		Map session = ActionContext.getContext().getSession();
+		String hql = "select cf from VCkfund cf where 1=1 "+jwhere;
+		String hqlc = "select count(*) as cnt from VCkfund cf where 1=1 "+jwhere;
+		Long cnt = vCkfundDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<VCkfund> rs = vCkfundDAO.find(hql, param, pager.pager,
+				pager.rows);
+		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckfund");
+		session.put("hql", hql);
+		session.put("param", param);
+		session.put("param1", null);
+		session.put("title", title);
+		return rs;
+	}
+	
+	@Override
+	public List<VCkfund> queryCkfundById(FundDTO fundDTO){
+		Object[] param = new Object[1];
+		BigDecimal id = new BigDecimal(fundDTO.getGjjId());
+		param[0] = id;
+		String hql = "select cf from VCkfund cf where cf.gjjId=?";
+		List<VCkfund> rs = vCkfundDAO.find(hql, param);
+		return rs;
+	}
 }

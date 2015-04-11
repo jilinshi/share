@@ -50,6 +50,8 @@ public class VehicleDTO {
 	private String vehicalNo;
 
 	private String vtype;
+	
+	private long vid;
 
 	public long getvId() {
 		return vId;
@@ -241,6 +243,14 @@ public class VehicleDTO {
 
 	public void setVtype(String vtype) {
 		this.vtype = vtype;
+	}
+
+	public long getVid() {
+		return vid;
+	}
+
+	public void setVid(long vid) {
+		this.vid = vid;
 	}
 	
 	
