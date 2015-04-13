@@ -1,10 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <excel>
-	<table id="vckinsurance" title="社保" name="vckinsurance">
+	<table id="vckinsurance" title="社保查询数据" name="vckinsurance">
 		<col id="pname">姓名</col>
 		<col id="idno">身份证号码</col>
-		<col id="oo">地址</col>
+		<col id="oo1">区</col>
+		<col id="oo2">街道</col>
+		<col id="oo3">社区</col>
+		<col id="sbname">社保姓名</col>
+		<col id="sbidno">社保身份证号码</col>
+		<col id="comp">工作单位</col>
+		<col id="txtime">退休时间</col>
+		<col id="txmoney">退休金</col>
 		<col id="ds">来源</col>
+	</table>
+	<table id="vckhouseproperty" title="房产查询数据" name="vckhouseproperty">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号码</col>
+		<col id="oo1">区</col>
+		<col id="oo2">街道</col>
+		<col id="oo3">社区</col>
+		<col id="ggtime">归档日期</col>
+		<col id="slyw">受理业务</col>
+		<col id="fczh">房产证号</col>
+		<col id="bname">所有人</col>
+		<col id="bidno">所有人身份证号</col>
+		<col id="zuoluo">坐落</col>
+		<col id="mianji">面积</col>
+		<col id="bltime">办理日期</col>
+	</table>
+	<table id="vckvehicle" title="驾管查询数据" name="vckvehicle">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号码</col>
+		<col id="oo1">区</col>
+		<col id="oo2">街道</col>
+		<col id="oo3">社区</col>
+		<col id="vehicalNo">车牌号</col>
+		<col id="brand">品牌</col>
+		<col id="motoNo">发动机号</col>
+		<col id="buytime">购置时间</col>
+		<col id="vtype">类型</col>
+	</table>
+	<table id="vckburial" title="殡葬查询数据" name="vckburial">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号码</col>
+		<col id="oo1">区</col>
+		<col id="oo2">街道</col>
+		<col id="oo3">社区</col>
+		<col id="bidno">殡葬身份证号</col>
+		<col id="bname">殡葬姓名</col>
+		<col id="hhtime">火化时间</col>
+	</table>
+	<table id="vckfund" title="公积金查询数据" name="vckfund">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号码</col>
+		<col id="bidno">所有人身份证号</col>
+		<col id="bname">所有人姓名</col>
+		<col id="gjjaccount">公积金账号</col>
+		<col id="cardinal">缴存基数</col>
+		<col id="lasttime">最后缴费期限</col>
+		<col id="banlance">账户余额</col>
+		<col id="unitname">单位名称</col>
+		<col id="state">状态</col>
+		<col id="begintime">开户日期</col>
+		<col id="area">所属</col>
 	</table>
 	<table id="ppinsurance" title="社保核对数据" name="ppinsurance">
 		<col id="col1">家庭编号</col>
