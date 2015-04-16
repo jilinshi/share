@@ -52,7 +52,7 @@ public class YbServiceImpl implements YbService {
 	private BaseDAO<VCkburial> vCkburialDAO;
 	@Resource
 	private BaseDAO<VCkfund> vCkfundDAO;
-	
+
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
 		Object[] param = null;
@@ -251,26 +251,29 @@ public class YbServiceImpl implements YbService {
 
 		return resultlist;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<VCkinsurance> queryCkInsurances(Pager pager, List<Object> param , String jwhere) {
+	public List<VCkinsurance> queryCkInsurances(Pager pager,
+			List<Object> param, String jwhere) {
 		Map session = ActionContext.getContext().getSession();
-		String hql = "select ci from VCkinsurance ci where 1=1 "+jwhere;
-		String hqlc = "select count(*) as cnt from VCkinsurance ci where 1=1 "+jwhere;
+		String hql = "select ci from VCkinsurance ci where 1=1 " + jwhere;
+		String hqlc = "select count(*) as cnt from VCkinsurance ci where 1=1 "
+				+ jwhere;
 		Long cnt = vCkinsuranceDAO.count(hqlc, param);
 		pager.setRecords(cnt);
 		List<VCkinsurance> rs = vCkinsuranceDAO.find(hql, param, pager.pager,
 				pager.rows);
-		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckinsurance");
+		LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+				.getTableMap("vckinsurance");
 		session.put("hql", hql);
 		session.put("param", param);
 		session.put("title", title);
 		return rs;
 	}
-	
+
 	@Override
-	public List<VCkinsurance> queryCkInsuranceById(InsuranceDTO insuranceDTO){
+	public List<VCkinsurance> queryCkInsuranceById(InsuranceDTO insuranceDTO) {
 		Object[] param = new Object[1];
 		BigDecimal id = new BigDecimal(insuranceDTO.getInId());
 		param[0] = id;
@@ -278,27 +281,31 @@ public class YbServiceImpl implements YbService {
 		List<VCkinsurance> rs = vCkinsuranceDAO.find(hql, param);
 		return rs;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<VCkhouseproperty> queryCkHousepropertys(Pager pager, List<Object> param , String jwhere) {
+	public List<VCkhouseproperty> queryCkHousepropertys(Pager pager,
+			List<Object> param, String jwhere) {
 		Map session = ActionContext.getContext().getSession();
-		String hql = "select ch from VCkhouseproperty ch where 1=1 "+jwhere;
-		String hqlc = "select count(*) as cnt from VCkhouseproperty ch where 1=1 "+jwhere;
+		String hql = "select ch from VCkhouseproperty ch where 1=1 " + jwhere;
+		String hqlc = "select count(*) as cnt from VCkhouseproperty ch where 1=1 "
+				+ jwhere;
 		Long cnt = vCkhousepropertyDAO.count(hqlc, param);
 		pager.setRecords(cnt);
-		List<VCkhouseproperty> rs = vCkhousepropertyDAO.find(hql, param, pager.pager,
-				pager.rows);
-		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckhouseproperty");
+		List<VCkhouseproperty> rs = vCkhousepropertyDAO.find(hql, param,
+				pager.pager, pager.rows);
+		LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+				.getTableMap("vckhouseproperty");
 		session.put("hql", hql);
 		session.put("param", param);
 		session.put("param1", null);
 		session.put("title", title);
 		return rs;
 	}
-	
+
 	@Override
-	public List<VCkhouseproperty> queryCkhousepropertyById(HousepropertyDTO housepropertyDTO){
+	public List<VCkhouseproperty> queryCkhousepropertyById(
+			HousepropertyDTO housepropertyDTO) {
 		Object[] param = new Object[1];
 		BigDecimal id = new BigDecimal(housepropertyDTO.getHid());
 		param[0] = id;
@@ -306,27 +313,30 @@ public class YbServiceImpl implements YbService {
 		List<VCkhouseproperty> rs = vCkhousepropertyDAO.find(hql, param);
 		return rs;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<VCkvehicle> queryCkvehicles(Pager pager, List<Object> param , String jwhere) {
+	public List<VCkvehicle> queryCkvehicles(Pager pager, List<Object> param,
+			String jwhere) {
 		Map session = ActionContext.getContext().getSession();
-		String hql = "select cv from VCkvehicle cv where 1=1 "+jwhere;
-		String hqlc = "select count(*) as cnt from VCkvehicle cv where 1=1 "+jwhere;
+		String hql = "select cv from VCkvehicle cv where 1=1 " + jwhere;
+		String hqlc = "select count(*) as cnt from VCkvehicle cv where 1=1 "
+				+ jwhere;
 		Long cnt = vCkhousepropertyDAO.count(hqlc, param);
 		pager.setRecords(cnt);
 		List<VCkvehicle> rs = vCkvehicleDAO.find(hql, param, pager.pager,
 				pager.rows);
-		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckvehicle");
+		LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+				.getTableMap("vckvehicle");
 		session.put("hql", hql);
 		session.put("param", param);
 		session.put("param1", null);
 		session.put("title", title);
 		return rs;
 	}
-	
+
 	@Override
-	public List<VCkvehicle> queryCkvehicleById(VehicleDTO vehicleDTO){
+	public List<VCkvehicle> queryCkvehicleById(VehicleDTO vehicleDTO) {
 		Object[] param = new Object[1];
 		BigDecimal id = new BigDecimal(vehicleDTO.getVid());
 		param[0] = id;
@@ -334,27 +344,30 @@ public class YbServiceImpl implements YbService {
 		List<VCkvehicle> rs = vCkvehicleDAO.find(hql, param);
 		return rs;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<VCkburial> queryCkburials(Pager pager, List<Object> param , String jwhere) {
+	public List<VCkburial> queryCkburials(Pager pager, List<Object> param,
+			String jwhere) {
 		Map session = ActionContext.getContext().getSession();
-		String hql = "select cb from VCkburial cb where 1=1 "+jwhere;
-		String hqlc = "select count(*) as cnt from VCkburial cb where 1=1 "+jwhere;
+		String hql = "select cb from VCkburial cb where 1=1 " + jwhere;
+		String hqlc = "select count(*) as cnt from VCkburial cb where 1=1 "
+				+ jwhere;
 		Long cnt = vCkburialDAO.count(hqlc, param);
 		pager.setRecords(cnt);
 		List<VCkburial> rs = vCkburialDAO.find(hql, param, pager.pager,
 				pager.rows);
-		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckburial");
+		LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+				.getTableMap("vckburial");
 		session.put("hql", hql);
 		session.put("param", param);
 		session.put("param1", null);
 		session.put("title", title);
 		return rs;
 	}
-	
+
 	@Override
-	public List<VCkburial> queryCkburialById(BurialDTO burialDTO){
+	public List<VCkburial> queryCkburialById(BurialDTO burialDTO) {
 		Object[] param = new Object[1];
 		BigDecimal id = new BigDecimal(burialDTO.getBid());
 		param[0] = id;
@@ -362,27 +375,29 @@ public class YbServiceImpl implements YbService {
 		List<VCkburial> rs = vCkburialDAO.find(hql, param);
 		return rs;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<VCkfund> queryCkfunds(Pager pager, List<Object> param , String jwhere) {
+	public List<VCkfund> queryCkfunds(Pager pager, List<Object> param,
+			String jwhere) {
 		Map session = ActionContext.getContext().getSession();
-		String hql = "select cf from VCkfund cf where 1=1 "+jwhere;
-		String hqlc = "select count(*) as cnt from VCkfund cf where 1=1 "+jwhere;
+		String hql = "select cf from VCkfund cf where 1=1 " + jwhere;
+		String hqlc = "select count(*) as cnt from VCkfund cf where 1=1 "
+				+ jwhere;
 		Long cnt = vCkfundDAO.count(hqlc, param);
 		pager.setRecords(cnt);
-		List<VCkfund> rs = vCkfundDAO.find(hql, param, pager.pager,
-				pager.rows);
-		LinkedHashMap<String, String>  title = XmlExcel.getXmlexcel().getTableMap("vckfund");
+		List<VCkfund> rs = vCkfundDAO.find(hql, param, pager.pager, pager.rows);
+		LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
+				.getTableMap("vckfund");
 		session.put("hql", hql);
 		session.put("param", param);
 		session.put("param1", null);
 		session.put("title", title);
 		return rs;
 	}
-	
+
 	@Override
-	public List<VCkfund> queryCkfundById(FundDTO fundDTO){
+	public List<VCkfund> queryCkfundById(FundDTO fundDTO) {
 		Object[] param = new Object[1];
 		BigDecimal id = new BigDecimal(fundDTO.getGjjId());
 		param[0] = id;

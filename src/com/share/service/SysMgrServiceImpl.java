@@ -1,7 +1,6 @@
 package com.share.service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.share.dao.BaseDAO;
 import com.share.dto.SysLogDTO;
 import com.share.model.SysLog;
-import com.share.model.SysMenus;
 
 @Service("sysMgrService")
 public class SysMgrServiceImpl implements SysMgrService {
