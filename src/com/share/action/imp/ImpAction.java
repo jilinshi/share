@@ -63,6 +63,14 @@ public class ImpAction extends ActionSupport {
 
 	private String pagetype;
 
+	private String begintime;
+
+	private String endtime;
+
+	private String onno;
+
+	private String ds;
+
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
 
@@ -210,22 +218,6 @@ public class ImpAction extends ActionSupport {
 		this.map = map;
 	}
 
-	/**
-	 * 用日期和随机数格式化文件名避免冲突
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	private String generateFileName(String fileName) {
-		System.out.println(fileName);
-		SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String formatDate = sf.format(new Date());
-		int random = new Random().nextInt(10000);
-		int position = fileName.lastIndexOf(".");
-		String extension = fileName.substring(position);
-		return formatDate + random + extension;
-	}
-
 	public String removedfile() {
 		System.out.println(fileDTO.getFilename());
 		File file = new File(fileDTO.getRealpath());
@@ -258,6 +250,22 @@ public class ImpAction extends ActionSupport {
 		}
 		log.info("end>>>>>>>>>>保存上传文件信息数据");
 		return SUCCESS;
+	}
+
+	/**
+	 * 用日期和随机数格式化文件名避免冲突
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	private String generateFileName(String fileName) {
+		System.out.println(fileName);
+		SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String formatDate = sf.format(new Date());
+		int random = new Random().nextInt(10000);
+		int position = fileName.lastIndexOf(".");
+		String extension = fileName.substring(position);
+		return formatDate + random + extension;
 	}
 
 	/**
@@ -351,13 +359,14 @@ public class ImpAction extends ActionSupport {
 			impkind = "1";
 
 		}
+
 		if (impkind.equals("1")) {
 			switch (this.getPagetype()) {
 			case "PpBurial":
-				temphql = " and t.hhtime is not null";
+				temphql = temphql + " and t.hhtime is not null";
 				break;
 			case "PpInsurance":
-				temphql = " and t.lqMoney>0";
+				temphql = temphql + " and t.lqMoney>0";
 				break;
 			default:
 				temphql = "";
@@ -366,6 +375,27 @@ public class ImpAction extends ActionSupport {
 
 		} else {
 			temphql = "";
+		}
+
+		if (!"".equals(begintime) && !"null".equals(begintime)) {
+			temphql = temphql + " and t.col9 < '" + begintime + "'";
+		}
+		if (!"".equals(endtime) && !"null".equals(endtime)) {
+			temphql = temphql + " and t.col9 > '" + endtime + "'";
+		}
+
+		if (!"".equals(begintime) && !"".equals(endtime)
+				&& !"null".equals(begintime) && !"null".equals(endtime)) {
+			temphql = temphql + " and t.col9 between '" + begintime
+					+ " 00:00:01' and '" + endtime + " 23:59:59'";
+		}
+
+		if (!"".equals(onno) && !"null".equals(onno)) {
+			temphql = temphql + " and t.col1 like '" + onno + "%'";
+		}
+
+		if (!"".equals(ds) && !"null".equals(ds)) {
+			temphql = temphql + " and t.ds = '" + ds + "'";
 		}
 
 		if ("1".equals(imptype)) {
@@ -410,9 +440,14 @@ public class ImpAction extends ActionSupport {
 			hql = "select t from " + this.getPagetype() + " t where  1=? "
 					+ temphql + " and 1=1";
 		}
+		if (!page.equals("1")) {
+			pager.setRecords(new Long(session.get("rcount").toString()));
+		}
 		List rs = impService.queryCheckData(pager, hql, param,
 				this.getPagetype());
-
+		if (page.equals("1")) {
+			session.put("rcount", pager.records + "");
+		}
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);
 		jsonMap.put("total", pager.total);
@@ -517,6 +552,38 @@ public class ImpAction extends ActionSupport {
 
 	public void setPagetype(String pagetype) {
 		this.pagetype = pagetype;
+	}
+
+	public String getBegintime() {
+		return begintime;
+	}
+
+	public void setBegintime(String begintime) {
+		this.begintime = begintime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
+	}
+
+	public String getOnno() {
+		return onno;
+	}
+
+	public void setOnno(String onno) {
+		this.onno = onno;
+	}
+
+	public String getDs() {
+		return ds;
+	}
+
+	public void setDs(String ds) {
+		this.ds = ds;
 	}
 
 }

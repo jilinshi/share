@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-multiselect.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/select2.css" />
 
 <!-- ajax layout which only needs content area -->
 <div class="row">
@@ -38,7 +39,27 @@
 		      	<select id="impkind" name="impkind" class="multiselect">
 						<option value="1">是</option>
 						<option value="0">否</option>
-				</select>&nbsp;
+				</select>&nbsp;时间：
+				<input type="text" name="begintime" id="begintime" class="form-control" readonly="readonly"/>
+				至
+				<input type="text" name ="endtime" id="endtime" class="form-control"  readonly="readonly"/>
+				&nbsp;
+				来源：<select id="state" name="ds" class="select2" data-placeholder="选择...">
+						<option value="">全部</option>
+						<option value="1">城市</option>
+						<option value="2">农村</option>
+						</select>
+				&nbsp;
+				所属：<select id="state" name="onno" class="select2" data-placeholder="选择所属...">
+						<option value="">全部</option>
+						<option value="220201">昌邑区</option>
+						<option value="220202">船营区</option>
+						<option value="220203">龙潭区</option>
+						<option value="220204">丰满区</option>
+						<option value="220205">高新区</option>
+						<option value="220206">经开区</option>
+						</select>
+				&nbsp;
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
@@ -70,7 +91,7 @@
 <script type="text/javascript">
 var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-		
+		var rcount=0;
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
 		$(window).on('resize.jqGrid', function () {
@@ -93,7 +114,7 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 			mtype:"POST",
 			url:"<%=basePath%>page/html/content/imp/queryCheckData.action",
 			datatype: "json",
-			postData:{'pagetype':'<%=_pagetype%>','imptype':'1','impkind':'1'},
+			postData:{'pagetype':'<%=_pagetype%>','imptype':'1','impkind':'1','rcount':rcount},
 			height: 450,
 			colNames: ['','家庭编号','低保成员姓名','低保身份证号码','区','街道','社区','社保姓名','社保身份证号码','工作单位','退休时间','退休金'],
 			colModel:[
@@ -112,13 +133,14 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 			], 
 			gridComplete: function(){
 				                //在Grid的第一列（Actions）中添加按钮E、S、C，添加增、删、查、改按钮；
-				                 var ids = jQuery(grid_selector).jqGrid('getDataIDs');
-				                 for(var i=0;i < ids.length;i++){
-				                    var cl = ids[i];
+				                // var ids = jQuery(grid_selector).jqGrid('getDataIDs');
+				               //  for(var i=0;i < ids.length;i++){
+				                //    var cl = ids[i];
+				                //   alert( $(grid_selector).jqGrid("getGridParam","records"));
 				                   // be="aaa";
 				                     //var p1= $(grid_selector).getCell(cl,'fileId');
 				                     // jQuery(grid_selector).jqGrid('setRowData',ids[i],{fileId:be});
-				                }
+				                //}
 				            },
 			viewrecords : true,
 			rowNum:15,
@@ -160,6 +182,17 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 								if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 							})
 						}
+						$( "#begintime" ).datepicker({
+							showOtherMonths: true,
+							selectOtherMonths: false,
+							format: 'yyyy-mm-dd',
+							
+						});
+						$( "#endtime" ).datepicker({
+							showOtherMonths: true,
+							selectOtherMonths: false,
+							format: 'yyyy-mm-dd'
+						});
 					});
 					
 function onClik(){

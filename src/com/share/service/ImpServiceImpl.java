@@ -764,9 +764,12 @@ public class ImpServiceImpl<T> implements ImpService {
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
 
 			log.info("查询>>>>>" + hql);
-			log.info("查询>>>>>" + hqlc);
-			Long cnt = ppInsuranceDAO.count(hqlc, param);
-			pager.setRecords(cnt);
+
+			if ("1".equals(pager.pager + "")) {
+				Long cnt = ppInsuranceDAO.count(hqlc, param);
+				pager.setRecords(cnt);
+				log.info("查询总数>>>>>" + hqlc);
+			}
 			list = (List<T>) ppInsuranceDAO.find(hql, param, pager.pager,
 					pager.rows);
 			Map session = ActionContext.getContext().getSession();
@@ -785,9 +788,12 @@ public class ImpServiceImpl<T> implements ImpService {
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
 
 			log.info("查询>>>>>" + hql);
-			log.info("查询>>>>>" + hqlc);
-			Long cnt = ppFundDAO.count(hqlc, param);
-			pager.setRecords(cnt);
+
+			if ("1".equals(pager.pager + "")) {
+				log.info("查询>>>>>" + hqlc);
+				Long cnt = ppFundDAO.count(hqlc, param);
+				pager.setRecords(cnt);
+			}
 			list = (List<T>) ppFundDAO
 					.find(hql, param, pager.pager, pager.rows);
 			Map session = ActionContext.getContext().getSession();
@@ -805,9 +811,11 @@ public class ImpServiceImpl<T> implements ImpService {
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
 
 			log.info("查询>>>>>" + hql);
-			log.info("查询>>>>>" + hqlc);
-			Long cnt = ppBurialDAO.count(hqlc, param);
-			pager.setRecords(cnt);
+			if ("1".equals(pager.pager + "")) {
+				log.info("查询>>>>>" + hqlc);
+				Long cnt = ppBurialDAO.count(hqlc, param);
+				pager.setRecords(cnt);
+			}
 			list = (List<T>) ppBurialDAO.find(hql, param, pager.pager,
 					pager.rows);
 			Map session = ActionContext.getContext().getSession();
@@ -826,9 +834,11 @@ public class ImpServiceImpl<T> implements ImpService {
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
 
 			log.info("查询>>>>>" + hql);
-			log.info("查询>>>>>" + hqlc);
-			Long cnt = ppHousepropertyDAO.count(hqlc, param);
-			pager.setRecords(cnt);
+			if ("1".equals(pager.pager + "")) {
+				log.info("查询>>>>>" + hqlc);
+				Long cnt = ppHousepropertyDAO.count(hqlc, param);
+				pager.setRecords(cnt);
+			}
 			list = (List<T>) ppHousepropertyDAO.find(hql, param, pager.pager,
 					pager.rows);
 			Map session = ActionContext.getContext().getSession();
@@ -847,9 +857,11 @@ public class ImpServiceImpl<T> implements ImpService {
 			String hqlc = "select count(*) as cnt  " + hql.substring(end);
 
 			log.info("查询>>>>>" + hql);
-			log.info("查询>>>>>" + hqlc);
-			Long cnt = ppVehicleDAO.count(hqlc, param);
-			pager.setRecords(cnt);
+			if ("1".equals(pager.pager + "")) {
+				log.info("查询>>>>>" + hqlc);
+				Long cnt = ppVehicleDAO.count(hqlc, param);
+				pager.setRecords(cnt);
+			}
 			list = (List<T>) ppVehicleDAO.find(hql, param, pager.pager,
 					pager.rows);
 			Map session = ActionContext.getContext().getSession();
