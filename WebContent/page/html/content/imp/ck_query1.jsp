@@ -44,13 +44,13 @@
 				至
 				<input type="text" name ="endtime" id="endtime" class="form-control"  readonly="readonly"/>
 				&nbsp;
-				来源：<select id="state" name="ds" class="select2" data-placeholder="选择...">
+				来源：<select id="ds" name="ds" class="select2" data-placeholder="选择...">
 						<option value="">全部</option>
 						<option value="1">城市</option>
 						<option value="2">农村</option>
 						</select>
 				&nbsp;
-				所属：<select id="state" name="onno" class="select2" data-placeholder="选择所属...">
+				所属：<select id="onno" name="onno" class="select2" data-placeholder="选择所属...">
 						<option value="">全部</option>
 						<option value="220201">昌邑区</option>
 						<option value="220202">船营区</option>
