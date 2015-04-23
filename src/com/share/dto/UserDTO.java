@@ -23,6 +23,8 @@ public class UserDTO {
 	private Timestamp utime;
 
 	private String token;
+	
+	private long orgId;
 
 	public long getUserId() {
 		return userId;
@@ -102,6 +104,14 @@ public class UserDTO {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(long orgId) {
+		this.orgId = orgId;
 	}
 
 }

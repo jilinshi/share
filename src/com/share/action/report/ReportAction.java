@@ -1,13 +1,26 @@
 package com.share.action.report;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.MemberDTO;
+import com.share.dto.UserDTO;
+import com.share.model.Personalinfo;
+import com.share.model.SysOrganization;
+import com.share.service.ReportService;
+import com.share.util.Pager;
 
 @Controller
 public class ReportAction extends ActionSupport {
@@ -15,6 +28,9 @@ public class ReportAction extends ActionSupport {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ReportAction.class);
 
+	@Resource
+	private ReportService reportService;
+	
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
 	 /** 当前页面 */ 
@@ -22,12 +38,61 @@ public class ReportAction extends ActionSupport {
 	 /** 每页的记录数 */ 
 	private String rows;
 	private MemberDTO memberDTO;
+	private List<SysOrganization> orgs;
+	private String result;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryPersonalInfo(){
-		System.out.println("000");
+		Pager pager = new Pager(page, rows, new Long(0));
+		List<Object> param = new ArrayList<Object>();
+		String jwhere = "";
+		if(this.memberDTO.getPaperid()==null||"".equals(this.memberDTO.getPaperid())){	
+		}else{
+			param.add(this.memberDTO.getPaperid());
+			jwhere=jwhere + " and p.idno=? "; 
+		}
+		if(this.memberDTO.getMembername()==null||"".equals(this.memberDTO.getMembername())){
+		}else{
+			param.add(this.memberDTO.getMembername());
+			jwhere=jwhere + " and p.pname=? ";
+		}
+		List<Personalinfo> rs = reportService.queryPersonalinfos(pager, param, jwhere);
+		Map jsonMap = new HashMap();
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
+		jsonMap.put("rows", rs);
+		map = jsonMap;
 		return SUCCESS;
 	}
-
+	
+	public String getOrgList(){
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+				.get("user");
+		long orgid = user.getOrgId();
+		orgs = reportService.findOrganlist(orgid);
+		Map jsonMap = new HashMap(); 
+		 
+			jsonMap.put("1", "成功");
+			jsonMap.put("orgs", orgs);
+			map=jsonMap;	
+		 
+		return SUCCESS;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String printcollatingreport(){
+		map = new HashMap<String, String>();
+		memberDTO.setAddress("111");
+		memberDTO.setMembername("ABC");
+		memberDTO.setFamilyno("1234567890");
+		map.put("add", memberDTO.getAddress());
+		map.put("name", memberDTO.getMembername());
+		map.put("no", memberDTO.getFamilyno());
+		return SUCCESS;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;
@@ -60,5 +125,21 @@ public class ReportAction extends ActionSupport {
 
 	public void setMemberDTO(MemberDTO memberDTO) {
 		this.memberDTO = memberDTO;
+	}
+
+	public List<SysOrganization> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(List<SysOrganization> orgs) {
+		this.orgs = orgs;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 }

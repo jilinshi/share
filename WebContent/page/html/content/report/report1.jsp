@@ -10,20 +10,21 @@
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/chosen.css" />
 <!-- ajax layout which only needs content area -->
 <div class="row">
 	<div class="col-xs-12">
 	  <div class="widget-box">
-			<!-- <div class="widget-header">
-				<h4 class="widget-title">查询</h4>
-			</div> -->
 			<div class="widget-body">
 			<div class="widget-main">
 				<form class="form-inline" id="searchform">
+					<label for="form-field-select">机构</label>
+					<select style="width:200px;" class="chosen-select" id="form-field-select" data-placeholder="请选择 . . .">
+					</select>
 					<label>姓名</label>
-					<input type="text" class="input-large" placeholder="姓名" name="memberDTO.pname"/>
+					<input type="text" class="input-large" placeholder="姓名" name="memberDTO.membername"/>
 					<label>身份证号码</label>
-					<input type="text" class="input-large" placeholder="身份证号码" name="memberDTO.idno"/>
+					<input type="text" class="input-large" placeholder="身份证号码" name="memberDTO.paperid"/>
 					<button type="button" class="btn btn-info btn-sm" onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
@@ -41,10 +42,13 @@
 		</script>
 	</div>
 </div>
+<script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 <script type="text/javascript">
 	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
+			//机构下拉列表初始化
+			chosen_Init();
 			var grid_selector = "#grid-table";
 			var pager_selector = "#grid-pager";
 			var formData = $("#searchform").serializeObject();
@@ -56,7 +60,6 @@
 			var parent_column = $(grid_selector).closest('[class*="col-"]');
 			$(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
 				if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
-					//setTimeout is for webkit only to give time for DOM changes and then redraw!!!
 					setTimeout(function() {
 						$(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
 					}, 0);
@@ -67,21 +70,16 @@
 				url : "<%=basePath%>page/html/content/report/queryPersonalInfo.action",
 				mtype : "POST", 
 				datatype : "json",
-				//postData : formData,
+				postData : formData,
 				height : 321,
-				colNames : ['','姓名','身份证号码','户主姓名','来源','低保状态','分类施保状态','再保障状态','社保姓名','社保身份证号码'],
+				colNames : ['家庭编号','姓名','身份证号码','户主姓名','操作'],
 				colModel : [
-				    {name:'inId',width:'120px',hidden:true},
-					{name:'pname',width:'120px',formatter:"actionFormatter"},
-				    {name:'idno',width:'250px',formatter:"actionFormatter"},
-				    {name:'mastername',width:'120px',formatter:'actionFormatter'},
-					{name:'ds',width:'120px',formatter:"actionFormatter"},
-					{name:'col4',width:'170px',formatter:"actionFormatter"},
-					{name:'col5',width:'170px',formatter:"actionFormatter"},
-					{name:'col6',width:'170px',formatter:"actionFormatter"},
-					{name:'sbname',width:'120px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor},
-					{name:'sbidno',width:'250px',formatter:"actionFormatter",cellattr: addCellAttr_bgcolor}
-				], 
+				    {name:'col1',formatter:"actionFormatter"},
+					{name:'pname',formatter:"actionFormatter"},
+				    {name:'idno',formatter:"actionFormatter"},
+				    {name:'mastername',formatter:'actionFormatter'},
+				    {name:'VIEW', index:'VIEW',align:'center'}
+				],
 				rownumbers: true,
 				autowidth : true,
 				viewrecords : true,
@@ -92,13 +90,11 @@
 				loadComplete : function() {
 					var table = this;
 					setTimeout(function(){
-						styleCheckbox(table);
 						updatePagerIcons(table);
-						//formatetext(table);
+						checkbutton(table);
 					}, 0);
 				}, 
 				caption : "居民数据信息显示"
-		
 			});
 			$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 			
@@ -119,15 +115,17 @@
  			function addCellAttr_bgcolor(rowId, val, rawObject, cm, rdata) {
  				return "style='background-color:pink'";
  			}
-			 
-			function styleCheckbox(table) {
-	/* 				$(table).find('input:checkbox').addClass('ace')
-					.wrap('<label />')
-					.after('<span class="lbl align-top" />')
-					$('.ui-jqgrid-labels th[id*="_cb"]:first-child')
-					.find('input.cbox[type=checkbox]').addClass('ace')
-					.wrap('<label />').after('<span class="lbl align-top" />'); */
-			}
+			
+ 			function checkbutton(table){
+ 				var ids = jQuery("#grid-table").jqGrid('getDataIDs');
+ 		        for (var i = 0; i < ids.length; i++) {
+ 		          var id = ids[i];
+ 		          var rowData = $("#grid-table").getRowData(id);
+				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button class='btn btn-minier btn-success' onclick='view(\""+rowData.col1+"\")'><i class='ace-icon fa fa-share bigger-100'></i>生成核对报告</button></div>"
+ 		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
+ 				}
+ 			}
+ 			
 			function updatePagerIcons(table) {
 				var replacement = 
 				{
@@ -168,5 +166,27 @@
         var jsonuserinfo = $('#searchform').serializeObject();  
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
+	
+	function view(id){
+		alert(id);
+		window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action";
+	}
+	
+	function chosen_Init(){
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/report/getOrgList.action",
+			success : function(data) {
+				var dataObj=eval("("+data+")");
+				var orgs = data.orgs;
+				//alert(dataObj[0].orgCode);
+				$("#form-field-select").append("<option value=' '> </option>")
+		    	.append("<option value='Value'>Text</option>")
+		    	.append("<option value='av'>avt</option>"); 
+				$("#form-field-select").chosen({allow_single_deselect:true});
+			}
+		});
+	}
 	
 </script>
