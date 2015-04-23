@@ -21,23 +21,12 @@
 		<property name="driverClass" value="${db.driverClassName}"></property>
 		<property name="user" value="${db.username}"></property>
 		<property name="password" value="${db.password}"></property>
-		<property name="maxPoolSize" value="40"></property>
-		<property name="minPoolSize" value="1"></property>
+		<property name="maxPoolSize" value="300"></property>
+		<property name="minPoolSize" value="10"></property>
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
 
-	<!-- 数据库连接池c3p0配置 <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource" 
-		destroy-method="shutdown"> <constructor-arg> <bean class="com.zaxxer.hikari.HikariConfig"> 
-		<property name="driverClassName" value="${hikaricp.jdbc.driverClassName}"/> 
-		<property name="jdbcUrl" value="${hikaricp.url}"/> <property name="username" 
-		value="${hikaricp.username}"/> <property name="password" value="${hikaricp.password}"/> 
-		<property name="connectionTestQuery" value="${hikaricp.connectionTestQuery}"/> 
-		<property name="connectionTimeout" value="${hikaricp.connectionTimeout}"/> 
-		<property name="idleTimeout" value="${hikaricp.idleTimeout}"/> <property 
-		name="maxLifetime" value="${hikaricp.maxLifetime}"/> <property name="maximumPoolSize" 
-		value="${hikaricp.maximumPoolSize}"/> <property name="minimumIdle" value="${hikaricp.minimumIdle}"/> 
-		</bean> </constructor-arg> </bean> -->
 	<!-- session工厂 -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -52,7 +41,6 @@
 			</list>
 		</property>
 	</bean>
-
 	<!-- 配置事务管理器 -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
