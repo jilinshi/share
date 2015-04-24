@@ -169,7 +169,8 @@
 	
 	function view(id){
 		alert(id);
-		window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action";
+		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
+		window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action");
 	}
 	
 	function chosen_Init(){

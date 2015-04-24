@@ -1,12 +1,27 @@
 package com.share.action.report;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,33 +43,36 @@ public class ReportAction extends ActionSupport {
 
 	@Resource
 	private ReportService reportService;
-	
+
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
-	 /** 当前页面 */ 
-	private String page;  
-	 /** 每页的记录数 */ 
+	/** 当前页面 */
+	private String page;
+	/** 每页的记录数 */
 	private String rows;
 	private MemberDTO memberDTO;
 	private List<OrganizationDTO> orgs;
 	private String result;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String queryPersonalInfo(){
+	public String queryPersonalInfo() {
 		Pager pager = new Pager(page, rows, new Long(0));
 		List<Object> param = new ArrayList<Object>();
 		String jwhere = "";
-		if(this.memberDTO.getPaperid()==null||"".equals(this.memberDTO.getPaperid())){	
-		}else{
+		if (this.memberDTO.getPaperid() == null
+				|| "".equals(this.memberDTO.getPaperid())) {
+		} else {
 			param.add(this.memberDTO.getPaperid());
-			jwhere=jwhere + " and p.idno=? "; 
+			jwhere = jwhere + " and p.idno=? ";
 		}
-		if(this.memberDTO.getMembername()==null||"".equals(this.memberDTO.getMembername())){
-		}else{
+		if (this.memberDTO.getMembername() == null
+				|| "".equals(this.memberDTO.getMembername())) {
+		} else {
 			param.add(this.memberDTO.getMembername());
-			jwhere=jwhere + " and p.pname=? ";
+			jwhere = jwhere + " and p.pname=? ";
 		}
-		List<Personalinfo> rs = reportService.queryPersonalinfos(pager, param, jwhere);
+		List<Personalinfo> rs = reportService.queryPersonalinfos(pager, param,
+				jwhere);
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);
 		jsonMap.put("total", pager.total);
@@ -63,31 +81,73 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getOrgList(){
+	public String getOrgList() {
 		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
 				.get("user");
 		long orgid = user.getSysOrganization().getOrgId();
 		orgs = reportService.findOrganlist(orgid);
-		Map jsonMap = new HashMap(); 
+		Map jsonMap = new HashMap();
 		jsonMap.put("orgs", orgs);
-		map=jsonMap;	
+		map = jsonMap;
 		return SUCCESS;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public String printcollatingreport(){
-		map = new HashMap<String, String>();
-		memberDTO.setAddress("111");
-		memberDTO.setMembername("ABC");
-		memberDTO.setFamilyno("1234567890");
-		map.put("add", memberDTO.getAddress());
-		map.put("name", memberDTO.getMembername());
-		map.put("no", memberDTO.getFamilyno());
-		return SUCCESS;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String printcollatingreport() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		try {
+			request.setCharacterEncoding("utf-8");
+			String path = ServletActionContext.getServletContext().getRealPath(
+					"/")
+					+ "page\\html\\content\\report\\collating_report.jasper";
+			System.out.println(path);
+			// 获得输出流
+			ServletOutputStream outputStream = response.getOutputStream();
+			// 获得输入流
+			InputStream inputStream = new FileInputStream(new File(path));
+			// 生成网页的PDF文件
+			HashMap map = new HashMap();
+			map.put("a1", "湿答答");
+			ArrayList<UserDTO> list2 = new ArrayList<UserDTO>();
+			UserDTO e = new UserDTO();
+			e.setIdno("东方闪电");
+			list2.add(e);
+			e = new UserDTO();
+			e.setIdno("东方闪电1");
+			list2.add(e);
+			e = new UserDTO();
+			e.setIdno("东方闪电2");
+			list2.add(e);
+			e = new UserDTO();
+			e.setIdno("东方闪电3");
+			list2.add(e);
+			JasperRunManager.runReportToPdfStream(inputStream, outputStream,
+					map, new JRBeanCollectionDataSource(list2));
+			// 设置PDF格式
+			response.setContentType("application/pdf");
+			outputStream.flush();
+			outputStream.close();
+		} catch (JRException e) {
+			StringWriter stringWriter = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(stringWriter);
+			e.printStackTrace(printWriter);
+			response.setContentType("text/plain");
+			try {
+				response.getOutputStream().print(stringWriter.toString());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;

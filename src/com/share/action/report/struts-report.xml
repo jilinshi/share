@@ -56,12 +56,12 @@
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
 		<action name="printcollatingreport" class="reportAction"
 			method="printcollatingreport">
-			<result name="success" type="jasper">
+			<!-- <result name="success" type="jasper">
 				<param name="location">/page/html/content/report/collating_report.jasper</param>
 				<param name="dataSource">memberDTO</param>
 				<param name="format">PDF</param>
 				<param name="reportParameters">map</param>
-			</result>
+			</result> -->
 		</action>
 	</package>
 </struts>   

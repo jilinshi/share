@@ -45,7 +45,7 @@ public class PrintReport extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("utf-8");
-
+	 
 		String path = getServletContext().getRealPath("/")
 				+ "page\\html\\content\\report\\collating_report.jasper";
 
