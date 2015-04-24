@@ -41,7 +41,7 @@ public class ReportServiceImpl implements ReportService{
 		return rs;
 	}
 	
-	public List<SysOrganization> findOrganlist(long orgid) {
+	public List<OrganizationDTO> findOrganlist(long orgid) {
 		List<OrganizationDTO> resultlist = new ArrayList<OrganizationDTO>();
 		//String hql = "select o from SysOrganization o where o.orgId = ? or o.parentId = ? order by  o.orgId"; 
 		String hql = "select o from SysOrganization o where o.orgId = ? order by  o.orgId";
@@ -49,12 +49,15 @@ public class ReportServiceImpl implements ReportService{
 		param = new Object[1]; 
 		param[0] = orgid;
 		List<SysOrganization> rs = sysOrganizationDAO.find(hql, param);
-		/*for (SysOrganization s : rs) {
+		for (SysOrganization s : rs) {
 			OrganizationDTO e = new OrganizationDTO();
-			e.setOrganizationId(s.getOrgCode());
+			e.setOrgId(s.getOrgId());
+			e.setOrgCode(s.getOrgCode());
+			e.setOrgName(s.getOrgName());
+			e.setParentId(s.getParentId());
 			resultlist.add(e);
-		}*/
-		return rs;
+		}
+		return resultlist;
 
 	}
 

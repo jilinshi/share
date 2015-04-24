@@ -1,94 +1,80 @@
 package com.share.dto;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 public class OrganizationDTO {
+	
+	private long orgId;
 
-	private String asorgname;
+	private Timestamp ctime;
 
-	private String depth;
+	private String flag;
 
-	private String fullname;
+	private String orgCode;
 
-	private String organizationId;
+	private String orgName;
 
-	private String parentorgid;
+	private BigDecimal parentId;
 
-	private String seqId;
+	private Timestamp utime;
 
-	private String serialnumber;
-
-	private String status;
-	private String orglevel;
-
-	public String getOrglevel() {
-		return orglevel;
+	public long getOrgId() {
+		return orgId;
 	}
 
-	public void setOrglevel(String orglevel) {
-		this.orglevel = orglevel;
+	public void setOrgId(long orgId) {
+		this.orgId = orgId;
 	}
 
-	public String getAsorgname() {
-		return asorgname;
+	public Timestamp getCtime() {
+		return ctime;
 	}
 
-	public void setAsorgname(String asorgname) {
-		this.asorgname = asorgname;
+	public void setCtime(Timestamp ctime) {
+		this.ctime = ctime;
 	}
 
-	public String getDepth() {
-		return depth;
+	public String getFlag() {
+		return flag;
 	}
 
-	public void setDepth(String depth) {
-		this.depth = depth;
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 
-	public String getFullname() {
-		return fullname;
+	public String getOrgCode() {
+		return orgCode;
 	}
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
 	}
 
-	public String getOrganizationId() {
-		return organizationId;
+	public String getOrgName() {
+		return orgName;
 	}
 
-	public void setOrganizationId(String organizationId) {
-		this.organizationId = organizationId;
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 
-	public String getParentorgid() {
-		return parentorgid;
+	public BigDecimal getParentId() {
+		return parentId;
 	}
 
-	public void setParentorgid(String parentorgid) {
-		this.parentorgid = parentorgid;
+	public void setParentId(BigDecimal parentId) {
+		this.parentId = parentId;
 	}
 
-	public String getSeqId() {
-		return seqId;
+	public Timestamp getUtime() {
+		return utime;
 	}
 
-	public void setSeqId(String seqId) {
-		this.seqId = seqId;
+	public void setUtime(Timestamp utime) {
+		this.utime = utime;
 	}
 
-	public String getSerialnumber() {
-		return serialnumber;
-	}
-
-	public void setSerialnumber(String serialnumber) {
-		this.serialnumber = serialnumber;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 
 }

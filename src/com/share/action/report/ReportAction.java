@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,9 +14,9 @@ import org.springframework.stereotype.Controller;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.MemberDTO;
+import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
-import com.share.model.SysOrganization;
 import com.share.service.ReportService;
 import com.share.util.Pager;
 
@@ -38,7 +36,7 @@ public class ReportAction extends ActionSupport {
 	 /** 每页的记录数 */ 
 	private String rows;
 	private MemberDTO memberDTO;
-	private List<SysOrganization> orgs;
+	private List<OrganizationDTO> orgs;
 	private String result;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -66,19 +64,16 @@ public class ReportAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getOrgList(){
 		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
 				.get("user");
-		long orgid = user.getOrgId();
+		long orgid = user.getSysOrganization().getOrgId();
 		orgs = reportService.findOrganlist(orgid);
 		Map jsonMap = new HashMap(); 
-		 
-			jsonMap.put("1", "成功");
-			jsonMap.put("orgs", orgs);
-			map=jsonMap;	
-		 
+		jsonMap.put("orgs", orgs);
+		map=jsonMap;	
 		return SUCCESS;
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -127,11 +122,11 @@ public class ReportAction extends ActionSupport {
 		this.memberDTO = memberDTO;
 	}
 
-	public List<SysOrganization> getOrgs() {
+	public List<OrganizationDTO> getOrgs() {
 		return orgs;
 	}
 
-	public void setOrgs(List<SysOrganization> orgs) {
+	public void setOrgs(List<OrganizationDTO> orgs) {
 		this.orgs = orgs;
 	}
 

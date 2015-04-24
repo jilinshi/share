@@ -178,12 +178,15 @@
 			dataType : "json",
 			url : "<%=basePath%>page/html/content/report/getOrgList.action",
 			success : function(data) {
-				var dataObj=eval("("+data+")");
 				var orgs = data.orgs;
-				//alert(dataObj[0].orgCode);
-				$("#form-field-select").append("<option value=' '> </option>")
-		    	.append("<option value='Value'>Text</option>")
-		    	.append("<option value='av'>avt</option>"); 
+				var len = orgs.length;
+				var a = " ";
+				for(var i=0; i<len; i++){
+					var value = orgs[i].orgCode;
+					var text = orgs[i].orgName;
+					a = a + "<option value='"+ value +"'>"+ text +"</option>";
+				}
+				$("#form-field-select").append("<option value=' '> </option>").append(a);
 				$("#form-field-select").chosen({allow_single_deselect:true});
 			}
 		});

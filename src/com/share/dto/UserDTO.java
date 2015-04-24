@@ -2,6 +2,8 @@ package com.share.dto;
 
 import java.sql.Timestamp;
 
+import com.share.model.SysOrganization;
+
 public class UserDTO {
 
 	private long userId;
@@ -24,7 +26,7 @@ public class UserDTO {
 
 	private String token;
 	
-	private long orgId;
+	private SysOrganization sysOrganization;
 
 	public long getUserId() {
 		return userId;
@@ -106,12 +108,12 @@ public class UserDTO {
 		this.token = token;
 	}
 
-	public long getOrgId() {
-		return orgId;
+	public SysOrganization getSysOrganization() {
+		return sysOrganization;
 	}
 
-	public void setOrgId(long orgId) {
-		this.orgId = orgId;
+	public void setSysOrganization(SysOrganization sysOrganization) {
+		this.sysOrganization = sysOrganization;
 	}
 
 }
