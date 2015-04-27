@@ -1,12 +1,12 @@
 package com.share.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -43,11 +43,11 @@ public class ReportServiceImpl implements ReportService{
 	
 	public List<OrganizationDTO> findOrganlist(long orgid) {
 		List<OrganizationDTO> resultlist = new ArrayList<OrganizationDTO>();
-		//String hql = "select o from SysOrganization o where o.orgId = ? or o.parentId = ? order by  o.orgId"; 
-		String hql = "select o from SysOrganization o where o.orgId = ? order by  o.orgId";
+		String hql = "select o from SysOrganization o where o.orgId = ? or o.parentId = ? order by  o.orgId";
 		Object[] param = null; 
-		param = new Object[1]; 
+		param = new Object[2]; 
 		param[0] = orgid;
+		param[1] = new BigDecimal(orgid+"");
 		List<SysOrganization> rs = sysOrganizationDAO.find(hql, param);
 		for (SysOrganization s : rs) {
 			OrganizationDTO e = new OrganizationDTO();

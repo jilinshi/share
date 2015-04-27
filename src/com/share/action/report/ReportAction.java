@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
@@ -102,8 +103,12 @@ public class ReportAction extends ActionSupport {
 			request.setCharacterEncoding("utf-8");
 			String path = ServletActionContext.getServletContext().getRealPath(
 					"/")
-					+ "page\\html\\content\\report\\collating_report.jasper";
-			System.out.println(path);
+					+ "\\page\\html\\content\\report\\collating_report.jasper";
+			System.out.println("mainPath:"+path);
+			String subPath = ServletActionContext.getServletContext().getRealPath(
+					"/")
+					+ "\\page\\html\\content\\report\\collating_report_subreport1.jasper";
+			System.out.println("subPath:"+subPath);
 			// 获得输出流
 			ServletOutputStream outputStream = response.getOutputStream();
 			// 获得输入流
@@ -135,8 +140,10 @@ public class ReportAction extends ActionSupport {
 			PrintWriter printWriter = new PrintWriter(stringWriter);
 			e.printStackTrace(printWriter);
 			response.setContentType("text/plain");
+			response.setCharacterEncoding("ISO 8859-1");
 			try {
 				response.getOutputStream().print(stringWriter.toString());
+				//response.getWriter().print(stringWriter.toString()); 
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
