@@ -18,9 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.ReportDTO;
 import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
 import com.share.service.ReportService;
@@ -104,18 +106,25 @@ public class ReportAction extends ActionSupport {
 			String path = ServletActionContext.getServletContext().getRealPath(
 					"/")
 					+ "\\page\\html\\content\\report\\collating_report.jasper";
-			System.out.println("mainPath:"+path);
-			String subPath = ServletActionContext.getServletContext().getRealPath(
-					"/")
+			System.out.println("mainPath:" + path);
+			String subPath = ServletActionContext.getServletContext()
+					.getRealPath("/")
 					+ "\\page\\html\\content\\report\\collating_report_subreport1.jasper";
-			System.out.println("subPath:"+subPath);
+			System.out.println("subPath:" + subPath);
 			// 获得输出流
 			ServletOutputStream outputStream = response.getOutputStream();
 			// 获得输入流
 			InputStream inputStream = new FileInputStream(new File(path));
 			// 生成网页的PDF文件
+
+			JasperReport subrep = (JasperReport) JRLoader.loadObject(new File(
+					subPath));
+
 			HashMap map = new HashMap();
+			map.put("subrep1", subrep);
+
 			map.put("a1", "湿答答");
+			
 			ArrayList<UserDTO> list2 = new ArrayList<UserDTO>();
 			UserDTO e = new UserDTO();
 			e.setIdno("东方闪电");
@@ -129,8 +138,15 @@ public class ReportAction extends ActionSupport {
 			e = new UserDTO();
 			e.setIdno("东方闪电3");
 			list2.add(e);
+		
+			ArrayList<ReportDTO> list1 = new ArrayList<ReportDTO>();
+			ReportDTO arg0 = new ReportDTO();
+			arg0.setCol1("踩单车");
+			arg0.setUsers(new JRBeanCollectionDataSource(list2));
+			list1.add(arg0);
+
 			JasperRunManager.runReportToPdfStream(inputStream, outputStream,
-					map, new JRBeanCollectionDataSource(list2));
+					map, new JRBeanCollectionDataSource(list1));
 			// 设置PDF格式
 			response.setContentType("application/pdf");
 			outputStream.flush();
@@ -143,7 +159,7 @@ public class ReportAction extends ActionSupport {
 			response.setCharacterEncoding("ISO 8859-1");
 			try {
 				response.getOutputStream().print(stringWriter.toString());
-				//response.getWriter().print(stringWriter.toString()); 
+				// response.getWriter().print(stringWriter.toString());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

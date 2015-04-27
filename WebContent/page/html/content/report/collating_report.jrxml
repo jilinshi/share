@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
-<!-- 2015-04-25T11:41:29 -->
+<!-- 2015-04-27T10:59:25 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="collating_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bfe626cb-eee3-425e-bdf6-bc52c9839c94">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="80"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\"]]></defaultValueExpression>
-	</parameter>
+	<parameter name="subrep1" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<field name="users" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -53,13 +52,10 @@
 				</textElement>
 				<text><![CDATA[核对家庭]]></text>
 			</staticText>
-			<subreport>
+			<subreport isUsingCache="true">
 				<reportElement x="0" y="57" width="555" height="40" uuid="6d712ae8-7854-4a22-bb69-34e4b7186267"/>
-				<subreportParameter name="collating_report_subreport1.jasper">
-					<subreportParameterExpression><![CDATA[]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "collating_report_subreport1.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[$F{users}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subrep1}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
