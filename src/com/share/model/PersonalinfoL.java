@@ -6,17 +6,20 @@ import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the H_PERSONALINFO database table.
+ * The persistent class for the PERSONALINFO_LS database table.
  * 
  */
 @Entity
-@Table(name="H_PERSONALINFO")
-@NamedQuery(name="HPersonalinfo.findAll", query="SELECT h FROM HPersonalinfo h")
-public class HPersonalinfo implements Serializable {
+@Table(name="PERSONALINFO_LS")
+@NamedQuery(name="PersonalinfoL.findAll", query="SELECT p FROM PersonalinfoL p")
+public class PersonalinfoL implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private HPersonalinfoPK id;
+	@Id
+	@SequenceGenerator(name="PERSONALINFO_LS_PIID_GENERATOR", sequenceName="SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSONALINFO_LS_PIID_GENERATOR")
+	@Column(name="PI_ID", unique=true, nullable=false, length=256)
+	private String piId;
 
 	@Column(length=256)
 	private String col1;
@@ -77,15 +80,15 @@ public class HPersonalinfo implements Serializable {
 
 	private Timestamp updatetime;
 
-	public HPersonalinfo() {
+	public PersonalinfoL() {
 	}
 
-	public HPersonalinfoPK getId() {
-		return this.id;
+	public String getPiId() {
+		return this.piId;
 	}
 
-	public void setId(HPersonalinfoPK id) {
-		this.id = id;
+	public void setPiId(String piId) {
+		this.piId = piId;
 	}
 
 	public String getCol1() {

@@ -25,6 +25,12 @@ public class Personalinfo implements Serializable {
 	private String col1;
 
 	@Column(length=256)
+	private String col10;
+
+	@Column(length=256)
+	private String col11;
+
+	@Column(length=256)
 	private String col2;
 
 	@Column(length=256)
@@ -60,7 +66,7 @@ public class Personalinfo implements Serializable {
 	@Column(length=18)
 	private String idno;
 
-	@Column(length=18)
+	@Column(length=20)
 	private String masterid;
 
 	@Column(length=256)
@@ -91,6 +97,22 @@ public class Personalinfo implements Serializable {
 
 	public void setCol1(String col1) {
 		this.col1 = col1;
+	}
+
+	public String getCol10() {
+		return this.col10;
+	}
+
+	public void setCol10(String col10) {
+		this.col10 = col10;
+	}
+
+	public String getCol11() {
+		return this.col11;
+	}
+
+	public void setCol11(String col11) {
+		this.col11 = col11;
 	}
 
 	public String getCol2() {
