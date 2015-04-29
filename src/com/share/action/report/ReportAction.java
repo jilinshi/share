@@ -35,11 +35,6 @@ import com.share.dto.OrganizationDTO;
 import com.share.dto.ReportDTO;
 import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
-import com.share.model.VCkburial;
-import com.share.model.VCkfund;
-import com.share.model.VCkhouseproperty;
-import com.share.model.VCkinsurance;
-import com.share.model.VCkvehicle;
 import com.share.service.ReportService;
 import com.share.util.Pager;
 
@@ -61,7 +56,6 @@ public class ReportAction extends ActionSupport {
 	private MemberDTO memberDTO;
 	private List<OrganizationDTO> orgs;
 	private String result;
-	private String masterid;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryPersonalInfo() {
@@ -112,25 +106,11 @@ public class ReportAction extends ActionSupport {
 			String path = ServletActionContext.getServletContext().getRealPath(
 					"/")
 					+ "\\page\\html\\content\\report\\collating_report.jasper";
+			System.out.println("mainPath:" + path);
 			String subPath = ServletActionContext.getServletContext()
 					.getRealPath("/")
 					+ "\\page\\html\\content\\report\\collating_report_subreport1.jasper";
-			String subPath1 = ServletActionContext.getServletContext()
-					.getRealPath("/")
-					+ "\\page\\html\\content\\report\\report1.jasper";
-			String subPath2 = ServletActionContext.getServletContext()
-					.getRealPath("/")
-					+ "\\page\\html\\content\\report\\report2.jasper";
-			String subPath3 = ServletActionContext.getServletContext()
-					.getRealPath("/")
-					+ "\\page\\html\\content\\report\\report3.jasper";
-			String subPath4 = ServletActionContext.getServletContext()
-					.getRealPath("/")
-					+ "\\page\\html\\content\\report\\report4.jasper";
-			String subPath5 = ServletActionContext.getServletContext()
-					.getRealPath("/")
-					+ "\\page\\html\\content\\report\\report5.jasper";
-			// System.out.println("subPath:" + subPath);
+			System.out.println("subPath:" + subPath);
 			// 获得输出流
 			ServletOutputStream outputStream = response.getOutputStream();
 			// 获得输入流
@@ -139,60 +119,34 @@ public class ReportAction extends ActionSupport {
 
 			JasperReport subrep = (JasperReport) JRLoader.loadObject(new File(
 					subPath));
-			JasperReport subrep1 = (JasperReport) JRLoader.loadObject(new File(
-					subPath1));
-			JasperReport subrep2 = (JasperReport) JRLoader.loadObject(new File(
-					subPath2));
-			JasperReport subrep3 = (JasperReport) JRLoader.loadObject(new File(
-					subPath3));
-			JasperReport subrep4 = (JasperReport) JRLoader.loadObject(new File(
-					subPath4));
-			JasperReport subrep5 = (JasperReport) JRLoader.loadObject(new File(
-					subPath5));
 
-			// 放入子报表
 			HashMap map = new HashMap();
-			map.put("hdbgno", "第213213216546321321654号");
 			map.put("subrep1", subrep);
-			map.put("subrep2", subrep1);
-			map.put("subrep3", subrep2);
-			map.put("subrep4", subrep3);
-			map.put("subrep5", subrep4);
-			map.put("subrep6", subrep5);
 
-			ArrayList<ReportDTO> list = new ArrayList<ReportDTO>();
+			map.put("a1", "湿答答");
+			
+			ArrayList<UserDTO> list2 = new ArrayList<UserDTO>();
+			UserDTO e = new UserDTO();
+			e.setIdno("东方闪电");
+			list2.add(e);
+			e = new UserDTO();
+			e.setIdno("东方闪电1");
+			list2.add(e);
+			e = new UserDTO();
+			e.setIdno("东方闪电2");
+			list2.add(e);
+			e = new UserDTO();
+			e.setIdno("东方闪电3");
+			list2.add(e);
+		
+			ArrayList<ReportDTO> list1 = new ArrayList<ReportDTO>();
 			ReportDTO arg0 = new ReportDTO();
-
-			ArrayList<Personalinfo> persons = (ArrayList) reportService
-					.findPersonsByMAID("120221195506211810");
-			arg0.setList(new JRBeanCollectionDataSource(persons));
-
-			ArrayList<VCkinsurance> list1 = (ArrayList<VCkinsurance>) reportService
-					.findInsuranceByMAID("220202196406193626");
-
-			ArrayList<VCkburial> list2 = (ArrayList<VCkburial>) reportService
-					.findBurialByMAID("222405196707221020");
-			ArrayList<VCkfund> list3 = (ArrayList<VCkfund>) reportService
-					.findFundByMAID("220204195907232118");
-			ArrayList<VCkhouseproperty> list4 = (ArrayList<VCkhouseproperty>) reportService
-					.findHousepropertyByMAID("220204196304042715");
-			ArrayList<VCkvehicle> list5 = (ArrayList<VCkvehicle>) reportService
-					.findVehicleByMAID("220202195001044812");
-
-			arg0.setCol1("1.社保信息");
-			arg0.setList1(new JRBeanCollectionDataSource(list1));
-			arg0.setCol2("2.殡葬信息");
-			arg0.setList2(new JRBeanCollectionDataSource(list2));
-			arg0.setCol3("3.公积金信息");
-			arg0.setList3(new JRBeanCollectionDataSource(list3));
-			arg0.setCol4("4.房产信息");
-			arg0.setList4(new JRBeanCollectionDataSource(list4));
-			arg0.setCol5("5.车辆信息");
-			arg0.setList5(new JRBeanCollectionDataSource(list5));
-			list.add(arg0);
+			arg0.setCol1("踩单车");
+			arg0.setUsers(new JRBeanCollectionDataSource(list2));
+			list1.add(arg0);
 
 			JasperRunManager.runReportToPdfStream(inputStream, outputStream,
-					map, new JRBeanCollectionDataSource(list));
+					map, new JRBeanCollectionDataSource(list1));
 			// 设置PDF格式
 			response.setContentType("application/pdf");
 			outputStream.flush();
@@ -266,13 +220,4 @@ public class ReportAction extends ActionSupport {
 	public void setResult(String result) {
 		this.result = result;
 	}
-
-	public String getMasterid() {
-		return masterid;
-	}
-
-	public void setMasterid(String masterid) {
-		this.masterid = masterid;
-	}
-
 }

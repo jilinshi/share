@@ -42,4 +42,5 @@
 	</package>
 	<include file="/com/share/action/imp/struts-imp.xml"></include>
 	<include file="/com/share/action/query/struts-query.xml"></include>
+	<include file="/com/share/action/report/struts-report.xml"></include>
 </struts>   
