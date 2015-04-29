@@ -2,15 +2,20 @@ package com.share.action.report;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -30,6 +35,7 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.share.dto.FileDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.ReportDTO;
@@ -56,12 +62,26 @@ public class ReportAction extends ActionSupport {
 	private MemberDTO memberDTO;
 	private List<OrganizationDTO> orgs;
 	private String result;
+	
+	private File single; // 上传的文件
+	private String singleFileName; // 文件名称
+	private String singleContentType; // 文件类型
+
+	private FileDTO fileDTO;
+	
+	private static final String savepath = "C:\\uploadfiles\\";
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryPersonalInfo() {
 		Pager pager = new Pager(page, rows, new Long(0));
 		List<Object> param = new ArrayList<Object>();
 		String jwhere = "";
+		if (this.memberDTO.getOnNo() == null
+				|| "".equals(this.memberDTO.getOnNo().trim())) {
+		} else {
+			param.add(this.memberDTO.getOnNo()+"%");
+			jwhere = jwhere + " and p.col1 like ? ";
+		}
 		if (this.memberDTO.getPaperid() == null
 				|| "".equals(this.memberDTO.getPaperid())) {
 		} else {
@@ -170,6 +190,81 @@ public class ReportAction extends ActionSupport {
 		}
 		return null;
 	}
+	
+	/**
+	 * 单文件上传 input type=file name=single 循环逐个上传
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String upload() {
+
+		String displayname = "";
+		String realname = "";
+		String realpath = "";
+
+		try {
+			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
+			// 取得需要上传的文件数组
+			File files = this.getSingle();
+			// 建立上传文件的输出流, getImageFileName()[i]
+			displayname = this.getSingleFileName();
+			realname = this.generateFileName(displayname);
+			realpath = savepath + "" + realname;
+			FileOutputStream fos = new FileOutputStream(realpath);
+			// 建立上传文件的输入流
+			FileInputStream fis = new FileInputStream(files);
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) > 0) {
+				fos.write(buffer, 0, len);
+			}
+			fos.close();
+			fis.close();
+
+			Map jsonMap = new HashMap();
+			jsonMap.put("fileid", "-1");// total键
+			jsonMap.put("realname", realname);
+			jsonMap.put("realpath", realpath);
+			jsonMap.put("displayname", displayname);
+			jsonMap.put("filename", displayname);
+			map = jsonMap;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return SUCCESS;
+	}
+	
+	/**
+	 * 用日期和随机数格式化文件名避免冲突
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	private String generateFileName(String fileName) {
+		System.out.println(fileName);
+		SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String formatDate = sf.format(new Date());
+		int random = new Random().nextInt(10000);
+		int position = fileName.lastIndexOf(".");
+		String extension = fileName.substring(position);
+		return formatDate + random + extension;
+	}
+	
+	public String removedfile() {
+		System.out.println(fileDTO.getFilename());
+		File file = new File(fileDTO.getRealpath());
+		if (file.exists() && file.isFile()) {
+			file.delete();
+		}
+		return SUCCESS;
+	}
+
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -219,5 +314,37 @@ public class ReportAction extends ActionSupport {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public File getSingle() {
+		return single;
+	}
+
+	public void setSingle(File single) {
+		this.single = single;
+	}
+
+	public String getSingleFileName() {
+		return singleFileName;
+	}
+
+	public void setSingleFileName(String singleFileName) {
+		this.singleFileName = singleFileName;
+	}
+
+	public String getSingleContentType() {
+		return singleContentType;
+	}
+
+	public void setSingleContentType(String singleContentType) {
+		this.singleContentType = singleContentType;
+	}
+
+	public FileDTO getFileDTO() {
+		return fileDTO;
+	}
+
+	public void setFileDTO(FileDTO fileDTO) {
+		this.fileDTO = fileDTO;
 	}
 }

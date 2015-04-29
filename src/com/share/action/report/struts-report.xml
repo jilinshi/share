@@ -38,6 +38,17 @@
 				</param>
 			</result>
 		</action>
+		<action name="upload" method="upload" class="reportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+			<!-- <result name="success">/page/common/success.jsp</result> -->
+		</action>
+		<action name="removedfile" method="removedfile" class="reportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 	
 	<package name="printreport" extends="jasperreports-default"
