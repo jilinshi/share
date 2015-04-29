@@ -106,7 +106,7 @@ public class VCkhouseproperty implements Serializable {
 	private BigDecimal fId;
 
 	@Column(length=128)
-	private String fczh;
+	private String mianji;
 
 	@Column(length=128)
 	private String ggtime;
@@ -127,7 +127,7 @@ public class VCkhouseproperty implements Serializable {
 	private String mastername;
 
 	@Column(length=128)
-	private String mianji;
+	private String fczh;
 
 	@Column(length=384)
 	private String oo;

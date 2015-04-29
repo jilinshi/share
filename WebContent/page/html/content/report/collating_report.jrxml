@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.4.final using JasperReports Library version 6.0.4  -->
-<!-- 2015-04-27T10:59:25 -->
+<!-- 2015-04-29T15:50:17 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="collating_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bfe626cb-eee3-425e-bdf6-bc52c9839c94">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="80"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="subrep1" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
-	<field name="users" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
+	<parameter name="subrep2" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="subrep3" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="subrep4" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="subrep5" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="subrep6" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="hdbgno" class="java.lang.String"/>
+	<field name="list" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="list1" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="list2" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="list3" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="list4" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="list5" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="col1" class="java.lang.String"/>
+	<field name="col2" class="java.lang.String"/>
+	<field name="col3" class="java.lang.String"/>
+	<field name="col4" class="java.lang.String"/>
+	<field name="col5" class="java.lang.String"/>
 	<title>
 		<band height="111">
 			<staticText>
@@ -17,7 +31,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[梅河口市民政局居民家庭经济状况核
+				<text><![CDATA[吉林市社会救助事业局居民家庭经济状况核
 对中心经济状况核对报告]]></text>
 			</staticText>
 			<staticText>
@@ -27,39 +41,170 @@
 				</textElement>
 				<text><![CDATA[------------------------------------------------------------------------------]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="60" width="555" height="30" uuid="22288298-2c31-440b-b9a4-9ac085937f5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{hdbgno}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
-		<band height="264" splitType="Stretch">
+		<band height="72" splitType="Stretch">
 			<staticText>
-				<reportElement x="28" y="0" width="100" height="20" uuid="9a70ab9e-714d-4e26-b6ab-d0961029d6f3"/>
+				<reportElement x="28" y="0" width="100" height="24" uuid="9a70ab9e-714d-4e26-b6ab-d0961029d6f3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[一、基本情况]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="130" width="100" height="20" uuid="46f0ddf2-175b-46ff-9684-d4be7d28e6a3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[二、核对结果]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="28" y="19" width="100" height="20" uuid="db407fbc-5fa9-466e-b9d8-8fc91c1fbabc"/>
+				<reportElement x="28" y="24" width="100" height="24" uuid="db407fbc-5fa9-466e-b9d8-8fc91c1fbabc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[核对家庭]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement x="0" y="57" width="555" height="40" uuid="6d712ae8-7854-4a22-bb69-34e4b7186267"/>
-				<dataSourceExpression><![CDATA[$F{users}]]></dataSourceExpression>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="48" width="505" height="24" uuid="6d712ae8-7854-4a22-bb69-34e4b7186267"/>
+				<dataSourceExpression><![CDATA[$F{list}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{subrep1}]]></subreportExpression>
 			</subreport>
 		</band>
+		<band height="95">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="28" y="0" width="100" height="24" uuid="46f0ddf2-175b-46ff-9684-d4be7d28e6a3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[二、核对结果]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="50" y="54" width="505" height="40" uuid="1fb3a671-7d2b-4a4f-9e93-f2e17791311b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{list1}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subrep2}]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="50" y="30" width="100" height="24" uuid="5403ecb8-0a44-4097-9c59-3f8ef313a020"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col1}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="64">
+			<textField>
+				<reportElement x="50" y="0" width="100" height="24" uuid="0b720845-f8b4-4236-b05e-c00da80fbc51"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col2}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="50" y="24" width="505" height="40" uuid="7cd841b1-6db2-46b8-8c22-a79ccbf174ed">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{list2}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subrep3}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="64">
+			<textField>
+				<reportElement x="50" y="0" width="100" height="24" uuid="b21f7368-75ff-4773-ab0c-2a14f13b75f8"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col3}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="50" y="24" width="505" height="40" uuid="048370ce-b37e-4b4e-9e47-6c5321216710">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{list3}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subrep4}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="64">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="50" y="0" width="100" height="24" uuid="95e852ac-2f01-472e-82b5-113d0785f63b"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col4}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="50" y="24" width="505" height="40" uuid="60437ea8-09ff-4a9a-9f95-c4737c29946a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{list4}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subrep5}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="64">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="50" y="0" width="100" height="24" uuid="56638719-e826-4dcb-9793-69deda63a720"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col5}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="50" y="24" width="505" height="40" uuid="c851e613-3727-4698-945e-c039de16dc0b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$F{list5}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subrep6}]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
-	<pageFooter>
-		<band height="50"/>
-	</pageFooter>
+	<lastPageFooter>
+		<band height="90">
+			<staticText>
+				<reportElement x="28" y="0" width="100" height="24" uuid="6c01a4a4-8c87-4962-b828-d4dee0eeefbf">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[三、核对结果]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="24" width="505" height="46" uuid="6f715b1a-de91-4666-83f8-f95ddfefe6d1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[    本核对报告只是客观反映核对对象在相关部门信息系统中存在的数据记录，仅作为委托核对部门开展社会救助审批时的参考依据。]]></text>
+			</staticText>
+			<textField pattern="YYYY年M月d日">
+				<reportElement x="380" y="70" width="175" height="20" uuid="ceea7238-630d-4200-a02c-8b4febe6c570"/>
+				<textElement>
+					<font size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
 </jasperReport>
