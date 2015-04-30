@@ -67,10 +67,14 @@ public class ReportAction extends ActionSupport {
 	private MemberDTO memberDTO;
 	private List<OrganizationDTO> orgs;
 	private String result;
+	private String familyno;
 	
 	private File single; // 上传的文件
 	private String singleFileName; // 文件名称
 	private String singleContentType; // 文件类型
+	
+	private List<File> afils;
+	private List<String> afilsFileName;
 
 	private FileDTO fileDTO;
 	
@@ -309,6 +313,15 @@ public class ReportAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getPCount(){
+		Long count = reportService.getPcountByFNO(familyno);
+		Map jsonMap = new HashMap();
+		jsonMap.put("count", count);
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 
 	@SuppressWarnings("rawtypes")
@@ -391,5 +404,29 @@ public class ReportAction extends ActionSupport {
 
 	public void setFileDTO(FileDTO fileDTO) {
 		this.fileDTO = fileDTO;
+	}
+
+	public String getFamilyno() {
+		return familyno;
+	}
+
+	public void setFamilyno(String familyno) {
+		this.familyno = familyno;
+	}
+
+	public List<File> getAfils() {
+		return afils;
+	}
+
+	public void setAfils(List<File> afils) {
+		this.afils = afils;
+	}
+
+	public List<String> getAfilsFileName() {
+		return afilsFileName;
+	}
+
+	public void setAfilsFileName(List<String> afilsFileName) {
+		this.afilsFileName = afilsFileName;
 	}
 }

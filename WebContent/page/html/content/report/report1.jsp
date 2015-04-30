@@ -1,18 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%
+<%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
-	String ftype = "REPORT";
 %>
 <title>核对报告数据查询</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/chosen.css" />
-<link rel="stylesheet" href="<%=basePath%>assets/css/dropzone.css" />
 <!-- ajax layout which only needs content area -->
 <div class="row">
 	<div class="col-xs-12">
@@ -42,35 +40,29 @@
 		<div id="dialog-confirm" class="hide">
 			<div class="row">
 			<div class="col-xs-12">
-				<form class="form-horizontal" id="attorney">
+				<form class="form-horizontal" id="myForm" method="post" enctype="multipart/form-data" action="<%=basePath%>page/html/content/report/upload.action" target="tempiframe">
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 委托单位 </label>
 		
 						<div class="col-sm-9">
-							<input type="text" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
+							<input type="text" name="1" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 委托内容  </label>
 		
 						<div class="col-sm-9">
-							<input type="text" id="form-field-2" placeholder="委托内容" class="col-xs-10 col-sm" />
+							<input type="text" name="2" id="form-field-2" placeholder="委托内容" class="col-xs-10 col-sm" />
 						</div>
 					</div>
+					<div class="hr hr-12 hr-double"></div>
+					
+						<div align="left" style="display: block" id="dfile1"></div>
 				</form>
-				<div class="space-6"></div>
-				<div>
-					<form method="post"
-						action="${pageContext.request.contextPath}/page/html/content/report/upload.action"
-						class="dropzone" id="dropzone">
-						<div class="fallback">
-							<input name="single" type="file" multiple="" />
-						</div>
-					</form>
-				</div>
 			</div>
 			</div>
 		</div>
+		<iframe id="tempiframe" name="tempiframe" frameborder="0" width="0" height="0" src="about:blank" style="position:absolute; z-index:-1; visibility: hidden;"></iframe>
 		<script type="text/javascript">
 			var $path_base = "<%=basePath%>";//in Ace demo this will be used for editurl parameter
 		</script>
@@ -79,7 +71,7 @@
 <script src="<%=basePath%>assets/js/jquery-ui.js"></script>
 <script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 <script type="text/javascript">
-	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/dropzone.js", null]
+	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			//机构下拉列表初始化
@@ -176,60 +168,6 @@
 					if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 				})
 			}
-			try {
-				Dropzone.autoDiscover = true;
-			  	var myDropzone = new Dropzone("#dropzone" , {
-			    paramName: "single", // The name that will be used to transfer the file
-			    //maxFilesize: 5.5, // MB
-			
-				addRemoveLinks : true,
-				dictRemoveFile:'删除',
-				dictDefaultMessage :
-				'<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>拖动文件</span>到此处上传\
-				<span class="smaller-80 grey">(或者点击此处)</span> <br /> \
-				<i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>',
-				dictResponseError: '错误 正在上传文件',
-				
-				//change the previewTemplate to use Bootstrap progress bars
-				previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
-				,
-				  init: function () {
-			            this.on("success", function (data) {                
-			                var res = eval('(' + data.xhr.responseText + ')');
-			                var ftype='<%=ftype%>';
-			                addfile(res.fileid,res.realname,res.realpath,res.displayname,ftype);
-			            });
-			            this.on("removedfile", function (data) {                
-			                var res = eval('(' + data.xhr.responseText + ')');
-			                remfile(res.fileid,res.realname,res.realpath);  
-			            });
-			        }
-	
-			  });
-		  	 function remfile(fid,realname,realpath){
-				  if(-1!=fid){
-				  $.ajax({url: "<%=basePath%>page/html/content/report/removedfile.action",
-					  type:"GET",
-					  dataType:"JSON",
-					  data: {'fileid':fid, 'realname':realname, 'realpath':realpath},
-		              success: function(){
-		            	  alert("文件和文件所产生的记录已经删除");
-				 }});}
-			  }
-			  
-			  function addfile(fid,realname,realpath,displayname,ftype){
-				alert("保存文件");
-			  }
-			  
-			   $(document).one('ajaxloadstart.page', function(e) {
-					try {
-						myDropzone.destroy();
-					} catch(e) {}
-			   });
-			
-			} catch(e) {
-				  alert('不支持此浏览器!');
-			}
 		});
 		
 	});
@@ -259,8 +197,9 @@
 	function view(id){
 		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
 		<%-- window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action"); --%>
+		
 		 var dialog = $("#dialog-confirm").removeClass('hide').dialog({
-			autoOpen: true,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
+			autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
 		    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
 			hide:true,
 			resizable: true,
@@ -272,7 +211,7 @@
 							text: "Cancel",
 							"class" : "btn btn-minier",
 							click: function() {
-								document.getElementById("attorney").reset();
+								document.getElementById("myForm").reset();
 								$( this ).dialog( "close" );
 							} 
 						},
@@ -280,16 +219,33 @@
 							text: "OK",
 							"class" : "btn btn-primary btn-minier",
 							click: function() {
-								var params=$("#dialog-confirm #attorney").serialize();
-								params = decodeURIComponent(params,true); 
+								var params=$("#myForm").serialize();
 								alert(params);
-								
-								//$( this ).dialog( "close" ); 
+								document.getElementById("myForm").submit();
 							} 
 						}
 					]
 		}); 
-		
+		 
+		$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/report/getPCount.action",
+				data: {familyno:id},
+				async : false,
+				success : function(data) {
+					var count = data.count*2+1;
+					var temp = "";
+	 				for(var i=0; i<count; i++){
+	 				    temp = temp 
+	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">附件'+(i+1)+': </label>'
+	 				    +' <div class="col-sm-9"><input name="afils" type="file" id="afile_'+i+'" /></div></div>';
+	 				}
+					var dfile1 = document.getElementById("dfile1");
+					dfile1.innerHTML=temp;
+					dialog.dialog("open");
+				}
+		});
 	}
 	
 	function chosen_Init(){

@@ -25,4 +25,5 @@ public interface ReportService {
 	public List<VCkhouseproperty> findHousepropertyByMAID(String masterid);
 	public List<VCkvehicle> findVehicleByMAID(String masterid);
 	public List<VCkburial> findBurialByMAID(String masterid);
+	public Long getPcountByFNO(String familyno);
 }

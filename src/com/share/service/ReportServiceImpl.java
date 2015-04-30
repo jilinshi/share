@@ -51,8 +51,8 @@ public class ReportServiceImpl implements ReportService {
 	public List<Personalinfo> queryPersonalinfos(Pager pager,
 			List<Object> param, String jwhere) {
 		Map session = ActionContext.getContext().getSession();
-		String hql = "select p from Personalinfo p where 1=1 " + jwhere;
-		String hqlc = "select count(*) as cnt from Personalinfo p where 1=1 "
+		String hql = "select p from Personalinfo p where 1=1 and p.col10='本人' " + jwhere;
+		String hqlc = "select count(*) as cnt from Personalinfo p where 1=1 and p.col10='本人' "
 				+ jwhere;
 		Long cnt = personalinfoDAO.count(hqlc, param);
 		pager.setRecords(cnt);
@@ -152,5 +152,14 @@ public class ReportServiceImpl implements ReportService {
 		param = new Object[1];
 		param[0] = masterid;
 		return vCkburialDAO.find(hql, param);
+	}
+	
+	@Override
+	public Long getPcountByFNO(String familyno){
+		String hql = "select count(*) as cnt from Personalinfo p where 1=1 and p.col1=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = familyno;
+		return personalinfoDAO.count(hql, param);
 	}
 }

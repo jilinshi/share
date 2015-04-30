@@ -13,6 +13,9 @@
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="authorityInterceptor" />
 				<interceptor-ref name="operationlogInterceptor" />
+				<interceptor-ref name="fileUpload">
+					<param name="maximumSize">5242880</param>
+				</interceptor-ref>
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 		</interceptors>
@@ -39,12 +42,14 @@
 			</result>
 		</action>
 		<action name="upload" method="upload" class="reportAction">
+			<result name="success">/page/common/success.jsp</result>
+		</action>
+		<action name="removedfile" method="removedfile" class="reportAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>
-			<!-- <result name="success">/page/common/success.jsp</result> -->
 		</action>
-		<action name="removedfile" method="removedfile" class="reportAction">
+		<action name="getPCount" method="getPCount" class="reportAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>
