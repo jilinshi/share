@@ -48,15 +48,7 @@
 							<input type="text" name="1" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 委托内容  </label>
-		
-						<div class="col-sm-9">
-							<input type="text" name="2" id="form-field-2" placeholder="委托内容" class="col-xs-10 col-sm" />
-						</div>
-					</div>
 					<div class="hr hr-12 hr-double"></div>
-					
 						<div align="left" style="display: block" id="dfile1"></div>
 				</form>
 			</div>
@@ -148,7 +140,7 @@
  		        for (var i = 0; i < ids.length; i++) {
  		          var id = ids[i];
  		          var rowData = $("#grid-table").getRowData(id);
-				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.col1+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.col1+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>上传委托书</button></div>"
+				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.col1+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.col1+"\",\""+rowData.idno+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>上传委托书</button></div>"
  		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
  				}
  			}
@@ -194,7 +186,7 @@
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
 	
-	function view(id){
+	function view(id,idno){
 		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
 		<%-- window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action"); --%>
 		
@@ -208,7 +200,7 @@
 			title: "上传委托书",
 			buttons: [ 
 						{
-							text: "Cancel",
+							text: "关闭",
 							"class" : "btn btn-minier",
 							click: function() {
 								document.getElementById("myForm").reset();
@@ -216,7 +208,7 @@
 							} 
 						},
 						{
-							text: "OK",
+							text: "保存",
 							"class" : "btn btn-primary btn-minier",
 							click: function() {
 								var params=$("#myForm").serialize();
@@ -230,16 +222,25 @@
 		$.ajax({
 				type : "post",
 				dataType : "json",
-				url : "<%=basePath%>page/html/content/report/getPCount.action",
-				data: {familyno:id},
+				url : "<%=basePath%>page/html/content/report/getPInfo.action",
+				data: {familyno:id,masterid:idno},
 				async : false,
 				success : function(data) {
-					var count = data.count*2+1;
+					var list = data.memberDTOs;
+					var count =list.length;
+					var wtno = data.wtno;
 					var temp = "";
+					temp = temp 
+						 + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
+	 				     +' <div class="col-sm-9"><input name="afils" type="file" id="WT'+wtno+'" /></div></div>';
 	 				for(var i=0; i<count; i++){
-	 				    temp = temp 
-	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">附件'+(i+1)+': </label>'
-	 				    +' <div class="col-sm-9"><input name="afils" type="file" id="afile_'+i+'" /></div></div>';
+	 				    var relmaster = list[i].relmaster;
+	 				    var paperid = list[i].paperid;
+	 					temp = temp 
+	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
+	 				    +' <div class="col-sm-4"><input name="afils" type="file" id="a-'+paperid+'" /></div></div>'
+	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
+	 				    +' <div class="col-sm-4"><input name="afils" type="file" id="b-'+paperid+'" /></div></div>';
 	 				}
 					var dfile1 = document.getElementById("dfile1");
 					dfile1.innerHTML=temp;

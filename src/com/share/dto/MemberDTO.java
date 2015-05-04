@@ -26,6 +26,7 @@ public class MemberDTO {
 	private byte[] onepic;
 	private Date opertime;
 	private String paperid;
+	private String masetPaperid;
 	private String personstate;
 	private String relmaster;
 	private String rpraddress;
@@ -222,6 +223,12 @@ public class MemberDTO {
 	}
 	public void setSsn(String ssn) {
 		this.ssn = ssn!=null?ssn:"";  
+	}
+	public String getMasetPaperid() {
+		return masetPaperid;
+	}
+	public void setMasetPaperid(String masetPaperid) {
+		this.masetPaperid = masetPaperid;
 	}
 
 }

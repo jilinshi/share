@@ -49,7 +49,7 @@
 				<param name="root">map</param>
 			</result>
 		</action>
-		<action name="getPCount" method="getPCount" class="reportAction">
+		<action name="getPInfo" method="getPInfo" class="reportAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>

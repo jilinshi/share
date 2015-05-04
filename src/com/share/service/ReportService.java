@@ -2,6 +2,7 @@ package com.share.service;
 
 import java.util.List;
 
+import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.model.Personalinfo;
 import com.share.model.VCkburial;
@@ -26,4 +27,5 @@ public interface ReportService {
 	public List<VCkvehicle> findVehicleByMAID(String masterid);
 	public List<VCkburial> findBurialByMAID(String masterid);
 	public Long getPcountByFNO(String familyno);
+	public List<MemberDTO> getPersonsByFNO(String familyno);
 }

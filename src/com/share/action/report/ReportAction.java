@@ -68,6 +68,7 @@ public class ReportAction extends ActionSupport {
 	private List<OrganizationDTO> orgs;
 	private String result;
 	private String familyno;
+	private String masterid; 
 	
 	private File single; // 上传的文件
 	private String singleFileName; // 文件名称
@@ -315,10 +316,19 @@ public class ReportAction extends ActionSupport {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getPCount(){
-		Long count = reportService.getPcountByFNO(familyno);
+	public String getPInfo(){
+		System.out.println(masterid);
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+				.get("user");
+		String orgcode = user.getSysOrganization().getOrgCode();
+		String code = orgcode.substring(0,6);
+		String nowTime = new SimpleDateFormat("yyyyMMdd").format(new Date());// 当前时间
+		int random = new Random().nextInt(10000);
+		String wtno = code + nowTime + random;
+		List<MemberDTO> memberDTOs = reportService.getPersonsByFNO(familyno);
 		Map jsonMap = new HashMap();
-		jsonMap.put("count", count);
+		jsonMap.put("memberDTOs", memberDTOs);
+		jsonMap.put("wtno", wtno);
 		map = jsonMap;
 		return SUCCESS;
 	}
@@ -429,4 +439,13 @@ public class ReportAction extends ActionSupport {
 	public void setAfilsFileName(List<String> afilsFileName) {
 		this.afilsFileName = afilsFileName;
 	}
+
+	public String getMasterid() {
+		return masterid;
+	}
+
+	public void setMasterid(String masterid) {
+		this.masterid = masterid;
+	}
+
 }

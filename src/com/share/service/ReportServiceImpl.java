@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
+import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.model.Personalinfo;
 import com.share.model.SysOrganization;
@@ -161,5 +162,28 @@ public class ReportServiceImpl implements ReportService {
 		param = new Object[1];
 		param[0] = familyno;
 		return personalinfoDAO.count(hql, param);
+	}
+	
+	@Override
+	public List<MemberDTO> getPersonsByFNO(String familyno){
+		List<MemberDTO> mems = new ArrayList<MemberDTO>();
+		String hql = "select p from Personalinfo p where 1=1 and p.col1=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = familyno;
+		List<Personalinfo> rs = personalinfoDAO.find(hql, param);
+		for (Personalinfo s : rs) {
+			MemberDTO m = new MemberDTO();
+			m.setMasterName(s.getMastername());
+			m.setMasetPaperid(s.getMasterid());
+			m.setMembername(s.getPname());
+			m.setPaperid(s.getIdno());
+			m.setDs(s.getDs());
+			m.setFamilyno(s.getCol1());
+			m.setRelmaster(s.getCol10());
+			m.setRpraddress(s.getCol11());
+			mems.add(m);
+		}
+		return mems;
 	}
 }
