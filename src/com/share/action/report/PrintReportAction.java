@@ -26,9 +26,12 @@ import org.apache.struts2.ServletActionContext;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.ReportDTO;
+import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
 import com.share.model.VCkburial;
 import com.share.model.VCkfund;
@@ -58,6 +61,8 @@ public class PrintReportAction extends ActionSupport {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String printcollatingreport() {
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+				.get("user");
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
 		try {
@@ -156,7 +161,9 @@ public class PrintReportAction extends ActionSupport {
 			// 每次生成核对报告 保存到数据库中
 			MongoDBManager mongo = new MongoDBManager("sharefile");
 			String id = ObjectId.get().toString();
-			DBObject metadata = null;
+			DBObject metadata = new BasicDBObject();
+			metadata.put("operuser", user.getUname());
+			metadata.put("operuserid", user.getUserId());
 			mongo.insertFile("sharefile", "checkreport", id, this.masterid
 					+ ".pdf", "application/pdf", metadata, bais);
 			mongo.close();
@@ -174,7 +181,6 @@ public class PrintReportAction extends ActionSupport {
 			response.setCharacterEncoding("ISO 8859-1");
 			try {
 				response.getOutputStream().print(stringWriter.toString());
-				// response.getWriter().print(stringWriter.toString());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -184,5 +190,42 @@ public class PrintReportAction extends ActionSupport {
 			e1.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * 查询本月上传授权书的家庭
+	 * 
+	 * @return
+	 */
+	public String queryAttorneyrecord() {
+		return SUCCESS;
+	}
+
+	/**
+	 * 查询历史上传授权书的家庭
+	 * 
+	 * @return
+	 */
+	public String queryHAttorneyrecord() {
+		return SUCCESS;
+	}
+
+	/**
+	 * 根据户主身份证号查询所有报告 按时间倒叙排列
+	 * 
+	 * @return
+	 */
+	public String queryReportsByMaid() {
+		return SUCCESS;
+	}
+
+	/**
+	 * 查询单个核对报告 mangodb 取出pdf
+	 * 
+	 * @return 返回pdf
+	 */
+	public String queryOneReport() {
+		return SUCCESS;
+
 	}
 }
