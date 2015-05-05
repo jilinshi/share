@@ -25,11 +25,15 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.struts2.ServletActionContext;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.client.FindIterable;
+import com.mongodb.gridfs.GridFSDBFile;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.MemberDTO;
@@ -239,8 +243,8 @@ public class PrintReportAction extends ActionSupport {
 			param.add(this.memberDTO.getMembername());
 			jwhere = jwhere + " and p.pname=? ";
 		}
-		List<VAttorney> rs = checkReportService.findAllAttorneyrecord(pager, param,
-				jwhere);
+		List<VAttorney> rs = checkReportService.findAllAttorneyrecord(pager,
+				param, jwhere);
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);
 		jsonMap.put("total", pager.total);
@@ -266,6 +270,21 @@ public class PrintReportAction extends ActionSupport {
 	 * @return
 	 */
 	public String queryReportsByMaid() {
+		MongoDBManager mongo = new MongoDBManager("sharefile");
+		/*
+		 * BasicDBObject sort = new BasicDBObject(); sort.put("$date", "-1");
+		 */
+		BasicDBObject filter = new BasicDBObject();
+		filter.put("filename", this.masterid + ".pdf");
+		List<GridFSDBFile> rs = mongo.readFiles("sharefile", "checkreport",
+				filter);
+
+		for (GridFSDBFile e : rs) {
+			System.out.println(e.toString());
+
+		}
+		mongo.close();
+		map = null;
 		return SUCCESS;
 	}
 

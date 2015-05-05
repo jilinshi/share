@@ -140,7 +140,8 @@
  		        for (var i = 0; i < ids.length; i++) {
  		          var id = ids[i];
  		          var rowData = $("#grid-table").getRowData(id);
-				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.masteridno+"\",\""+rowData.mastername+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>上传委托书</button></div>"
+				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.masteridno+"\",\""+rowData.mastername+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>生成核对报告</button>"+
+				  "<button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view1(\""+rowData.masteridno+"\",\""+rowData.mastername+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>查看报告</button></div>"
  		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
  				}
  			}
@@ -185,7 +186,9 @@
         var jsonuserinfo = $('#searchform').serializeObject();  
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
-	
+	function view1(id,idno){
+		window.open("<%=basePath%>page/html/content/printreport/queryReportsByMaid.action?masterid="+id);
+	}
 	function view(id,idno){
 		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
 		<%--  --%>
