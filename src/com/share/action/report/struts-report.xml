@@ -56,7 +56,7 @@
 		</action>
 	</package>
 	
-	<package name="printreport" extends="jasperreports-default"
+	<package name="printreport" extends="json-default"
 		namespace="/page/html/content/printreport">
 		<interceptors>
 			<interceptor name="operationlogInterceptor"
@@ -78,6 +78,26 @@
 				<param name="format">PDF</param>
 				<param name="reportParameters">map</param>
 			</result> -->
+		</action>
+		<action name="queryAttorneyrecord" method="queryAttorneyrecord" class="printReportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryHAttorneyrecord" method="queryHAttorneyrecord" class="printReportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryReportsByMaid" method="queryReportsByMaid" class="printReportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryOneReport" method="queryOneReport" class="printReportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
 		</action>
 	</package>
 </struts>   

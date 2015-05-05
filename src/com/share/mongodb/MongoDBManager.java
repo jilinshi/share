@@ -1,6 +1,8 @@
 package com.share.mongodb;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -33,7 +35,12 @@ public class MongoDBManager {
 
 		try {
 			Properties prop = new Properties();
-			InputStream in = Object.class.getResourceAsStream("/db.properties");
+
+			URL u1 = MongoDBManager.class.getClassLoader().getResource(
+					"db.properties");
+			System.out.println(u1.toString());
+			FileInputStream fis = new FileInputStream(u1.getFile());
+			InputStream in = fis;
 			prop.load(in);
 			user = prop.getProperty(database + ".user").trim();
 			password = prop.getProperty(database + ".password").trim();
@@ -289,11 +296,13 @@ public class MongoDBManager {
 	}
 
 	@SuppressWarnings("deprecation")
-	public InputStream readFile(String databaseName, String collectionname, DBObject query) {
+	public InputStream readFile(String databaseName, String collectionname,
+			DBObject query) {
 		GridFS gridFS = new GridFS(client.getDB(databaseName), collectionname);
 		GridFSDBFile gridFSDbFile = gridFS.findOne(query);
 		return gridFSDbFile.getInputStream();
 	}
+
 	public void close() {
 		if (null != client)
 			client.close();

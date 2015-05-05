@@ -10,6 +10,8 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -30,16 +32,21 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.share.dto.MemberDTO;
+import com.share.dto.OrganizationDTO;
 import com.share.dto.ReportDTO;
 import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
+import com.share.model.VAttorney;
 import com.share.model.VCkburial;
 import com.share.model.VCkfund;
 import com.share.model.VCkhouseproperty;
 import com.share.model.VCkinsurance;
 import com.share.model.VCkvehicle;
 import com.share.mongodb.MongoDBManager;
+import com.share.service.CheckReportService;
 import com.share.service.ReportService;
+import com.share.util.Pager;
 
 @Controller
 public class PrintReportAction extends ActionSupport {
@@ -51,7 +58,19 @@ public class PrintReportAction extends ActionSupport {
 
 	@Resource
 	private ReportService reportService;
+	@Resource
+	private CheckReportService checkReportService;
 
+	@SuppressWarnings("rawtypes")
+	private Map map;// 返回的json
+	/** 当前页面 */
+	private String page;
+	/** 每页的记录数 */
+	private String rows;
+	private MemberDTO memberDTO;
+	private List<OrganizationDTO> orgs;
+	private String result;
+	private String familyno;
 	private String masterid;
 
 	/**
@@ -197,8 +216,39 @@ public class PrintReportAction extends ActionSupport {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryAttorneyrecord() {
+		Pager pager = new Pager(page, rows, new Long(0));
+		List<Object> param = new ArrayList<Object>();
+		String jwhere = "";
+		if (this.memberDTO.getOnNo() == null
+				|| "".equals(this.memberDTO.getOnNo().trim())) {
+		} else {
+			param.add(this.memberDTO.getOnNo() + "%");
+			jwhere = jwhere + " and p.col1 like ? ";
+		}
+		if (this.memberDTO.getPaperid() == null
+				|| "".equals(this.memberDTO.getPaperid())) {
+		} else {
+			param.add(this.memberDTO.getPaperid());
+			jwhere = jwhere + " and p.idno=? ";
+		}
+		if (this.memberDTO.getMembername() == null
+				|| "".equals(this.memberDTO.getMembername())) {
+		} else {
+			param.add(this.memberDTO.getMembername());
+			jwhere = jwhere + " and p.pname=? ";
+		}
+		List<VAttorney> rs = checkReportService.findAllAttorneyrecord(pager, param,
+				jwhere);
+		Map jsonMap = new HashMap();
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
+		jsonMap.put("rows", rs);
+		map = jsonMap;
 		return SUCCESS;
+
 	}
 
 	/**
@@ -228,4 +278,79 @@ public class PrintReportAction extends ActionSupport {
 		return SUCCESS;
 
 	}
+
+	public ReportService getReportService() {
+		return reportService;
+	}
+
+	public void setReportService(ReportService reportService) {
+		this.reportService = reportService;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Map getMap() {
+		return map;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
+	}
+
+	public List<OrganizationDTO> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(List<OrganizationDTO> orgs) {
+		this.orgs = orgs;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getFamilyno() {
+		return familyno;
+	}
+
+	public void setFamilyno(String familyno) {
+		this.familyno = familyno;
+	}
+
+	public String getMasterid() {
+		return masterid;
+	}
+
+	public void setMasterid(String masterid) {
+		this.masterid = masterid;
+	}
+
 }
