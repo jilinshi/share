@@ -207,6 +207,7 @@ public class ReportServiceImpl implements ReportService {
 		o.setWttime(new Timestamp(date));
 		o.setOpertime(new Timestamp(date));
 		o.setUploadtime(new Timestamp(date));
+		o.setUpoper(ardto.getUpoper());
 		o.setFlag("1");
 		attorneyrecordDAO.save(o);
 	}
