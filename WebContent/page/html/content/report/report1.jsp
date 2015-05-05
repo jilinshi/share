@@ -45,7 +45,7 @@
 						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 委托单位 </label>
 		
 						<div class="col-sm-9">
-							<input type="text" name="1" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
+							<input type="text" name="attorneyrecordDTO.wtdanwei" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="hr hr-12 hr-double"></div>
@@ -212,8 +212,8 @@
 							"class" : "btn btn-primary btn-minier",
 							click: function() {
 								var params=$("#myForm").serialize();
-								alert(params);
 								document.getElementById("myForm").submit();
+								dialog.dialog("close");
 							} 
 						}
 					]
@@ -227,20 +227,26 @@
 				async : false,
 				success : function(data) {
 					var list = data.memberDTOs;
-					var count =list.length;
-					var wtno = data.wtno;
+					var count = list.length;
+					var mastername = data.mastername;
+					var masterpaperid = data.masterpaperid;
 					var temp = "";
 					temp = temp 
-						 + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
-	 				     +' <div class="col-sm-9"><input name="afils" type="file" id="WT'+wtno+'" /></div></div>';
+						 +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
+	 				     +' <div class="col-sm-8"><input name="afils" type="file" id="WT'+idno+'" /></div>'
+	 				     +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="WT'+ idno +'" />'
+	 				     +' <input type="hidden" name="masterid" value="'+masterpaperid+'" />'
+	 				     +' <input type="hidden" name="mastername" value="'+mastername+'" /></div></div>';
 	 				for(var i=0; i<count; i++){
 	 				    var relmaster = list[i].relmaster;
 	 				    var paperid = list[i].paperid;
 	 					temp = temp 
-	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-4"><input name="afils" type="file" id="a-'+paperid+'" /></div></div>'
-	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-4"><input name="afils" type="file" id="b-'+paperid+'" /></div></div>';
+	 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
+	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="a-'+paperid+'" /></div>'
+	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="a-'+ paperid +'" /></div></div>'
+	 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
+	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="b-'+paperid+'" /></div>'
+	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="b-'+ paperid +'" /></div></div>';
 	 				}
 					var dfile1 = document.getElementById("dfile1");
 					dfile1.innerHTML=temp;

@@ -42,7 +42,9 @@
 			</result>
 		</action>
 		<action name="upload" method="upload" class="reportAction">
-			<result name="success">/page/common/success.jsp</result>
+			<result name="success">
+				/page/common/result.jsp
+			</result>
 		</action>
 		<action name="removedfile" method="removedfile" class="reportAction">
 			<result type="json">

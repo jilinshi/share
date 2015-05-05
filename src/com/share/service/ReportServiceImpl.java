@@ -1,7 +1,9 @@
 package com.share.service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
+import com.share.dto.AttorneyrecordDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.model.Attorneyrecord;
 import com.share.model.Personalinfo;
 import com.share.model.SysOrganization;
 import com.share.model.VCkburial;
@@ -39,6 +43,8 @@ public class ReportServiceImpl implements ReportService {
 	private BaseDAO<VCkfund> vCkfundDAO;
 	@Resource
 	private BaseDAO<SysOrganization> sysOrganizationDAO;
+	@Resource
+	private BaseDAO<Attorneyrecord> attorneyrecordDAO;
 
 	/*
 	 * (non-Javadoc)
@@ -185,5 +191,23 @@ public class ReportServiceImpl implements ReportService {
 			mems.add(m);
 		}
 		return mems;
+	}
+	
+	@Override
+	public void saveAttorneyRecord(AttorneyrecordDTO ardto){
+		Attorneyrecord o = new Attorneyrecord();
+		o.setMasteridno(ardto.getMasteridno());
+		o.setMastername(ardto.getMastername());
+		o.setCkmonth(ardto.getCkmonth());
+		o.setAttorneyId(ardto.getAttorneyId());
+		o.setAttorney(ardto.getAttorney());
+		o.setWtdanwei(ardto.getWtdanwei());
+		o.setCkcontent(ardto.getCkcontent());
+		long date = new Date().getTime();
+		o.setWttime(new Timestamp(date));
+		o.setOpertime(new Timestamp(date));
+		o.setUploadtime(new Timestamp(date));
+		o.setFlag("1");
+		attorneyrecordDAO.save(o);
 	}
 }

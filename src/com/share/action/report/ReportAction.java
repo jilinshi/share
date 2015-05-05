@@ -17,17 +17,21 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.struts2.ServletActionContext;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import com.mongodb.DBObject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.share.dto.AttorneyrecordDTO;
 import com.share.dto.FileDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
+import com.share.mongodb.MongoDBManager;
 import com.share.service.ReportService;
 import com.share.util.Pager;
 
@@ -50,18 +54,15 @@ public class ReportAction extends ActionSupport {
 	private List<OrganizationDTO> orgs;
 	private String result;
 	private String familyno;
-	private String masterid; 
-	
-	private File single; // 上传的文件
-	private String singleFileName; // 文件名称
-	private String singleContentType; // 文件类型
+	private String masterid;
+	private String mastername;
+	private AttorneyrecordDTO attorneyrecordDTO;
 	
 	private List<File> afils;
 	private List<String> afilsFileName;
+	private List<String> afilenames;
 
 	private FileDTO fileDTO;
-	
-	private static final String savepath = "C:\\uploadfiles\\";
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryPersonalInfo() {
@@ -118,87 +119,63 @@ public class ReportAction extends ActionSupport {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String upload() {
-
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+				.get("user");
+		long orgid = user.getSysOrganization().getOrgId();
 		String displayname = "";
 		String realname = "";
-		String realpath = "";
-
+		String type = ".jpg";
 		try {
-			ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
-			// 取得需要上传的文件数组
-			File files = this.getSingle();
-			// 建立上传文件的输出流, getImageFileName()[i]
-			displayname = this.getSingleFileName();
-			realname = this.generateFileName(displayname);
-			realpath = savepath + "" + realname;
-			FileOutputStream fos = new FileOutputStream(realpath);
-			// 建立上传文件的输入流
-			FileInputStream fis = new FileInputStream(files);
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			while ((len = fis.read(buffer)) > 0) {
-				fos.write(buffer, 0, len);
+			// 委托数据保存
+			String code = masterid.substring(0,6);
+			String nowTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());// 当前时间
+			String wtno = code + nowTime;
+			String ckmonth=nowTime.substring(0,6);
+			attorneyrecordDTO.setMasteridno(masterid);
+			attorneyrecordDTO.setMastername(mastername);
+			attorneyrecordDTO.setCkmonth(ckmonth);
+			attorneyrecordDTO.setAttorneyId(wtno);
+			attorneyrecordDTO.setAttorney("第"+wtno+"号");
+			attorneyrecordDTO.setCkcontent("社保、公积金、殡葬、房产、驾管");
+			attorneyrecordDTO.setUpoper(orgid+"");
+			reportService.saveAttorneyRecord(attorneyrecordDTO);
+			// 附件保存到数据库中
+			MongoDBManager mongo = new MongoDBManager("sharefile");
+			for(int i=0;i<afils.size();i++){
+				ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
+				// 取得需要上传的文件数组
+				File files = afils.get(i);
+				displayname = this.getAfilenames().get(i);
+				realname = displayname + type;
+				// 建立上传文件的输入流
+				FileInputStream fis = new FileInputStream(files);
+				//
+				String id = ObjectId.get().toString();
+				DBObject metadata = null;
+				mongo.insertFile("sharefile", "attorneyfile", id, realname, "application/jpg", metadata, fis);
 			}
-			fos.close();
-			fis.close();
-
+			mongo.close();
 			Map jsonMap = new HashMap();
-			jsonMap.put("fileid", "-1");// total键
-			jsonMap.put("realname", realname);
-			jsonMap.put("realpath", realpath);
-			jsonMap.put("displayname", displayname);
-			jsonMap.put("filename", displayname);
+			jsonMap.put("msg", "保存成功！");
 			map = jsonMap;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
 		return SUCCESS;
 	}
 	
-	/**
-	 * 用日期和随机数格式化文件名避免冲突
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	private String generateFileName(String fileName) {
-		System.out.println(fileName);
-		SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String formatDate = sf.format(new Date());
-		int random = new Random().nextInt(10000);
-		int position = fileName.lastIndexOf(".");
-		String extension = fileName.substring(position);
-		return formatDate + random + extension;
-	}
-	
-	public String removedfile() {
-		System.out.println(fileDTO.getFilename());
-		File file = new File(fileDTO.getRealpath());
-		if (file.exists() && file.isFile()) {
-			file.delete();
-		}
-		return SUCCESS;
-	}
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getPInfo(){
-		System.out.println(masterid);
-		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
-				.get("user");
-		String orgcode = user.getSysOrganization().getOrgCode();
-		String code = orgcode.substring(0,6);
-		String nowTime = new SimpleDateFormat("yyyyMMdd").format(new Date());// 当前时间
-		int random = new Random().nextInt(10000);
-		String wtno = code + nowTime + random;
 		List<MemberDTO> memberDTOs = reportService.getPersonsByFNO(familyno);
+		String mastername = memberDTOs.get(0).getMasterName();
+		String masterpaperid = memberDTOs.get(0).getMasetPaperid();
 		Map jsonMap = new HashMap();
 		jsonMap.put("memberDTOs", memberDTOs);
-		jsonMap.put("wtno", wtno);
+		jsonMap.put("mastername", mastername);
+		jsonMap.put("masterpaperid", masterpaperid);
 		map = jsonMap;
 		return SUCCESS;
 	}
@@ -254,30 +231,6 @@ public class ReportAction extends ActionSupport {
 		this.result = result;
 	}
 
-	public File getSingle() {
-		return single;
-	}
-
-	public void setSingle(File single) {
-		this.single = single;
-	}
-
-	public String getSingleFileName() {
-		return singleFileName;
-	}
-
-	public void setSingleFileName(String singleFileName) {
-		this.singleFileName = singleFileName;
-	}
-
-	public String getSingleContentType() {
-		return singleContentType;
-	}
-
-	public void setSingleContentType(String singleContentType) {
-		this.singleContentType = singleContentType;
-	}
-
 	public FileDTO getFileDTO() {
 		return fileDTO;
 	}
@@ -316,6 +269,30 @@ public class ReportAction extends ActionSupport {
 
 	public void setMasterid(String masterid) {
 		this.masterid = masterid;
+	}
+
+	public AttorneyrecordDTO getAttorneyrecordDTO() {
+		return attorneyrecordDTO;
+	}
+
+	public void setAttorneyrecordDTO(AttorneyrecordDTO attorneyrecordDTO) {
+		this.attorneyrecordDTO = attorneyrecordDTO;
+	}
+
+	public List<String> getAfilenames() {
+		return afilenames;
+	}
+
+	public void setAfilenames(List<String> afilenames) {
+		this.afilenames = afilenames;
+	}
+
+	public String getMastername() {
+		return mastername;
+	}
+
+	public void setMastername(String mastername) {
+		this.mastername = mastername;
 	}
 
 }
