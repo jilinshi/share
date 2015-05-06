@@ -40,12 +40,23 @@
 		<div id="dialog-confirm" class="hide">
 			<div class="row">
 			<div class="col-xs-12">
-				<form class="form-horizontal" id="myForm" method="post" enctype="multipart/form-data" action="<%=basePath%>page/html/content/report/upload.action" target="tempiframe">
+				<div class="alert alert-info">
+					<font style="font-size:12px">
+					<strong>文件命名规则：</strong>&nbsp;
+					①委托书："WT-户主身份证号码",例如：'WT-22020219010101XXXX';
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					②身份证件正面(家庭关系)："A-本人身份证号码",例如：'A-22020219010101XXXX';
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					③身份证件反面(家庭关系)："B-本人身份证号码",例如：'B-22020219010101XXXX';
+					</font>
+				</div>
+				<form class="form-horizontal" id="myForm" method="post" enctype="multipart/form-data" action="<%=basePath%>page/html/content/report/upload.action" target="tempiframe" >
 					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 委托单位 </label>
-		
+						<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 委托单位 </label>
 						<div class="col-sm-9">
-							<input type="text" name="attorneyrecordDTO.wtdanwei" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
+							<input type="text" name="attorneyrecordDTO.wtdanwei" id="wtdanwei" placeholder="请填写。。。" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="hr hr-12 hr-double"></div>
@@ -54,12 +65,13 @@
 			</div>
 			</div>
 		</div>
-		<iframe id="tempiframe" name="tempiframe" frameborder="0" width="0" height="0" src="about:blank" style="position:absolute; z-index:-1; visibility: hidden;"></iframe>
+		
 		<script type="text/javascript">
 			var $path_base = "<%=basePath%>";//in Ace demo this will be used for editurl parameter
 		</script>
 	</div>
 </div>
+<iframe id="tempiframe" name="tempiframe" width="0" height="0" style="overflow: hidden;"></iframe>
 <script src="<%=basePath%>assets/js/jquery-ui.js"></script>
 <script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 <script type="text/javascript">
@@ -186,6 +198,36 @@
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
 	
+	//验证附件上传
+	function valfile(){
+		var afils = document.getElementsByName('afils');
+		var afilenames = document.getElementsByName('afilenames');
+		 if(afils.length>0){
+			for ( var i = 0; i < afils.length; i++) {
+				var file = afils[i].value;
+				var filetype = file.split(".")[1];
+				var filename = file.substring(file.lastIndexOf('\\')+1).split(".")[0];
+				var filename_v = afilenames[i].value;
+				if (file == '') {
+					alert('选择上传的附件！');
+					return false;
+				}else if(filetype != 'jpg'){
+					alert('请上传\".jpg\"的图片文件！');
+					return false;
+				}else if(filename!=filename_v){
+					alert('不符合命名规则，请重新命名！');
+					return false;
+				}
+			}
+	
+			return true;
+		}else{
+			alert('你必须上传附件!');
+			return false;
+		} 
+
+	};
+	
 	function view(id,idno){
 		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
 		<%-- window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action"); --%>
@@ -211,13 +253,23 @@
 							text: "保存",
 							"class" : "btn btn-primary btn-minier",
 							click: function() {
-								var params=$("#myForm").serialize();
-								document.getElementById("myForm").submit();
-								dialog.dialog("close");
+								var wtdanwei = $("#wtdanwei").val();
+								var flag = false;
+								if(wtdanwei==""){
+									alert("请填写委托单位！")
+									flag = false;
+									return flag;
+								}
+								flag = valfile();
+								if(flag){
+									var params=$("#myForm").serialize();
+									document.getElementById("myForm").submit();
+									dialog.dialog("close");
+								}
 							} 
 						}
 					]
-		}); 
+		});
 		 
 		$.ajax({
 				type : "post",
@@ -233,8 +285,8 @@
 					var temp = "";
 					temp = temp 
 						 +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
-	 				     +' <div class="col-sm-8"><input name="afils" type="file" id="WT'+idno+'" /></div>'
-	 				     +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="WT'+ idno +'" />'
+	 				     +' <div class="col-sm-8"><input name="afils" type="file" id="WT－'+idno+'" /></div>'
+	 				     +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="WT-'+ idno +'" />'
 	 				     +' <input type="hidden" name="masterid" value="'+masterpaperid+'" />'
 	 				     +' <input type="hidden" name="mastername" value="'+mastername+'" /></div></div>';
 	 				for(var i=0; i<count; i++){
@@ -242,11 +294,11 @@
 	 				    var paperid = list[i].paperid;
 	 					temp = temp 
 	 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="a-'+paperid+'" /></div>'
-	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="a-'+ paperid +'" /></div></div>'
+	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="A-'+paperid+'" /></div>'
+	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="A-'+ paperid +'" /></div></div>'
 	 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="b-'+paperid+'" /></div>'
-	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="b-'+ paperid +'" /></div></div>';
+	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="B-'+paperid+'" /></div>'
+	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="B-'+ paperid +'" /></div></div>';
 	 				}
 					var dfile1 = document.getElementById("dfile1");
 					dfile1.innerHTML=temp;

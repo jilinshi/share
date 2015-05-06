@@ -119,6 +119,7 @@ public class ReportAction extends ActionSupport {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String upload() {
+		Map jsonMap = new HashMap();
 		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
 				.get("user");
 		long orgid = user.getSysOrganization().getOrgId();
@@ -155,14 +156,15 @@ public class ReportAction extends ActionSupport {
 				mongo.insertFile("sharefile", "attorneyfile", id, realname, "application/jpg", metadata, fis);
 			}
 			mongo.close();
-			Map jsonMap = new HashMap();
 			jsonMap.put("msg", "保存成功！");
-			map = jsonMap;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
 		}
+		map = jsonMap;
 
 		return SUCCESS;
 	}

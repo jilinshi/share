@@ -9,12 +9,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href=".<%=basePath%>assets/css/jquery-ui.css" />
-<script type="text/javascript" src="<%=basePath%>assets/js/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>assets/js/jquery-1.9.1.min.js"></script>
 <title>结果页面</title>
 <script type="text/javascript">
 	jQuery(function($) {
-		parent.OpenDailog("${map['msg']}");
+		alert("${map['msg']}");
 	});
 </script>
 </head>
