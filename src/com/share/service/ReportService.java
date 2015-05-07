@@ -30,4 +30,5 @@ public interface ReportService {
 	public Long getPcountByFNO(String familyno);
 	public List<MemberDTO> getPersonsByFNO(String familyno);
 	public void saveAttorneyRecord(AttorneyrecordDTO ardto);
+	public Long queryAttorneyRecordCount(AttorneyrecordDTO ardto);
 }

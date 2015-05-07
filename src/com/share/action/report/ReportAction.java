@@ -3,8 +3,6 @@ package com.share.action.report;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -178,6 +175,20 @@ public class ReportAction extends ActionSupport {
 		jsonMap.put("memberDTOs", memberDTOs);
 		jsonMap.put("mastername", mastername);
 		jsonMap.put("masterpaperid", masterpaperid);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String getCount(){
+		String nowMonth = new SimpleDateFormat("yyyyMM").format(new Date());// 当前月份
+		AttorneyrecordDTO ardto = new AttorneyrecordDTO();
+		ardto.setCkmonth(nowMonth);
+		ardto.setMasteridno(masterid);
+		ardto.setFlag("1");
+		Long count = reportService.queryAttorneyRecordCount(ardto);
+		Map jsonMap = new HashMap();
+		jsonMap.put("count", count);
 		map = jsonMap;
 		return SUCCESS;
 	}

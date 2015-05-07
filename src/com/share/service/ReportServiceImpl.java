@@ -211,4 +211,15 @@ public class ReportServiceImpl implements ReportService {
 		o.setFlag("1");
 		attorneyrecordDAO.save(o);
 	}
+	
+	@Override
+	public Long queryAttorneyRecordCount(AttorneyrecordDTO ardto){
+		String hql = "select count(*) as cnt from Attorneyrecord ar where 1=1 and ar.masteridno=? and ar.ckmonth=? and ar.flag=?";
+		Object[] param = null;
+		param = new Object[3];
+		param[0] = ardto.getMasteridno();
+		param[1] = ardto.getCkmonth();
+		param[2] = ardto.getFlag();
+		return attorneyrecordDAO.count(hql, param);
+	}
 }

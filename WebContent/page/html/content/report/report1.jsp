@@ -231,80 +231,94 @@
 	function view(id,idno){
 		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
 		<%-- window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action"); --%>
-		
-		 var dialog = $("#dialog-confirm").removeClass('hide').dialog({
-			autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
-		    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
-			hide:true,
-			resizable: true,
-			width: '600',
-			modal: true,
-			title: "上传委托书",
-			buttons: [ 
-						{
-							text: "关闭",
-							"class" : "btn btn-minier",
-							click: function() {
-								document.getElementById("myForm").reset();
-								$( this ).dialog( "close" );
-							} 
-						},
-						{
-							text: "保存",
-							"class" : "btn btn-primary btn-minier",
-							click: function() {
-								var wtdanwei = $("#wtdanwei").val();
-								var flag = false;
-								if(wtdanwei==""){
-									alert("请填写委托单位！")
-									flag = false;
-									return flag;
-								}
-								flag = valfile();
-								if(flag){
-									var params=$("#myForm").serialize();
-									document.getElementById("myForm").submit();
-									dialog.dialog("close");
-								}
-							} 
-						}
-					]
-		});
-		 
 		$.ajax({
-				type : "post",
-				dataType : "json",
-				url : "<%=basePath%>page/html/content/report/getPInfo.action",
-				data: {familyno:id,masterid:idno},
-				async : false,
-				success : function(data) {
-					var list = data.memberDTOs;
-					var count = list.length;
-					var mastername = data.mastername;
-					var masterpaperid = data.masterpaperid;
-					var temp = "";
-					temp = temp 
-						 +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
-	 				     +' <div class="col-sm-8"><input name="afils" type="file" id="WT－'+idno+'" /></div>'
-	 				     +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="WT-'+ idno +'" />'
-	 				     +' <input type="hidden" name="masterid" value="'+masterpaperid+'" />'
-	 				     +' <input type="hidden" name="mastername" value="'+mastername+'" /></div></div>';
-	 				for(var i=0; i<count; i++){
-	 				    var relmaster = list[i].relmaster;
-	 				    var paperid = list[i].paperid;
-	 					temp = temp 
-	 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="A-'+paperid+'" /></div>'
-	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="A-'+ paperid +'" /></div></div>'
-	 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-8"><input name="afils" type="file" id="B-'+paperid+'" /></div>'
-	 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="B-'+ paperid +'" /></div></div>';
-	 				}
-					var dfile1 = document.getElementById("dfile1");
-					dfile1.innerHTML=temp;
-					dialog.dialog("open");
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/report/getCount.action",
+			data: {masterid:idno},
+			async : false,
+			success : function(data) {
+				var count = data.count;
+				if(count>0){
+					alert("本月已上传委托书！");
+				}else{
+					  var dialog = $("#dialog-confirm").removeClass('hide').dialog({
+							autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
+						    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
+							hide:true,
+							resizable: true,
+							width: '600',
+							modal: true,
+							title: "上传委托书",
+							buttons: [ 
+										{
+											text: "关闭",
+											"class" : "btn btn-minier",
+											click: function() {
+												document.getElementById("myForm").reset();
+												$( this ).dialog( "close" );
+											} 
+										},
+										{
+											text: "保存",
+											"class" : "btn btn-primary btn-minier",
+											click: function() {
+												var wtdanwei = $("#wtdanwei").val();
+												var flag = false;
+												if(wtdanwei==""){
+													alert("请填写委托单位！")
+													flag = false;
+													return flag;
+												}
+												flag = valfile();
+												if(flag){
+													var params=$("#myForm").serialize();
+													document.getElementById("myForm").submit();
+													dialog.dialog("close");
+												}
+											} 
+										}
+									]
+						});
+						 
+						$.ajax({
+								type : "post",
+								dataType : "json",
+								url : "<%=basePath%>page/html/content/report/getPInfo.action",
+								data: {familyno:id,masterid:idno},
+								async : false,
+								success : function(data) {
+									var list = data.memberDTOs;
+									var count = list.length;
+									var mastername = data.mastername;
+									var masterpaperid = data.masterpaperid;
+									var temp = "";
+									temp = temp 
+										 +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
+					 				     +' <div class="col-sm-8"><input name="afils" type="file" id="WT－'+idno+'" /></div>'
+					 				     +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="WT-'+ idno +'" />'
+					 				     +' <input type="hidden" name="masterid" value="'+masterpaperid+'" />'
+					 				     +' <input type="hidden" name="mastername" value="'+mastername+'" /></div></div>';
+					 				for(var i=0; i<count; i++){
+					 				    var relmaster = list[i].relmaster;
+					 				    var paperid = list[i].paperid;
+					 					temp = temp 
+					 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
+					 				    +' <div class="col-sm-8"><input name="afils" type="file" id="A-'+paperid+'" /></div>'
+					 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="A-'+ paperid +'" /></div></div>'
+					 				    +' <div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
+					 				    +' <div class="col-sm-8"><input name="afils" type="file" id="B-'+paperid+'" /></div>'
+					 				    +' <div class="col-sm-1"><input type="hidden" name="afilenames" value="B-'+ paperid +'" /></div></div>';
+					 				}
+									var dfile1 = document.getElementById("dfile1");
+									dfile1.innerHTML=temp;
+									dialog.dialog("open");
+								}
+						});
 				}
+			}
 		});
+
 	}
 	
 	function chosen_Init(){
