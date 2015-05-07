@@ -310,6 +310,13 @@ public class MongoDBManager {
 		return gridFS.find(query);
 	}
 
+	@SuppressWarnings("deprecation")
+	public List<GridFSDBFile> readFiles(String databaseName,
+			String collectionname, DBObject query, DBObject sort) {
+		GridFS gridFS = new GridFS(client.getDB(databaseName), collectionname);
+		return gridFS.find(query, sort);
+	}
+
 	public void close() {
 		if (null != client)
 			client.close();

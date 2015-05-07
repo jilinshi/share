@@ -25,14 +25,11 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.struts2.ServletActionContext;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.client.FindIterable;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -269,6 +266,7 @@ public class PrintReportAction extends ActionSupport {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryReportsByMaid() {
 		MongoDBManager mongo = new MongoDBManager("sharefile");
 		/*
@@ -276,15 +274,14 @@ public class PrintReportAction extends ActionSupport {
 		 */
 		BasicDBObject filter = new BasicDBObject();
 		filter.put("filename", this.masterid + ".pdf");
+		BasicDBObject sort = new BasicDBObject();
+		sort.put("uploadDate", "-1");
 		List<GridFSDBFile> rs = mongo.readFiles("sharefile", "checkreport",
 				filter);
-
-		for (GridFSDBFile e : rs) {
-			System.out.println(e.toString());
-
-		}
 		mongo.close();
-		map = null;
+		Map jsonMap = new HashMap();
+		jsonMap.put("rows", rs);
+		map = jsonMap;
 		return SUCCESS;
 	}
 
@@ -294,7 +291,30 @@ public class PrintReportAction extends ActionSupport {
 	 * @return ·µ»Øpdf
 	 */
 	public String queryOneReport() {
-		return SUCCESS;
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		ServletOutputStream pw;
+		try {
+			request.setCharacterEncoding("utf-8");
+			pw = response.getOutputStream();
+			MongoDBManager mongo = new MongoDBManager("sharefile");
+			BasicDBObject filter = new BasicDBObject();
+			filter.put("_id", this.masterid);
+			InputStream is = mongo.readFile("sharefile", "checkreport", filter);
+			byte[] byteArr = new byte[1024];
+			int readCount = is.read(byteArr);
+			while (readCount != -1) {
+				pw.write(byteArr, 0, readCount);
+				readCount = is.read(byteArr);
+			}
+			response.setContentType("application/pdf");
+			pw.flush();
+			pw.close();
+			mongo.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 

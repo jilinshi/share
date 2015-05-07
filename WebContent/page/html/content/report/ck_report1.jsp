@@ -38,23 +38,8 @@
 		<table id="grid-table"></table>
 		<div id="grid-pager"></div>
 		<div id="dialog-confirm" class="hide">
-			<div class="row">
-			<div class="col-xs-12">
-				<form class="form-horizontal" id="myForm" method="post" enctype="multipart/form-data" action="<%=basePath%>page/html/content/report/upload.action" target="tempiframe">
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 委托单位 </label>
-		
-						<div class="col-sm-9">
-							<input type="text" name="1" id="form-field-1" placeholder="委托单位" class="col-xs-10 col-sm" />
-						</div>
-					</div>
-					<div class="hr hr-12 hr-double"></div>
-						<div align="left" style="display: block" id="dfile1"></div>
-				</form>
-			</div>
-			</div>
+			 <table id="grid-table1"></table>
 		</div>
-		<iframe id="tempiframe" name="tempiframe" frameborder="0" width="0" height="0" src="about:blank" style="position:absolute; z-index:-1; visibility: hidden;"></iframe>
 		<script type="text/javascript">
 			var $path_base = "<%=basePath%>";//in Ace demo this will be used for editurl parameter
 		</script>
@@ -85,36 +70,88 @@
 				}
 		    })
 			
-			jQuery(grid_selector).jqGrid({
-				url : "<%=basePath%>page/html/content/printreport/queryAttorneyrecord.action",
-				mtype : "POST", 
-				datatype : "json",
-				postData : formData,
-				height : 321,
-				colNames : ['户主身份证号','户主姓名','地址','上传时间','操作'],
-				colModel : [
-				    {name:'masteridno',formatter:"actionFormatter"},
+		    jQuery(grid_selector).jqGrid({
+			//direction: "rtl",
+	
+			//subgrid options
+			subGrid : true,
+			//subGridModel: [{ name : ['No','Item Name','Qty'], width : [55,200,80] }],
+			//datatype: "xml",
+			subGridOptions : {
+				plusicon : "ace-icon fa fa-plus center bigger-110 blue",
+				minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
+				openicon : "ace-icon fa fa-chevron-right center orange"
+			},
+			//for this example we are using local data
+			
+ 
+			subGridRowExpanded: function (subgridDivId, rowId) {
+				var subgridTableId = subgridDivId + "_t";
+				$("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
+				$("#" + subgridTableId).jqGrid({
+					autowidth:true,
+					datatype: 'json',
+					mtype:"POST",
+					postData:{'masterid':$(grid_selector).getCell(rowId,'masteridno')},
+					url:"<%=basePath%>page/html/content/printreport/queryReportsByMaid.action",
+					colNames: ['文档名称','文档类型','生成时间','操作'],
+					colModel: [
+						{ name: 'filename'},
+						{ name: 'contentType'},
+						{ name: 'uploadDate'},
+						{ name: 'id', index:'id',align:'center'}
+					],
+					  gridComplete : function() {
+			              var ids = jQuery("#" + subgridTableId).jqGrid('getDataIDs');
+			              for ( var i = 0; i < ids.length; i++) {
+			                var cl = ids[i];
+			                be ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+cl+"' class='btn btn-minier btn-success' onclick='view1(\""+cl+"\")'><i class='ace-icon fa 	fa-binoculars bigger-100'></i>查看报告</button>"+
+							  "</div>";
+			             
+			                jQuery("#" + subgridTableId).jqGrid('setRowData', ids[i],
+			                    {
+			                      id : be
+			                    });
+			              }
+			            }
+				});
+			},
+			autowidth:true,
+			mtype:"POST",
+			url : "<%=basePath%>page/html/content/printreport/queryAttorneyrecord.action",
+			datatype: "json",
+			postData:formData,
+			height: 450,
+			colNames:['户主身份证号','户主姓名','地址','上传时间','操作'],
+			colModel:[
+				 {name:'masteridno',formatter:"actionFormatter"},
 					{name:'mastername',formatter:"actionFormatter"},
 				    {name:'col11',formatter:'actionFormatter'},
 				    {name:'uploadtime',formatter:'actionFormatter'},
 				    {name:'VIEW', index:'VIEW',align:'center'}
-				],
-				rownumbers: true,
-				autowidth : true,
-				viewrecords : true,
-				rowNum : 10,
-				rowList : [10,20,30],
-				pager : pager_selector,
-				altRows : true,
-				loadComplete : function() {
-					var table = this;
-					setTimeout(function(){
-						updatePagerIcons(table);
-						checkbutton(table);
-					}, 0);
-				}, 
-				caption : "居民数据信息显示"
-			});
+			], 
+			gridComplete: function(){},
+			viewrecords : true,
+			rowNum:15,
+			rowList:[10,15,20],
+			pager : pager_selector,
+			altRows: true,
+			rownumbers: true,
+			multiselect: false,
+	        multiboxonly: true,
+			loadComplete : function() {
+				var table = this;
+				setTimeout(function(){
+					styleCheckbox(table);
+					updateActionIcons(table);
+					updatePagerIcons(table);
+					enableTooltips(table);
+					checkbutton(table);
+				}, 0);
+			},
+			caption: "核对报告生成与查看"
+		}); 
+			
 			$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 			
  			 $.extend($.fn.fmatter, {
@@ -141,11 +178,20 @@
  		          var id = ids[i];
  		          var rowData = $("#grid-table").getRowData(id);
 				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.masteridno+"\",\""+rowData.mastername+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>生成核对报告</button>"+
-				  "<button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view1(\""+rowData.masteridno+"\",\""+rowData.mastername+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>查看报告</button></div>"
+				  "</div>"
  		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
  				}
  			}
- 			
+ 			function styleCheckbox(table) {
+ 				
+ 			}
+ 			function updateActionIcons(table) {
+ 				
+ 			}
+ 			function enableTooltips(table) {
+ 				$('.navtable .ui-pg-button').tooltip({container:'body'});
+ 				$(table).find('.ui-pg-div').tooltip({container:'body'});
+ 			}
 			function updatePagerIcons(table) {
 				var replacement = 
 				{
@@ -186,70 +232,13 @@
         var jsonuserinfo = $('#searchform').serializeObject();  
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
-	function view1(id,idno){
-		window.open("<%=basePath%>page/html/content/printreport/queryReportsByMaid.action?masterid="+id);
+	
+	
+	function view1(id){
+		window.open("<%=basePath%>page/html/content/printreport/queryOneReport.action?masterid="+id);
 	}
 	function view(id,idno){
-		<%-- //window.location.href ="<%=basePath%>page/html/content/printreport/printcollatingreport.action"; --%>
-		<%--  --%>
 		window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action?masterid="+id);
-	<%-- 	 var dialog = $("#dialog-confirm").removeClass('hide').dialog({
-			autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
-		    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
-			hide:true,
-			resizable: true,
-			width: '600',
-			modal: true,
-			title: "上传委托书",
-			buttons: [ 
-						{
-							text: "关闭",
-							"class" : "btn btn-minier",
-							click: function() {
-								document.getElementById("myForm").reset();
-								$( this ).dialog( "close" );
-							} 
-						},
-						{
-							text: "保存",
-							"class" : "btn btn-primary btn-minier",
-							click: function() {
-								var params=$("#myForm").serialize();
-								alert(params);
-								document.getElementById("myForm").submit();
-							} 
-						}
-					]
-		}); 
-		 
-		$.ajax({
-				type : "post",
-				dataType : "json",
-				url : "<%=basePath%>page/html/content/report/getPInfo.action",
-				data: {familyno:id,masterid:idno},
-				async : false,
-				success : function(data) {
-					var list = data.memberDTOs;
-					var count =list.length;
-					var wtno = data.wtno;
-					var temp = "";
-					temp = temp 
-						 + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">委托书: </label>'
-	 				     +' <div class="col-sm-9"><input name="afils" type="file" id="WT'+wtno+'" /></div></div>';
-	 				for(var i=0; i<count; i++){
-	 				    var relmaster = list[i].relmaster;
-	 				    var paperid = list[i].paperid;
-	 					temp = temp 
-	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件正面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-4"><input name="afils" type="file" id="a-'+paperid+'" /></div></div>'
-	 				    + '<div class="form-group"><label class="col-sm-3 control-label no-padding-right">身份证件反面('+relmaster+'): </label>'
-	 				    +' <div class="col-sm-4"><input name="afils" type="file" id="b-'+paperid+'" /></div></div>';
-	 				}
-					var dfile1 = document.getElementById("dfile1");
-					dfile1.innerHTML=temp;
-					dialog.dialog("open");
-				}
-		}); --%>
 	}
 	
 	function chosen_Init(){
