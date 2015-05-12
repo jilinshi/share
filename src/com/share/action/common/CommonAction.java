@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.share.dto.DistrictsDTO;
 import com.share.dto.SysDictionaryDTO;
-import com.share.dto.UserDTO;
+import com.share.model.SysDistrict;
 import com.share.service.SysMgrService;
 
 @Controller
@@ -37,7 +37,7 @@ public class CommonAction extends ActionSupport{
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = orgId+"%";
-		List<HashMap> districts=sysMgrService.queryData(hql, param);
+		List<DistrictsDTO> districts=sysMgrService.queryDistricts(hql, param);
 		Map jsonMap = new HashMap();
 		jsonMap.put("districts", districts);
 		map = jsonMap;

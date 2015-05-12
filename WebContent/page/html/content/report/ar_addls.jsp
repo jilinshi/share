@@ -228,9 +228,9 @@
 	};
 	
 	function add(){
-		 var orgid = <%=orgId %>;
+		 var orgid = <%=orgId%>;
 		 chosen_Init('2');
-		 chosen_onNo("22020201");
+		 chosen_onNo(orgid);
 		 var dialog = $("#dialog-confirm").removeClass('hide').dialog({
 				autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
 			    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
@@ -303,12 +303,11 @@
 			    var o = data.districts;
 				var len = o.length;
 				var a = " ";
-				alert(o);
-				/* for(var i=0; i<len; i++){
-					var value = o[i].districts_id;
-					var text = o[i].districts_code+"-"+o[i].districts_name;
+				 for(var i=0; i<len; i++){
+					var value = o[i].districtsId;
+					var text = o[i].districtsCode+"-"+o[i].districtsNmae;
 					a = a + "<option value='"+ value +"'>"+ text +"</option>";
-				} */
+				}
 				$("#onNo").append("<option value=' '> </option>").append(a);
 				$("#onNo").chosen({allow_single_deselect:true});
 			}

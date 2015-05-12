@@ -22,9 +22,6 @@
 			<result name="input" type="redirect">/page/common/noright.jsp</result>
 			<result name="exception-error">/page/common/result.jsp</result>
 		</global-results>
-		<global-exception-mappings>
-            <exception-mapping result="exception-error" exception="java.lang.Exception"></exception-mapping>
-        </global-exception-mappings> 
 		<action name="getOrgs" method="getOrgs" class="commonAction">
 			<result type="json">
 				<param name="root">map</param>
