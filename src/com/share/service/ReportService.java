@@ -31,4 +31,6 @@ public interface ReportService {
 	public List<MemberDTO> getPersonsByFNO(String familyno);
 	public void saveAttorneyRecord(AttorneyrecordDTO ardto);
 	public Long queryAttorneyRecordCount(AttorneyrecordDTO ardto);
+	public List<Personalinfo> queryPersonalinfoAll(Pager pager,
+			List<Object> param, String jwhere);
 }

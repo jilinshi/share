@@ -222,4 +222,15 @@ public class ReportServiceImpl implements ReportService {
 		param[2] = ardto.getFlag();
 		return attorneyrecordDAO.count(hql, param);
 	}
+	
+	public List<Personalinfo> queryPersonalinfoAll(Pager pager,
+			List<Object> param, String jwhere) {
+		String hql = "select p from Personalinfo p where 1=1 " + jwhere + " order by p.col1";
+		String hqlc = "select count(*) as cnt from Personalinfo p where 1=1 " + jwhere + " order by p.col1";
+		Long cnt = personalinfoDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<Personalinfo> rs = personalinfoDAO.find(hql, param, pager.pager,
+				pager.rows);
+		return rs;
+	}
 }

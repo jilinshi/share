@@ -106,8 +106,6 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-
- 
 	
 	/**
 	 * 单文件上传 input type=file name=single 循环逐个上传
@@ -192,7 +190,27 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryPersonals(){
+		Pager pager = new Pager(page, rows, new Long(0));
+		List<Object> param = new ArrayList<Object>();
+		String jwhere = "";
+		if (this.memberDTO.getPaperid() == null
+				|| "".equals(this.memberDTO.getPaperid())) {
+		} else {
+			param.add(this.memberDTO.getPaperid());
+			jwhere = jwhere + " and p.idno=? ";
+		}	
+		List<Personalinfo> rs = reportService.queryPersonalinfoAll(pager, param , jwhere);
+		Map jsonMap = new HashMap();
+		jsonMap.put("page", page);
+		jsonMap.put("total", pager.total);
+		jsonMap.put("records", pager.records);
+		jsonMap.put("rows", rs);
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
