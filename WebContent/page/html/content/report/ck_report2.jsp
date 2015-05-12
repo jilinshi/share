@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<title>吉林市社会救助局信息共享平台-核对报告数据查询</title>
+<title>吉林市社会救助局信息共享平台-核对报告历史数据查询</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
