@@ -75,6 +75,7 @@ public class PrintReportAction extends ActionSupport {
 	private String result;
 	private String familyno;
 	private String masterid;
+	private String imgname;
 
 	/**
 	 * 为这户家庭生成核对报告
@@ -323,6 +324,11 @@ public class PrintReportAction extends ActionSupport {
 
 	}
 
+	public String queryOneAttorney() {
+
+		return SUCCESS;
+	}
+
 	public String queryAttorneysByMaid() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -331,7 +337,8 @@ public class PrintReportAction extends ActionSupport {
 			request.setCharacterEncoding("utf-8");
 			pw = response.getOutputStream();
 			MongoDBManager mongo = new MongoDBManager("sharefile");
-			InputStream is = mongo.readFile("sharefile", "attorneyfile", "WT-"+this.masterid+".jpg");		
+			InputStream is = mongo.readFile("sharefile", "attorneyfile",
+					imgname + ".jpg");
 			byte[] byteArr = new byte[1024];
 			int readCount = is.read(byteArr);
 			while (readCount != -1) {
@@ -346,7 +353,6 @@ public class PrintReportAction extends ActionSupport {
 			e.printStackTrace();
 		}
 		return null;
-
 
 	}
 
