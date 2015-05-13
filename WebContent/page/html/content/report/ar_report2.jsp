@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<title>吉林市社会救助局信息共享平台-核对报告数据查询</title>
+<title>吉林市社会救助局信息共享平台-授权书管理</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
@@ -74,7 +74,7 @@
 			//direction: "rtl",
 	
 			//subgrid options
-			subGrid : true,
+			subGrid : false,
 			//subGridModel: [{ name : ['No','Item Name','Qty'], width : [55,200,80] }],
 			//datatype: "xml",
 			subGridOptions : {
@@ -93,7 +93,7 @@
 					datatype: 'json',
 					mtype:"POST",
 					postData:{'masterid':$(grid_selector).getCell(rowId,'masteridno')},
-					url:"<%=basePath%>page/html/content/printreport/queryReportsByMaid.action",
+					url:"<%=basePath%>page/html/content/printreport/queryAttorneysByMaid.action",
 					colNames: ['文档名称','文档类型','生成时间','操作'],
 					colModel: [
 						{ name: 'filename'},
@@ -122,12 +122,13 @@
 			datatype: "json",
 			postData:formData,
 			height: 450,
-			colNames:['户主身份证号','户主姓名','授权书编号','地址','上传时间','操作'],
+			colNames:['户主身份证号','户主姓名','编号','地址','核对月份','上传时间','操作'],
 			colModel:[
 				 {name:'masteridno',formatter:"actionFormatter"},
 					{name:'mastername',formatter:"actionFormatter"},
 					{name:'attorney',formatter:'actionFormatter'},
 				    {name:'col11',formatter:'actionFormatter'},
+				    {name:'ckmonth',formatter:'actionFormatter'},
 				    {name:'uploadtime',formatter:'actionFormatter'},
 				    {name:'VIEW', index:'VIEW',align:'center'}
 			], 
@@ -178,7 +179,7 @@
  		        for (var i = 0; i < ids.length; i++) {
  		          var id = ids[i];
  		          var rowData = $("#grid-table").getRowData(id);
-				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.masteridno+"\",\""+rowData.mastername+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>生成核对报告</button>"+
+				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.masteridno+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.masteridno+"\",\""+rowData.attorney+"\")'><i class='ace-icon fa fa-cloud-upload bigger-100'></i>查看授权书</button>"+
 				  "</div>"
  		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
  				}
@@ -239,7 +240,7 @@
 		window.open("<%=basePath%>page/html/content/printreport/queryOneReport.action?masterid="+id);
 	}
 	function view(id,idno){
-		window.open("<%=basePath%>page/html/content/printreport/printcollatingreport.action?masterid="+id);
+		window.open("<%=basePath%>page/html/content/printreport/queryAttorneysByMaid.action?masterid="+id);
 	}
 	
 	function chosen_Init(){

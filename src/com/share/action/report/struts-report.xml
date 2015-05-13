@@ -119,5 +119,10 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="queryAttorneysByMaid" method="queryAttorneysByMaid" class="printReportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

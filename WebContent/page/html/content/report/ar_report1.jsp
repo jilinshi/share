@@ -43,20 +43,20 @@
 				<div class="alert alert-info">
 					<font style="font-size:12px">
 					<strong>文件命名规则：</strong>&nbsp;
-					①委托书："WT-户主身份证号码",例如：'WT-22020219010101XXXX';
+					①委托书："WT-户主身份证号码",例如：'WT-22020219010101XXXX.jpg';
 					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					②身份证件正面(家庭关系)："A-本人身份证号码",例如：'A-22020219010101XXXX';
+					②身份证件正面(家庭关系)："A-本人身份证号码",例如：'A-22020219010101XXXX.jpg';
 					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					③身份证件反面(家庭关系)："B-本人身份证号码",例如：'B-22020219010101XXXX';
+					③身份证件反面(家庭关系)："B-本人身份证号码",例如：'B-22020219010101XXXX.jpg';
 					</font>
 				</div>
 				<form class="form-horizontal" id="myForm" method="post" enctype="multipart/form-data" action="<%=basePath%>page/html/content/report/upload.action" target="tempiframe" >
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 委托单位 </label>
 						<div class="col-sm-9">
-							<input type="text" name="attorneyrecordDTO.wtdanwei" id="wtdanwei" placeholder="请填写。。。" class="col-xs-10 col-sm" />
+							<input type="text" name="attorneyrecordDTO.wtdanwei" id="wtdanwei" placeholder="请填写......" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="hr hr-12 hr-double"></div>

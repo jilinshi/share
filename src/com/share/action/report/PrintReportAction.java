@@ -8,7 +8,9 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,8 +131,11 @@ public class PrintReportAction extends ActionSupport {
 					subPath5));
 
 			// 放入子报表
+			String datastr = "";
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			datastr = sdf.format(new Date());
 			HashMap map = new HashMap();
-			map.put("hdbgno", "第213213216546321321654号");
+			map.put("hdbgno", "第" + masterid + datastr + "号");
 			map.put("subrep1", subrep);
 			map.put("subrep2", subrep1);
 			map.put("subrep3", subrep2);
@@ -315,6 +320,33 @@ public class PrintReportAction extends ActionSupport {
 			e.printStackTrace();
 		}
 		return null;
+
+	}
+
+	public String queryAttorneysByMaid() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		ServletOutputStream pw;
+		try {
+			request.setCharacterEncoding("utf-8");
+			pw = response.getOutputStream();
+			MongoDBManager mongo = new MongoDBManager("sharefile");
+			InputStream is = mongo.readFile("sharefile", "attorneyfile", "WT-"+this.masterid+".jpg");		
+			byte[] byteArr = new byte[1024];
+			int readCount = is.read(byteArr);
+			while (readCount != -1) {
+				pw.write(byteArr, 0, readCount);
+				readCount = is.read(byteArr);
+			}
+			response.setContentType("application/jpg");
+			pw.flush();
+			pw.close();
+			mongo.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+
 
 	}
 
