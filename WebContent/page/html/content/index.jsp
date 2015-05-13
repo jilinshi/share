@@ -6,7 +6,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
-<title>Blank Page - Ace Admin</title>
+<title>吉林市信息共享平台</title>
 <!-- ajax layout which only needs content area -->
 <div class="row">
 	<div class="col-xs-12">

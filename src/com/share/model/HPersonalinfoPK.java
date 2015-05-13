@@ -15,8 +15,8 @@ public class HPersonalinfoPK implements Serializable {
 	@Column(unique=true, nullable=false, length=18)
 	private String hsubject;
 
-	@Column(name="PI_ID", unique=true, nullable=false, length=256)
-	private String piId;
+	@Column(name="PI_ID", unique=true, nullable=false, precision=13)
+	private long piId;
 
 	public HPersonalinfoPK() {
 	}
@@ -26,10 +26,10 @@ public class HPersonalinfoPK implements Serializable {
 	public void setHsubject(String hsubject) {
 		this.hsubject = hsubject;
 	}
-	public String getPiId() {
+	public long getPiId() {
 		return this.piId;
 	}
-	public void setPiId(String piId) {
+	public void setPiId(long piId) {
 		this.piId = piId;
 	}
 
@@ -43,14 +43,14 @@ public class HPersonalinfoPK implements Serializable {
 		HPersonalinfoPK castOther = (HPersonalinfoPK)other;
 		return 
 			this.hsubject.equals(castOther.hsubject)
-			&& this.piId.equals(castOther.piId);
+			&& (this.piId == castOther.piId);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.hsubject.hashCode();
-		hash = hash * prime + this.piId.hashCode();
+		hash = hash * prime + ((int) (this.piId ^ (this.piId >>> 32)));
 		
 		return hash;
 	}
