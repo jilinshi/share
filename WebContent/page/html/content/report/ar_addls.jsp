@@ -97,6 +97,9 @@
 							<textarea class="form-control limited" name="memberDTO.address" id="address" maxlength="50"></textarea>
 						</div>
 					</div>
+					<div class="form-group">
+							<div id="message" align="center" style="color:#F00"></div>
+					</div>
 				</form>	
 			</div>
 			</div>
@@ -244,8 +247,14 @@
 								"class" : "btn btn-minier",
 								click: function() {
 									document.getElementById("myForm").reset();
+									$("#paperid").attr("value","");
+									$("#membername").attr("value","");
+							    	$("#masterName").attr("value","");
+							    	$("#masetPaperid").attr("value","");
+							    	$("#address").val("");
 									$("#onNo").chosen("destroy");
 									$("#relmaster").chosen("destroy");
+									document.getElementById('message').innerHTML="";
 									$( this ).dialog( "close" );
 								} 
 							},
@@ -254,18 +263,46 @@
 								"class" : "btn btn-primary btn-minier",
 								id:"save",
 								click: function() {
-								$.ajax({
-										type : "post",
-										dataType : "json",
-										url : "<%=basePath%>page/html/content/report/savePInfo.action",
-										data: $("#myForm").serialize(),
-										async : true,
-										success : function(data) {
-											var msg = data.msg;
-											alert(msg);
-											dialog.dialog( "close" );
-										}
-									});
+									var flag = true;
+									var paperid = $("#paperid").val();
+									var membername = $("#membername").val();
+							    	var mastername = $("#masterName").val();
+							    	var masterpaperid = $("#masetPaperid").val();
+							    							    	
+							    	if(membername==""){
+										alert("请填写本人姓名！")
+										flag = false;
+										return flag;
+									}
+							    	if(paperid==""){
+										alert("请填写本人身份证号码！")
+										flag = false;
+										return flag;
+									}	
+							    	if(mastername==""){
+										alert("请填写户主姓名！")
+										flag = false;
+										return flag;
+									}
+							    	if(masterpaperid==""){
+										alert("请填写户主身份证号码！")
+										flag = false;
+										return flag;
+									}
+									if(flag){
+										$.ajax({
+											type : "post",
+											dataType : "json",
+											url : "<%=basePath%>page/html/content/report/savePInfo.action",
+											data: $("#myForm").serialize(),
+											async : true,
+											success : function(data) {
+												var msg = data.msg;
+												alert(msg);
+												dialog.dialog( "close" );
+											}
+										});
+									}
 								} 
 							}
 						]
@@ -330,15 +367,19 @@
 				data: {idcard:idcard},
 				async : true,
 				success : function(data) {
+					var result = data.result;
 				    var o = data.msg;
-				    if(o==1){
+				    if(result==1){
 				    	var m = data.mems;
 				    	$("#membername").attr("value",m.membername);
 				    	$("#masterName").attr("value",m.masterName);
 				    	$("#masetPaperid").attr("value",m.masetPaperid);
 				    	$("#address").val(m.address);
 				    	$("#save").attr("disabled",true);
-				    }else{
+				    	document.getElementById('message').innerHTML="此人已存在，不能重复录入！";
+				    }else if(result==2){
+				    		
+					}else if(result==3){
 				    	alert(o);
 				    }
 				}
@@ -347,7 +388,36 @@
 	};
 	
 	function chang_masetPaperid(v){
-		alert(v.value);
+		var idcard = v.value;
+		var len = idcard.length;
+		if(len==0){
+			alert("请输入户主身份证号码！");
+		}else{
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/report/valPeperid.action",
+				data: {idcard:idcard},
+				async : true,
+				success : function(data) {
+					var result = data.result;
+				    var o = data.msg;
+				    if(result==1){
+				    	var m = data.mems;
+				    	$("#membername").attr("value",m.membername);
+				    	$("#masterName").attr("value",m.masterName);
+				    	$("#paperid").attr("value",m.paperid);
+				    	$("#address").val(m.address);
+				    	$("#save").attr("disabled",true);
+				    	document.getElementById('message').innerHTML="此人已存在，不能重复录入！";
+				    }else if(result==2){
+				    		
+					}else if(result==3){
+				    	alert(o);
+				    }
+				}
+			});
+		}
 	};
 	
 </script>

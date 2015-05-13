@@ -238,9 +238,12 @@ public class ReportAction extends ActionSupport {
 				List<MemberDTO> mems = reportService.queryPersonByCard(idcard);
 				if(mems.size()>0){
 					jsonMap.put("mems", mems.get(0));
-					jsonMap.put("msg", "1");
+					jsonMap.put("result", "1");
+				}else{
+					jsonMap.put("result", "2");
 				}
 			}else{
+				jsonMap.put("result", "3");
 				jsonMap.put("msg", msg);
 			}
 		} catch (ParseException e) {
