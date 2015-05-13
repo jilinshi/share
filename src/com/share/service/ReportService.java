@@ -33,4 +33,6 @@ public interface ReportService {
 	public Long queryAttorneyRecordCount(AttorneyrecordDTO ardto);
 	public List<Personalinfo> queryPersonalinfoAll(Pager pager,
 			List<Object> param, String jwhere);
+	public void savePersonalinfo(MemberDTO m);
+	public List<MemberDTO> queryPersonByCard(String idcard);
 }

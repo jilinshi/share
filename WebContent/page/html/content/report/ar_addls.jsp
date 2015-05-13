@@ -55,7 +55,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="paperid"> 身份证号码 </label>
 						<div class="col-sm-9">
-							<input type="text" name="memberDTO.paperid" id="paperid" placeholder="" class="col-xs-10 col-sm" />
+							<input type="text" name="memberDTO.paperid" id="paperid" placeholder="" class="col-xs-10 col-sm" onBlur="chang_paperid(this);"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -73,7 +73,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="masetPaperid"> 户主身份证号码  </label>
 						<div class="col-sm-9">
-							<input type="text" name="memberDTO.masetPaperid" id="masetPaperid" placeholder="" class="col-xs-10 col-sm" />
+							<input type="text" name="memberDTO.masetPaperid" id="masetPaperid" placeholder="" class="col-xs-10 col-sm" onBlur="chang_masetPaperid(this);" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -81,11 +81,11 @@
 						<div class="col-sm-9">
 							<div class="radio">
 								<label>
-									<input name="memberDTO.ds" type="radio" class="ace" />
+									<input name="memberDTO.ds" type="radio" class="ace" value="1"/>
 									<span class="lbl"> 城市</span> 
 								</label>
 								<label>
-									<input name="memberDTO.ds" type="radio" class="ace" />
+									<input name="memberDTO.ds" type="radio" class="ace" value="2"/>
 									<span class="lbl"> 农村</span>
 								</label>
 							</div>
@@ -106,7 +106,6 @@
 		</script>
 	</div>
 </div>
-
 <script src="<%=basePath%>assets/js/jquery-ui.js"></script>
 <script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 <script src="<%=basePath%>assets/js/ace/elements.scroller.js"></script>
@@ -245,24 +244,28 @@
 								"class" : "btn btn-minier",
 								click: function() {
 									document.getElementById("myForm").reset();
+									$("#onNo").chosen("destroy");
+									$("#relmaster").chosen("destroy");
 									$( this ).dialog( "close" );
 								} 
 							},
 							{
 								text: "保存",
 								"class" : "btn btn-primary btn-minier",
+								id:"save",
 								click: function() {
-								alert( $("#myForm").serialize());
-									<%-- $.ajax({
+								$.ajax({
 										type : "post",
 										dataType : "json",
-										url : "<%=basePath%>page/html/content/report/getPInfo.action",
+										url : "<%=basePath%>page/html/content/report/savePInfo.action",
 										data: $("#myForm").serialize(),
-										async : false,
+										async : true,
 										success : function(data) {
-											
+											var msg = data.msg;
+											alert(msg);
+											dialog.dialog( "close" );
 										}
-									}); --%>
+									});
 								} 
 							}
 						]
@@ -282,7 +285,7 @@
 				var len = dics.length;
 				var a = " ";
 				for(var i=0; i<len; i++){
-					var value = dics[i].dictkey;
+					var value = dics[i].dictvalue;
 					var text = dics[i].dictvalue;
 					a = a + "<option value='"+ value +"'>"+ text +"</option>";
 				}
@@ -304,7 +307,7 @@
 				var len = o.length;
 				var a = " ";
 				 for(var i=0; i<len; i++){
-					var value = o[i].districtsId;
+					var value = o[i].districtsCode;
 					var text = o[i].districtsCode+"-"+o[i].districtsNmae;
 					a = a + "<option value='"+ value +"'>"+ text +"</option>";
 				}
@@ -312,6 +315,39 @@
 				$("#onNo").chosen({allow_single_deselect:true});
 			}
 		});
-	}
+	};
+	
+	function chang_paperid(v){
+		var idcard = v.value;
+		var len = idcard.length;
+		if(len==0){
+			alert("请输入身份证号码！");
+		}else{
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/report/valPeperid.action",
+				data: {idcard:idcard},
+				async : true,
+				success : function(data) {
+				    var o = data.msg;
+				    if(o==1){
+				    	var m = data.mems;
+				    	$("#membername").attr("value",m.membername);
+				    	$("#masterName").attr("value",m.masterName);
+				    	$("#masetPaperid").attr("value",m.masetPaperid);
+				    	$("#address").val(m.address);
+				    	$("#save").attr("disabled",true);
+				    }else{
+				    	alert(o);
+				    }
+				}
+			});
+		}
+	};
+	
+	function chang_masetPaperid(v){
+		alert(v.value);
+	};
 	
 </script>

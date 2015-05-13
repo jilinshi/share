@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 
+import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -18,12 +20,14 @@ import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.model.Attorneyrecord;
 import com.share.model.Personalinfo;
+import com.share.model.PersonalinfoL;
 import com.share.model.SysOrganization;
 import com.share.model.VCkburial;
 import com.share.model.VCkfund;
 import com.share.model.VCkhouseproperty;
 import com.share.model.VCkinsurance;
 import com.share.model.VCkvehicle;
+import com.share.util.IDCard;
 import com.share.util.Pager;
 
 @Service("reportService")
@@ -31,6 +35,8 @@ public class ReportServiceImpl implements ReportService {
 
 	@Resource
 	private BaseDAO<Personalinfo> personalinfoDAO;
+	@Resource
+	private BaseDAO<PersonalinfoL> personalinfoDAOL;
 	@Resource
 	private BaseDAO<VCkinsurance> vCkinsuranceDAO;
 	@Resource
@@ -223,6 +229,7 @@ public class ReportServiceImpl implements ReportService {
 		return attorneyrecordDAO.count(hql, param);
 	}
 	
+	@Override
 	public List<Personalinfo> queryPersonalinfoAll(Pager pager,
 			List<Object> param, String jwhere) {
 		String hql = "select p from Personalinfo p where 1=1 " + jwhere + " order by p.col1";
@@ -232,5 +239,61 @@ public class ReportServiceImpl implements ReportService {
 		List<Personalinfo> rs = personalinfoDAO.find(hql, param, pager.pager,
 				pager.rows);
 		return rs;
+	}
+	
+	@Override
+	public void savePersonalinfo(MemberDTO m){
+		String paperid = m.getPaperid();
+		String id18="";
+		String id15="";
+		if(paperid.length()==15){
+			id18 = IDCard.uptoeighteen(paperid);
+			id15 = paperid;
+		}else if(paperid.length()==18){
+			id18 = paperid;
+			id15 = IDCard.uptofifteen(paperid);
+		}
+		Personalinfo o = new Personalinfo();
+		o.setId18(id18);
+		o.setId15(id15);
+		o.setIdno(m.getPaperid());
+		o.setPname(m.getMembername());
+		o.setMasterid(m.getMasetPaperid());
+		o.setMastername(m.getMasterName());
+		o.setCol10(m.getRelmaster());
+		o.setCol11(m.getAddress());
+		int random = new Random().nextInt(10000);
+		o.setCol1(m.getOnNo()+random);
+		o.setDs(m.getDs());
+		long date = new Date().getTime();
+		o.setUpdatetime(new Timestamp(date));
+		personalinfoDAO.save(o);
+		PersonalinfoL ol = new PersonalinfoL();
+		BeanCopier copy = BeanCopier.create(Personalinfo.class, PersonalinfoL.class,false);
+		copy.copy(o, ol, null);
+		personalinfoDAOL.save(ol);
+	};
+	
+	@Override
+	public List<MemberDTO> queryPersonByCard(String idcard) {
+		List<MemberDTO> mems = new ArrayList<MemberDTO>();
+		String hql = "select p from Personalinfo p where 1=1 and p.id18=? or p.id15=? order by p.col1";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = idcard;
+		param[1] = idcard;
+		List<Personalinfo> rs = personalinfoDAO.find(hql, param);
+		for(Personalinfo s: rs){
+			MemberDTO m = new MemberDTO();
+			m.setMembername(s.getPname());
+			m.setPaperid(s.getIdno());
+			m.setMasetPaperid(s.getMasterid());
+			m.setMasterName(s.getMastername());
+			m.setRelmaster(s.getCol10());
+			m.setAddress(s.getCol11());
+			m.setDs(s.getDs());
+			mems.add(m);
+		}
+		return mems;
 	}
 }

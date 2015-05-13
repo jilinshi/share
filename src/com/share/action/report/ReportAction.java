@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,7 @@ import com.share.dto.UserDTO;
 import com.share.model.Personalinfo;
 import com.share.mongodb.MongoDBManager;
 import com.share.service.ReportService;
+import com.share.util.IDCard;
 import com.share.util.Pager;
 
 @Controller
@@ -53,6 +55,7 @@ public class ReportAction extends ActionSupport {
 	private String familyno;
 	private String masterid;
 	private String mastername;
+	private String idcard;
 	private AttorneyrecordDTO attorneyrecordDTO;
 	
 	private List<File> afils;
@@ -211,7 +214,43 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String savePInfo(){
+		Map jsonMap = new HashMap();
+		try{
+			reportService.savePersonalinfo(memberDTO);
+			jsonMap.put("msg", "保存成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String valPeperid(){
+		Map jsonMap = new HashMap();
+		try {
+			String msg = IDCard.IDCardValidate(idcard);
+			if("".equals(msg)){
+				List<MemberDTO> mems = reportService.queryPersonByCard(idcard);
+				if(mems.size()>0){
+					jsonMap.put("mems", mems.get(0));
+					jsonMap.put("msg", "1");
+				}
+			}else{
+				jsonMap.put("msg", msg);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			jsonMap.put("msg", "系统错误！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;
@@ -324,6 +363,14 @@ public class ReportAction extends ActionSupport {
 
 	public void setMastername(String mastername) {
 		this.mastername = mastername;
+	}
+
+	public String getIdcard() {
+		return idcard;
+	}
+
+	public void setIdcard(String idcard) {
+		this.idcard = idcard;
 	}
 
 }

@@ -9,6 +9,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IDCard {
+	
+	private static int[] wi = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1 };
+	private static int[] vi = { 1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2 };
+	private static int[] ai = new int[18];
 	/*********************************** 身份证验证开始 ****************************************/
 	/**
 	 * 身份证号码验证 1、号码的结构 公民身份号码是特征组合码，由十七位数字本体码和一位校验码组成。排列顺序从左至右依次为：六位数字地址码，
@@ -199,6 +203,41 @@ public class IDCard {
 			return false;
 		}
 	}
+	
+	public static String getVerify(String eightcardid) {
+		int remaining = 0;
+		if (eightcardid.length() == 18) {
+			eightcardid = eightcardid.substring(0, 17);
+		}
+		if (eightcardid.length() == 17) {
+			int sum = 0;
+			for (int i = 0; i < 17; i++) {
+				String k = eightcardid.substring(i, i + 1);
+				ai[i] = Integer.parseInt(k);
+			}
+			for (int i = 0; i < 17; i++) {
+				sum = sum + wi[i] * (ai[i]);
+			}
+			remaining = sum % 11;
+		}
+		return remaining == 2 ? "X" : String.valueOf(vi[remaining]);
+	}
+	
+	// 15转18位
+	public static String uptoeighteen(String fifteencardid) {
+		String eightcardid = fifteencardid.substring(0, 6);
+		eightcardid = eightcardid + "19";
+		eightcardid = eightcardid + fifteencardid.substring(6, 15);
+		eightcardid = eightcardid + getVerify(eightcardid);
+		return eightcardid;
+	}
+	
+	// 18转15位
+	public static String uptofifteen(String eighteencardid) {
+		String fifteencardid = eighteencardid.substring(0,6);
+		fifteencardid = fifteencardid + eighteencardid.substring(8,18);
+		return fifteencardid;
+	}
 
 	/**
 	 * @param args
@@ -212,6 +251,10 @@ public class IDCard {
 		IDCard cc = new IDCard();
 		System.out.println(cc.IDCardValidate(IDCardNum));
 		// System.out.println(cc.isDate("1996-02-29"));
+		String card = cc.uptoeighteen("210181880719311");
+		System.out.println(card);
+		String card15 = cc.uptofifteen("210181198807193116");
+		System.out.println(card15);
 	}
 	/*********************************** 身份证验证结束 ****************************************/
 
