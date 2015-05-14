@@ -179,7 +179,7 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<MemberDTO> getPersonsByFNO(String masterid){
 		List<MemberDTO> mems = new ArrayList<MemberDTO>();
-		String hql = "select p from Personalinfo p where 1=1 and p¡£masterid=?";
+		String hql = "select p from Personalinfo p where 1=1 and p.masterid=?";
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = masterid;

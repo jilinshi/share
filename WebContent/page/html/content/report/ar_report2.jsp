@@ -240,7 +240,7 @@
 		window.open("<%=basePath%>page/html/content/printreport/queryOneReport.action?masterid="+id);
 	}
 	function view(id,idno){
-		window.open("<%=basePath%>page/html/content/printreport/queryAttorneysByMaid.action?masterid="+id);
+		window.open("<%=basePath%>page/html/content/printreport/queryOneAttorney.action?masterid="+id);
 	}
 	
 	function chosen_Init(){

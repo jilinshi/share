@@ -77,6 +77,8 @@ public class PrintReportAction extends ActionSupport {
 	private String masterid;
 	private String imgname;
 
+	private List<MemberDTO> memberDTOs;
+
 	/**
 	 * 为这户家庭生成核对报告
 	 * 
@@ -325,7 +327,7 @@ public class PrintReportAction extends ActionSupport {
 	}
 
 	public String queryOneAttorney() {
-
+		memberDTOs = reportService.getPersonsByFNO(masterid);
 		return SUCCESS;
 	}
 
@@ -337,6 +339,7 @@ public class PrintReportAction extends ActionSupport {
 			request.setCharacterEncoding("utf-8");
 			pw = response.getOutputStream();
 			MongoDBManager mongo = new MongoDBManager("sharefile");
+			System.out.println(imgname + ".jpg");
 			InputStream is = mongo.readFile("sharefile", "attorneyfile",
 					imgname + ".jpg");
 			byte[] byteArr = new byte[1024];
@@ -428,6 +431,22 @@ public class PrintReportAction extends ActionSupport {
 
 	public void setMasterid(String masterid) {
 		this.masterid = masterid;
+	}
+
+	public List<MemberDTO> getMemberDTOs() {
+		return memberDTOs;
+	}
+
+	public void setMemberDTOs(List<MemberDTO> memberDTOs) {
+		this.memberDTOs = memberDTOs;
+	}
+
+	public String getImgname() {
+		return imgname;
+	}
+
+	public void setImgname(String imgname) {
+		this.imgname = imgname;
 	}
 
 }

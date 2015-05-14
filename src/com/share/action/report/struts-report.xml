@@ -129,5 +129,10 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="queryOneAttorney" method="queryOneAttorney" class="printReportAction">
+			<result name="success">
+				/page/html/content/report/view-attorney.jsp
+			</result>
+		</action>
 	</package>
 </struts>   
