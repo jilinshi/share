@@ -177,12 +177,12 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
-	public List<MemberDTO> getPersonsByFNO(String familyno){
+	public List<MemberDTO> getPersonsByFNO(String masterid){
 		List<MemberDTO> mems = new ArrayList<MemberDTO>();
-		String hql = "select p from Personalinfo p where 1=1 and p.col1=?";
+		String hql = "select p from Personalinfo p where 1=1 and p¡£masterid=?";
 		Object[] param = null;
 		param = new Object[1];
-		param[0] = familyno;
+		param[0] = masterid;
 		List<Personalinfo> rs = personalinfoDAO.find(hql, param);
 		for (Personalinfo s : rs) {
 			MemberDTO m = new MemberDTO();
@@ -232,8 +232,8 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<Personalinfo> queryPersonalinfoAll(Pager pager,
 			List<Object> param, String jwhere) {
-		String hql = "select p from Personalinfo p where 1=1 " + jwhere + " order by p.col1";
-		String hqlc = "select count(*) as cnt from Personalinfo p where 1=1 " + jwhere + " order by p.col1";
+		String hql = "select p from Personalinfo p where 1=1 " + jwhere + " order by p.masterid";
+		String hqlc = "select count(*) as cnt from Personalinfo p where 1=1 " + jwhere + " order by p.masterid";
 		Long cnt = personalinfoDAO.count(hqlc, param);
 		pager.setRecords(cnt);
 		List<Personalinfo> rs = personalinfoDAO.find(hql, param, pager.pager,
@@ -277,7 +277,7 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<MemberDTO> queryPersonByCard(String idcard) {
 		List<MemberDTO> mems = new ArrayList<MemberDTO>();
-		String hql = "select p from Personalinfo p where 1=1 and p.id18=? or p.id15=? order by p.col1";
+		String hql = "select p from Personalinfo p where 1=1 and p.id18=? or p.id15=? order by p.masterid";
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = idcard;

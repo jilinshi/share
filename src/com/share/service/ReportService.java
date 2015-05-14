@@ -28,7 +28,7 @@ public interface ReportService {
 	public List<VCkvehicle> findVehicleByMAID(String masterid);
 	public List<VCkburial> findBurialByMAID(String masterid);
 	public Long getPcountByFNO(String familyno);
-	public List<MemberDTO> getPersonsByFNO(String familyno);
+	public List<MemberDTO> getPersonsByFNO(String masterid);
 	public void saveAttorneyRecord(AttorneyrecordDTO ardto);
 	public Long queryAttorneyRecordCount(AttorneyrecordDTO ardto);
 	public List<Personalinfo> queryPersonalinfoAll(Pager pager,

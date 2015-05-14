@@ -103,12 +103,13 @@
 				datatype : "json",
 				postData : formData,
 				height : 321,
-				colNames : ['家庭编号','姓名','身份证号码','户主姓名','操作'],
+				colNames : ['家庭编号','姓名','身份证号码','户主姓名','户主身份证号码','操作'],
 				colModel : [
 				    {name:'col1',formatter:"actionFormatter"},
 					{name:'pname',formatter:"actionFormatter"},
 				    {name:'idno',formatter:"actionFormatter"},
 				    {name:'mastername',formatter:'actionFormatter'},
+				    {name:'masterid',formatter:'actionFormatter'},
 				    {name:'VIEW', index:'VIEW',align:'center'}
 				],
 				rownumbers: true,
@@ -247,7 +248,7 @@
 						    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
 							hide:true,
 							resizable: true,
-							width: '600',
+							width: '650',
 							modal: true,
 							title: "上传委托书",
 							buttons: [ 
@@ -285,7 +286,7 @@
 								type : "post",
 								dataType : "json",
 								url : "<%=basePath%>page/html/content/report/getPInfo.action",
-								data: {familyno:id,masterid:idno},
+								data: {masterid:idno},
 								async : false,
 								success : function(data) {
 									var list = data.memberDTOs;

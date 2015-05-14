@@ -169,7 +169,7 @@ public class ReportAction extends ActionSupport {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getPInfo(){
-		List<MemberDTO> memberDTOs = reportService.getPersonsByFNO(familyno);
+		List<MemberDTO> memberDTOs = reportService.getPersonsByFNO(masterid);
 		String mastername = memberDTOs.get(0).getMasterName();
 		String masterpaperid = memberDTOs.get(0).getMasetPaperid();
 		Map jsonMap = new HashMap();
