@@ -292,6 +292,7 @@ public class ReportServiceImpl implements ReportService {
 			m.setRelmaster(s.getCol10());
 			m.setAddress(s.getCol11());
 			m.setDs(s.getDs());
+			m.setOnNo(s.getCol1());
 			mems.add(m);
 		}
 		return mems;

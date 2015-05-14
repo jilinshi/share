@@ -81,11 +81,11 @@
 						<div class="col-sm-9">
 							<div class="radio">
 								<label>
-									<input name="memberDTO.ds" type="radio" class="ace" value="1"/>
+									<input id="1" name="memberDTO.ds" type="radio" class="ace" value="1"/>
 									<span class="lbl"> 城市</span> 
 								</label>
 								<label>
-									<input name="memberDTO.ds" type="radio" class="ace" value="2"/>
+									<input id="2" name="memberDTO.ds" type="radio" class="ace" value="2"/>
 									<span class="lbl"> 农村</span>
 								</label>
 							</div>
@@ -253,6 +253,11 @@
 							    	$("#masetPaperid").attr("value","");
 							    	$("#address").val("");
 									$("#onNo").chosen("destroy");
+									$('input:radio[name="memberDTO.ds"]').removeAttr("checked");
+									$('#relmaster option[value=" "]').attr("selected","selected");
+							    	$("#relmaster").trigger("chosen:updated");
+							    	$('#onNo option[value=" "]').attr("selected","selected");
+							    	$("#onNo").trigger("chosen:updated");
 									$("#relmaster").chosen("destroy");
 									document.getElementById('message').innerHTML="";
 									$( this ).dialog( "close" );
@@ -268,7 +273,15 @@
 									var membername = $("#membername").val();
 							    	var mastername = $("#masterName").val();
 							    	var masterpaperid = $("#masetPaperid").val();
-							    							    	
+							    	var ds = $('input:radio[name="memberDTO.ds"]:checked').val();
+							    	var onNo=$("#onNo").val();
+							    	var relmaster=$("#relmaster").val();
+							    	var address=$("#address").val();
+							    	if(onNo==" "){
+							    		alert("请选择所在辖区！")
+										flag = false;
+										return flag;
+							    	}
 							    	if(membername==""){
 										alert("请填写本人姓名！")
 										flag = false;
@@ -278,7 +291,12 @@
 										alert("请填写本人身份证号码！")
 										flag = false;
 										return flag;
-									}	
+									}
+							    	if(relmaster==" "){
+							    		alert("请选择家庭关系！")
+										flag = false;
+										return flag;
+							    	}
 							    	if(mastername==""){
 										alert("请填写户主姓名！")
 										flag = false;
@@ -286,6 +304,17 @@
 									}
 							    	if(masterpaperid==""){
 										alert("请填写户主身份证号码！")
+										flag = false;
+										return flag;
+									}
+							    	if(ds==1||ds==2){
+							    	}else{
+							    		alert("请选择来源！")
+										flag = false;
+										return flag;
+							    	}
+							    	if(address==""){
+										alert("请填写家庭住址！")
 										flag = false;
 										return flag;
 									}
@@ -371,6 +400,11 @@
 				    var o = data.msg;
 				    if(result==1){
 				    	var m = data.mems;
+				    	$('#relmaster option[value='+m.relmaster+']').attr("selected","selected");
+				    	$("#relmaster").trigger("chosen:updated");
+				    	$('#onNo option[value='+m.onNo.substring(0,10)+']').attr("selected","selected");
+				    	$("#onNo").trigger("chosen:updated");
+				    	$('input:radio[name="memberDTO.ds"][value='+m.ds+']').attr("checked",'checked');
 				    	$("#membername").attr("value",m.membername);
 				    	$("#masterName").attr("value",m.masterName);
 				    	$("#masetPaperid").attr("value",m.masetPaperid);
@@ -404,6 +438,11 @@
 				    var o = data.msg;
 				    if(result==1){
 				    	var m = data.mems;
+				    	$('#relmaster option[value='+m.relmaster+']').attr("selected","selected");
+				    	$("#relmaster").trigger("chosen:updated");
+				    	$('#onNo option[value='+m.onNo.substring(0,10)+']').attr("selected","selected");
+				    	$("#onNo").trigger("chosen:updated");
+				    	$('input:radio[name="memberDTO.ds"][value='+m.ds+']').attr("checked",'checked');
 				    	$("#membername").attr("value",m.membername);
 				    	$("#masterName").attr("value",m.masterName);
 				    	$("#paperid").attr("value",m.paperid);
