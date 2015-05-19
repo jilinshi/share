@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="sys" namespace="/page/html/content/sys" extends="json-default">
+		<interceptors>
+			<interceptor name="operationlogInterceptor"
+				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
+			<interceptor name="authorityInterceptor"
+				class="com.share.interceptor.AuthorityInterceptor"></interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="authorityInterceptor" />
+				<interceptor-ref name="operationlogInterceptor" />
+				<interceptor-ref name="fileUpload">
+					<param name="maximumSize">5242880</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
+		<global-results>
+			<result name="login" type="redirect">/logout.action</result>
+			<result name="input" type="redirect">/page/common/noright.jsp</result>
+			<result name="exception-error">/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="exception-error"
+				exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="findOrgList" method="findOrgList"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="findOrgListALL" method="findOrgListALL"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="saveDistricts" method="saveDistricts"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>		
+	</package>
+</struts>   

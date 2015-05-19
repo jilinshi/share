@@ -17,8 +17,6 @@ public class SysDistrict implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SYS_DISTRICTS_DISTRICTSID_GENERATOR", sequenceName="SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SYS_DISTRICTS_DISTRICTSID_GENERATOR")
 	@Column(name="DISTRICTS_ID", unique=true, nullable=false, length=256)
 	private String districtsId;
 

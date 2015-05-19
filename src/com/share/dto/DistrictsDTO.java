@@ -13,6 +13,7 @@ public class DistrictsDTO {
 	private String fullname;
 	private BigDecimal ord;
 	private String parentId;
+	private String text;
 
 	public String getDistrictsId() {
 		return districtsId;
@@ -93,5 +94,14 @@ public class DistrictsDTO {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 
 }

@@ -43,4 +43,5 @@
 	<include file="/com/share/action/query/struts-query.xml"></include>
 	<include file="/com/share/action/report/struts-report.xml"></include>
 	<include file="/com/share/action/common/struts-common.xml"></include>
+	<include file="/com/share/action/sys/struts-sys.xml"></include>
 </struts>   
