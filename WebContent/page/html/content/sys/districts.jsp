@@ -61,7 +61,7 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属辖区机构名称 </label>
 
 							<div class="col-sm-9">
-								<input type="text" id="text" placeholder="请从机构列表中选择..." class="col-xs-10 col-sm-7" disabled/>
+								<input type="text" id="text_org" placeholder="请从机构列表中选择..." class="col-xs-10 col-sm-7" disabled/>
 								<input type="hidden" id="text_hidden" name="districtsDTO.text" placeholder="请从机构列表中选择..." class="col-xs-10 col-sm-7" />
 							</div>
 						</div>
@@ -79,7 +79,7 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 新增机构名称 </label>
 
 							<div class="col-sm-9">
-								<input type="text" id="districtsNmae" name="districtsDTO.districtsNmae" placeholder="请输入机构名称..." class="col-xs-10 col-sm-7" />
+								<input type="text" id="districtsNmae" name="districtsDTO.districtsNmae" placeholder="请输入机构名称..." class="col-xs-10 col-sm-7" onBlur="v_districtsNmae()"/>
 							</div>
 						</div>
 						<br/><br/><br/>
@@ -112,11 +112,17 @@
 var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %>assets/plugins/jqx/jqxexpander.js","<%=basePath %>assets/plugins/jqx/jqxbuttons.js","<%=basePath %>assets/plugins/jqx/jqxscrollbar.js","<%=basePath %>assets/plugins/jqx/jqxtree.js","<%=basePath %>assets/plugins/jqx/jqxcheckbox.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
+			InitTree();
+		});
+		function InitTree(){
+			 $.ajaxSetup({cache:false});
 			 $.ajax({ 
 		            type: "post", 
 		            url: "<%=basePath%>page/html/content/sys/findOrgList.action",
 					dataType : "json",
 					data :{parentid:-1},
+					lang:{loading:"数据加载中……"},  
+					async : false, //必须同步等返回值
 					success : function(data) {
 						var myspin = $("#myspin");
 						var mytree = $("#mytree");
@@ -159,17 +165,12 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
 	 					//创建 jqxTree
 				        $('#jqxTree').jqxTree({ theme: 'energyblue'});
 				        $('#jqxTree').css('visibility', 'visible');
-				        $('#jqxTree').on('expand', function (event) {
-			                var args = event.args;
-			                var item = $('#jqxTree').jqxTree('getItem', args.element);
-			                alert(item.id);
-			            });
 				        $('#jqxTree').on('select', function (event) {
 				        	var args = event.args;
 			                var item = $('#jqxTree').jqxTree('getItem', args.element);
 			                 if(item.label != null){
 			                	 var id = item.id;
-					             $('#text').val(item.label);
+					             $('#text_org').val(item.label);
 					             $('#districtsId').val(id.split("-")[1]);
 					             $('#text_hidden').val(item.label);
 					             $('#districtsId_hidden').val(id.split("-")[1]);
@@ -184,10 +185,10 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
 					}
 					
 				});
-		});
+		}
 		// Expand All
         $('#ExpandAll').click(function () {
-            $('#jqxTree').jqxTree('expandAll');
+           $('#jqxTree').jqxTree('expandAll');
         });
 
         // Collapse All
@@ -197,15 +198,63 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
         
         //保存
         $("#sub").click(function (){
-        	 $.ajax({ 
+        	var text_org = $("#text_org").val();
+        	var districtsId = $("#districtsId").val();
+        	var districtsNmae = $("#districtsNmae").val();
+        	var flag = true;
+        	if(text_org==""){
+        		alert("所属辖区机构名称不能为空，请从机构列表中选择！");
+        		flag = false;
+        		return flag;
+        	}else{
+        		if(districtsId.length==10){
+        			alert("不能创建新机构！");
+        			flag = false;
+        			return flag;
+        		}
+        	}
+        	if(districtsNmae==""){
+        		alert("请填写新增机构名称！");
+        		flag = false;
+        		return flag;
+        	}
+        	if(flag){
+        	  $.ajax({ 
 		            type: "post", 
 		            url: "<%=basePath%>page/html/content/sys/saveDistricts.action",
 					dataType : "json",
+					async : false, //必须同步等返回值
 					data : $("#myForm").serialize(),
 					success : function(data) {
-						
+						var msg = data.msg;
+						alert(msg);	
+						location.reload();
 					}
         	 });
+        	}
         });
 	});
+function v_districtsNmae(){
+	var districtsNmae = $("#districtsNmae").val();
+	if(districtsNmae != ""){
+		$.ajax({ 
+	        type: "post", 
+	        url: "<%=basePath%>page/html/content/sys/findDistricts.action",
+			dataType : "json",
+			async : false, //必须同步等返回值
+			data : $("#myForm").serialize(),
+			success : function(data) {
+				var ds = data.ds;
+				var r = data.r;
+				if(r=="1"){
+					$("#sub").attr("disabled",true);
+					alert("机构编号：" + ds.districtsCode + ", 机构名称：" + ds.districtsNmae + ",已经存在！");
+				}else if(r=="0"){
+					$("#sub").attr("disabled",false);
+				}
+			}
+	        
+	 	});
+	}
+}
 </script>

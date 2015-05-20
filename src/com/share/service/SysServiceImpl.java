@@ -78,4 +78,24 @@ public class SysServiceImpl implements SysService {
 			sysDistrictDAO.save(o);
 		}
 	}
+	public List<DistrictsDTO> querySYSDistrict(DistrictsDTO districtsDTO){
+		List<DistrictsDTO> ds = new ArrayList<DistrictsDTO>();
+		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.districtsNmae=? ";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = "1";
+		param[1] = districtsDTO.getDistrictsNmae();
+		List<SysDistrict> sds= sysDistrictDAO.find(hql, param);
+		for(SysDistrict e : sds){
+			DistrictsDTO m = new DistrictsDTO();
+			m.setDistrictsId(e.getDistrictsId());
+			m.setDistrictsCode(e.getDistrictsCode());
+			m.setDistrictsNmae(e.getDistrictsNmae());
+			m.setFlag(e.getFlag());
+			m.setFullname(e.getFullname());
+			m.setParentId(e.getParentId());
+			ds.add(m);
+		}
+		return ds;
+	}
 }

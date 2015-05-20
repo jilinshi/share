@@ -31,9 +31,9 @@ public class SysAction extends ActionSupport {
 	private Map map;// 返回的json
 	private String parentid;
 	private DistrictsDTO districtsDTO;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String findOrgList(){
+	public String findOrgList() {
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? order by sd.districtsId";
 		Object[] param = null;
 		param = new Object[1];
@@ -44,19 +44,20 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String findOrgListALL(){
+	public String findOrgListALL() {
 		Map jsonMap = new HashMap();
-		List<DistrictsDTO>  orgs = findChildOrgList(parentid);
-		net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(orgs);
-		//System.out.println(jsonArray);
+		List<DistrictsDTO> orgs = findChildOrgList(parentid);
+		net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray
+				.fromObject(orgs);
+		// System.out.println(jsonArray);
 		jsonMap.put("orgs", orgs);
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
-	private List<DistrictsDTO> findChildOrgList(String parentid){
+
+	private List<DistrictsDTO> findChildOrgList(String parentid) {
 		List<DistrictsDTO> templist = new ArrayList<DistrictsDTO>();
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.parentId=? and sd.flag=? order by sd.districtsId";
 		Object[] param = null;
@@ -64,19 +65,38 @@ public class SysAction extends ActionSupport {
 		param[0] = parentid;
 		param[1] = "1";
 		List<DistrictsDTO> list = sysService.querySYSDistrict(hql, param);
-		for(DistrictsDTO e: list){
+		for (DistrictsDTO e : list) {
 			templist.add(e);
-			templist.addAll(findChildOrgList(e.getDistrictsId()));			
+			templist.addAll(findChildOrgList(e.getDistrictsId()));
 		}
 
 		return templist;
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String saveDistricts() {
+		Map jsonMap = new HashMap();
+		try {
+			sysService.saveSYSDistrict(districtsDTO);
+			jsonMap.put("msg", "保存成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String saveDistricts(){
-		sysService.saveSYSDistrict(districtsDTO);
+	public String findDistricts() {
+		List<DistrictsDTO> ds = sysService.querySYSDistrict(districtsDTO);
 		Map jsonMap = new HashMap();
-		jsonMap.put("msg", "保存成功！");
+		if(ds.size()>0){
+			jsonMap.put("ds", ds.get(0));
+			jsonMap.put("r", "1");
+		}else{
+			jsonMap.put("r", "0");
+		}
 		map = jsonMap;
 		return SUCCESS;
 	}
