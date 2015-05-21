@@ -31,6 +31,7 @@ public class SysAction extends ActionSupport {
 	private Map map;// ·µ»ØµÄjson
 	private String parentid;
 	private DistrictsDTO districtsDTO;
+	private String districtsId;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findOrgList() {
@@ -100,6 +101,19 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String removeDistricts() {
+		int u = sysService.updateSYSDistrict(districtsId);
+		Map jsonMap = new HashMap();
+		if(u>0){
+			jsonMap.put("msg", "É¾³ý³É¹¦£¡");
+		}else{
+			jsonMap.put("msg", "É¾³ýÊ§°Ü£¡");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -125,6 +139,14 @@ public class SysAction extends ActionSupport {
 
 	public void setDistrictsDTO(DistrictsDTO districtsDTO) {
 		this.districtsDTO = districtsDTO;
+	}
+
+	public String getDistrictsId() {
+		return districtsId;
+	}
+
+	public void setDistrictsId(String districtsId) {
+		this.districtsId = districtsId;
 	}
 
 }

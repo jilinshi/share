@@ -52,5 +52,11 @@
 				<param name="root">map</param>
 			</result>
 		</action>	
+		<action name="removeDistricts" method="removeDistricts"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

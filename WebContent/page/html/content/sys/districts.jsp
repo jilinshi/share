@@ -30,6 +30,11 @@
 								<i class="ace-icon fa fa-minus green"></i>合并
 							</button>
 						</div>
+						<div class="btn-group">
+							<button class="btn btn-sm btn-success btn-white btn-round" id="Remove">
+								<i class="ace-icon fa fa-close green"></i>删除
+							</button>
+						</div>
 					</div>
 				</div>
 				<div class="widget-main padding-8" style=" overflow: hidden; border: none;" id='jqxTree'>
@@ -194,6 +199,27 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
         // Collapse All
         $('#CollapseAll').click(function () {
             $('#jqxTree').jqxTree('collapseAll');
+        });
+        
+        //
+        $('#Remove').click(function () {
+        	var districtsId = $("#districtsId").val();
+        	if(districtsId==""){
+        		alert("请选择机构！");
+        	}else{
+	        	$.ajax({ 
+		            type: "post", 
+		            url: "<%=basePath%>page/html/content/sys/removeDistricts.action",
+					dataType : "json",
+					async : false, //必须同步等返回值
+					data : {districtsId:districtsId},
+					success : function(data) {
+						var msg = data.msg;
+						alert(msg);	
+						location.reload();
+					}
+	    	 	});
+        	}
         });
         
         //保存

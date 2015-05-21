@@ -8,4 +8,5 @@ public interface SysService {
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param);
 	public void saveSYSDistrict(DistrictsDTO districtsDTO);
 	public List<DistrictsDTO> querySYSDistrict(DistrictsDTO districtsDTO);
+	public int updateSYSDistrict(String id);
 }

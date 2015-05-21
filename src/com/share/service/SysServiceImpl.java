@@ -78,6 +78,7 @@ public class SysServiceImpl implements SysService {
 			sysDistrictDAO.save(o);
 		}
 	}
+	
 	public List<DistrictsDTO> querySYSDistrict(DistrictsDTO districtsDTO){
 		List<DistrictsDTO> ds = new ArrayList<DistrictsDTO>();
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.districtsNmae=? ";
@@ -97,5 +98,31 @@ public class SysServiceImpl implements SysService {
 			ds.add(m);
 		}
 		return ds;
+	}
+	
+	public int updateSYSDistrict(String id){
+		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.parentId=? ";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = "1";
+		param[1] = id;
+		List<SysDistrict> sds= sysDistrictDAO.find(hql, param);
+		String hql_u = "";
+		Object[] param_u = null;
+		if(sds.size()>0){
+			hql_u = " update SysDistrict sd set sd.flag=? where sd.districtsId=? or sd.parentId=? ";
+			param_u = new Object[3];
+			param_u[0] = "0";
+			param_u[1] = id;
+			param_u[2] = id;
+		}else{
+			hql_u = " update SysDistrict sd set sd.flag=? where sd.districtsId=? ";
+			param_u = new Object[2];
+			param_u[0] = "0";
+			param_u[1] = id;
+		}
+		int u = sysDistrictDAO.update(hql_u, param_u);
+		
+		return u;
 	}
 }
