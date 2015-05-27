@@ -15,7 +15,7 @@ public class OrganizationDTO {
 
 	private String orgName;
 
-	private BigDecimal parentId;
+	private String parentId;
 
 	private Timestamp utime;
 	
@@ -63,11 +63,11 @@ public class OrganizationDTO {
 		this.orgName = orgName;
 	}
 
-	public BigDecimal getParentId() {
+	public String getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(BigDecimal parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 

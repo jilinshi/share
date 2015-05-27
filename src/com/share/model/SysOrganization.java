@@ -18,8 +18,6 @@ public class SysOrganization implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SYS_ORGANIZATION_ORGID_GENERATOR", sequenceName="SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SYS_ORGANIZATION_ORGID_GENERATOR")
 	@Column(name="ORG_ID", unique=true, nullable=false, precision=12)
 	private long orgId;
 
@@ -35,7 +33,7 @@ public class SysOrganization implements Serializable {
 	private String orgName;
 
 	@Column(name="PARENT_ID", precision=12)
-	private BigDecimal parentId;
+	private String parentId;
 
 	private Timestamp utime;
 
@@ -91,11 +89,11 @@ public class SysOrganization implements Serializable {
 		this.orgName = orgName;
 	}
 
-	public BigDecimal getParentId() {
+	public String getParentId() {
 		return this.parentId;
 	}
 
-	public void setParentId(BigDecimal parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 

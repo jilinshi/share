@@ -1,5 +1,6 @@
 package com.share.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.model.SysDistrict;
 import com.share.model.SysOrganization;
+import com.share.util.PrimaryKey;
 import com.share.util.StringFormat;
 
 @Service("SysService")
@@ -152,15 +154,48 @@ public class SysServiceImpl implements SysService {
 	@Override
 	public void saveSYSOrg(OrganizationDTO organizationDTO){
 		//查询
-		String hql = " select so from SysOrganization so where 1=1 and so.flag=? and so.orgId=? ";
+		String hql = " select so from SysOrganization so where 1=1 and so.flag=? and so.parentId=? order by so.orgId desc";
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = "1";
-		param[1] = organizationDTO.getOrgId();
-		SysOrganization so= sysOrganizationDAO.find(hql, param).get(0);
-		//保存机构表
+		param[1] = organizationDTO.getOrgId()+"";
+		List<SysOrganization> sos =  sysOrganizationDAO.find(hql, param);
+		String preid="";
+		String orgid="";
+		String maxvalue="";
+		String key="";
 		SysOrganization o = new SysOrganization();
-		
+		SysDistrict s = new SysDistrict();
+		if(sos.size()>0){
+			SysOrganization so= sysOrganizationDAO.find(hql, param).get(0);
+			//保存机构表
+			preid = so.getParentId().toString();
+			orgid = so.getOrgId()+"";
+			maxvalue = orgid.substring(preid.length());
+			key = PrimaryKey.nextKey(preid, maxvalue);
+			
+			o.setParentId(so.getParentId());
+		}else{
+			orgid = organizationDTO.getOrgId()+"";
+			int prikey_len=orgid.length();
+			if(prikey_len==2){
+				maxvalue="00";
+	        }else if(prikey_len==4){
+	        	maxvalue="00";
+	        }else if(prikey_len==6){
+	        	maxvalue="000";
+	        }else if(prikey_len==8||prikey_len==9){
+	        	maxvalue="000";
+	        }
+			key =  PrimaryKey.nextKey(orgid, maxvalue);
+			o.setParentId(orgid);
+		}
+		s.setDistrictsId(organizationDTO.getParentId());
+		o.setOrgCode(StringFormat.getformatting12(key));
+		o.setOrgName(organizationDTO.getOrgName());
+		o.setSysDistrict(s);
+		o.setOrgId(Long.valueOf(key));
+		o.setFlag("1");
 		sysOrganizationDAO.save(o);
 	}
 }

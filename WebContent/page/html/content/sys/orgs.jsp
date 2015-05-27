@@ -103,6 +103,7 @@
 							<div class="col-sm-8">
 								<input type="text" id="orgId" placeholder="所属辖区机构编号" class="col-xs-10 col-sm-10" disabled/>
 								<input type="hidden" id="orgId_hidden" name="organizationDTO.orgId" placeholder="所属辖区机构编号" class="col-xs-10 col-sm-10"/>
+								<input type="hidden" id="preId_hidden" name="organizationDTO.parentId" placeholder="所属辖区机构编号" class="col-xs-10 col-sm-10"/>
 							</div>
 						</div>
 						<br/>
@@ -203,11 +204,12 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		});
 	};
 	function zTreeOnClick_org(event, treeId, treeNode){
-		 alert(treeNode.id + "," + treeNode.pId + ", " + treeNode.name);
+		 $("#orgName").val("");
 		 $("#orgNameParent").val(treeNode.name);
 		 $("#orgNameParent_hidden").val(treeNode.name);
 		 $("#orgId").val(treeNode.id);
 		 $("#orgId_hidden").val(treeNode.id);
+		 $("#preId_hidden").val(treeNode.pId);
 	};
 	// Expand All
     $('#ExpandAll').click(function () {
@@ -245,6 +247,9 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				success : function(data) {
 					var msg = data.msg;
 					alert(msg);
+					var treeObj = $.fn.zTree.getZTreeObj("treeDemo_org");
+					treeObj.refresh();
+
 				}
  	 });
     });

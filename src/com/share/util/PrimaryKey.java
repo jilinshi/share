@@ -67,7 +67,7 @@ public class PrimaryKey {
 	     *         KeyInc为true时， 下一个主键字符串返回最大数 + 1  
 	     *         KeyInc为false时， 返回空值  
 	     */  
-	    private static synchronized String nextKey(String prikey, String mvalue) {   
+	    public static synchronized String nextKey(String prikey, String mvalue) {   
 	        
 	    	//初始化
 	    	int prikey_len = prikey.trim().length();
@@ -213,18 +213,18 @@ public class PrimaryKey {
 	    
 	    private static synchronized boolean checkValue(String keyValue) {   
 	        if(keyValue != null && !keyValue.equals("")) { 
-	        	if(keyValue.length()!=keySize){
+	        	if((keyValue.length()==keySize)||(keyValue.length()+1==keySize)){
+	        		 for( int i = 0; i < keyValue.length(); i++ ) {   
+			                char symbol = keyValue.charAt(i);   
+			                if(symbol >= MIN_DATA && symbol <= MAX_DATA) {  
+			                    return true;
+			                }else{
+			                	return false;
+			                }
+			          }
+	        	}else{
 	        		System.out.println(keyValue+" : 长度不符合规则！"); 
 	        		return false;
-	        	}else{
-		            for( int i = 0; i < keyValue.length(); i++ ) {   
-		                char symbol = keyValue.charAt(i);   
-		                if(symbol >= MIN_DATA && symbol <= MAX_DATA) {  
-		                    return true;
-		                }else{
-		                	return false;
-		                }
-		            }
 	        	}
 	        }
 	        return false;   

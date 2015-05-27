@@ -187,19 +187,11 @@ public class SysAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findOrgList1() {
 		Map jsonMap = new HashMap();
-		String hql = " select so from SysOrganization so where 1=1 and so.orgId=? and so.flag=? order by so.orgId ";
-		Object[] param = null;
-		param = new Object[2];
-		param[0] = Long.valueOf(parentid);
-		param[1] = "1";
-		List<OrganizationDTO> list = sysService.querySYSOrgs(hql, param);
-		OrganizationDTO head = list.get(0);
-		List<OrganizationDTO> orgs = findChildOrgList(parentid);
-		orgs.add(head);
+		List<OrganizationDTO> orgs = findChildOrgList1(parentid);
 		List<ShortcutDTO> sl1 = new ArrayList<ShortcutDTO>();
 		for(OrganizationDTO e:orgs){
 			ShortcutDTO s = new ShortcutDTO();
-			s.setId(e.getDistrictsId());
+			s.setId(e.getOrgId()+"");
 			s.setpId(e.getParentId().toString());
 			if(parentid.toString().equals(e.getDistrictsId())){
 				s.setOpen(true);
@@ -212,6 +204,17 @@ public class SysAction extends ActionSupport {
 		jsonMap.put("orgs", sl1);
 		map = jsonMap;
 		return SUCCESS;
+	}
+	
+	private List<OrganizationDTO> findChildOrgList1(String parentid) {
+		String hql = " select so from SysOrganization so where 1=1 and so.orgId=? or so.parentId like ? and so.flag=? order by so.orgId";
+		Object[] param = null;
+		param = new Object[3];
+		param[0] = Long.valueOf(parentid);
+		param[1] = parentid+"%";
+		param[2] = "1";
+		List<OrganizationDTO> list = sysService.querySYSOrgs(hql, param);
+		return list;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

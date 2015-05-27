@@ -8,6 +8,13 @@ public class StringFormat {
 	  str_m=str_m + str.substring(str_m.length(), 10);
 	  return str_m;
 	}
+	
+	public static String getformatting12(String s){
+		  String str_m = String.valueOf(s); 
+		  String str ="000000000000";
+		  str_m=str_m + str.substring(str_m.length(), 12);
+		  return str_m;
+		}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
