@@ -14,63 +14,50 @@ public class PrimaryKey {
 	    // 数字串最大值   
 	    private static final char MAX_DATA = '9';   
 	    // 数字串默认从1开始   
-	    private static final char START_DATA = '1';   
-	    // 默认长度   
-	    private static final int DEFAULT_SIZE = 8;   
-	    // KeySize的最大数   
-	    // Long的最大长度是19位，防止溢出   
-	    private static final int MAX_KEYSIZE_VALUE = 18;   
-	    // 默认字符串Head   
-	    private static final String DEFAULT_HEAD = "KEY";   
+	    private static final char START_DATA = '1';    
 	    // 主键字符串头部   
-	    private String keyHead;   
+	    private static String keyHead;   
 	    // 字符串数字位数，不足补0   
-	    private Integer keySize = 8;   
+	    private static Integer keySize = 0;   
 	    // 是否允许数字最大之后自增，默认false   
-	    private boolean keyInc = false;   
+	    private static boolean keyInc = false;
+	    // 字符串数字位数
+	    private static String maxvalue;
 	    // 程序执行开始系统时间   
-	    private Long startExecute = 0L;   
+	    private static Long startExecute = 0L;   
 	    // 程序执行结束系统时间   
-	    private Long finishExecute = 0L;   
-	       
+	    private static Long finishExecute = 0L;   
+	    
 	    /**  
 	     * 初始化主键字符串格式，默认达到KeySize后不可自增  
 	     * @param keyHead 字符串开头部分  
 	     * @param keySize 字符串数组长度  
 	     */  
-	    public PrimaryKey(String keyHead, Integer keySize) {   
+	    public PrimaryKey(String prikey, String maxvalue) {   
 	        super();   
 	        /**  
 	         * 设置不可自增  
-	         */  
-	        if(this.checkSize(keySize))   
-	            this.keySize = keySize;   
-	        else  
-	            this.keySize = this.DEFAULT_SIZE;   
-	        if(this.checkHead(keyHead))   
-	            this.keyHead = keyHead;   
-	        else  
-	            this.keyHead = this.DEFAULT_HEAD;   
-	    }   
-	  
-	    /**  
-	     * 初始化主键字符串的格式  
-	     * @param keyHead 字符串开头部分  
-	     * @param keySize 字符串数组长度  
-	     * @param keyInc 数值最大值之后是否允许自增  
-	     */  
-	    public PrimaryKey(String keyHead, Integer keySize, boolean keyInc) {   
-	        super();   
-	        if(this.checkSize(keySize))   
-	            this.keySize = keySize;   
-	        else  
-	            this.keySize = this.DEFAULT_SIZE;   
-	        if(this.checkHead(keyHead))   
-	            this.keyHead = keyHead;   
-	        else  
-	            this.keyHead = this.DEFAULT_HEAD;   
-	        this.keyInc = keyInc;   
-	    }   
+	         */
+	        int prikey_len = prikey.trim().length();
+	        Integer keySize=2;
+	        if(prikey_len==2){
+	        	this.keySize = keySize;   
+	        }else if(prikey_len==4){
+	        	this.keySize = keySize;
+	        }else if(prikey_len==6){
+	        	this.keySize = keySize+1;
+	        }else if(prikey_len==8||prikey_len==9){
+	        	this.keySize = keySize+1;
+	        }else{
+	        	System.out.println("不符合规则");
+	        }
+	        if(this.checkValue(maxvalue)){
+	        	this.maxvalue = maxvalue;
+	        }
+	        if(this.checkHead(prikey)){   
+	            this.keyHead = prikey;   
+	    	}
+	    }    
 	       
 	    /**  
 	     * 返回下一个字符串  
@@ -80,44 +67,69 @@ public class PrimaryKey {
 	     *         KeyInc为true时， 下一个主键字符串返回最大数 + 1  
 	     *         KeyInc为false时， 返回空值  
 	     */  
-	    public synchronized String nextKey(String currentKey) {   
-	           
+	    private static synchronized String nextKey(String prikey, String mvalue) {   
+	        
+	    	//初始化
+	    	int prikey_len = prikey.trim().length();
+	        Integer Size=2;
+	        if(prikey_len==2){
+	        	keySize = Size;   
+	        }else if(prikey_len==4){
+	        	keySize = Size;
+	        }else if(prikey_len==6){
+	        	keySize = Size+1;
+	        }else if(prikey_len==8||prikey_len==9){
+	        	keySize = Size+1;
+	        }else{
+	        	System.out.println("不符合规则");
+	        	return null;
+	        }
+	        if(checkValue(mvalue)){
+	        	maxvalue = mvalue;
+	        }else{
+	        	return null;
+	        }
+	        if(checkHead(prikey)){   
+	            keyHead = prikey;   
+	    	}else{
+	    		return null;
+	    	}
+	        
 	        // 记录开始执行程序系统时间   
-	        this.startExecute = System.currentTimeMillis();   
+	        startExecute = System.currentTimeMillis();   
 	        try {   
 	            /**  
 	             * 去掉首尾空字符  
 	             */  
-	            currentKey = currentKey.trim();   
-	            if(!this.check(currentKey)) {   
-	                System.out.println(PrimaryKey.class.getSimpleName() +    
-	                        " Error: Input CurrentKey Str Type Illegal, Check '" + currentKey +"' is Right!");   
+	        	maxvalue = maxvalue.trim();   
+	            if(!check(maxvalue)) {   
+	                System.out.println(maxvalue+" : 不符合规则！"); 
 	                return null;   
 	            }   
 	            StringBuilder sb = new StringBuilder();   
-	            sb.append(this.keyHead);   
+	            sb.append(keyHead);   
 	            int charIndex = 0;   
-	            for(int i = 0; i < currentKey.length(); i++) {   
-	                char symbol = currentKey.charAt(i);   
-	                if(symbol >= this.MIN_DATA && symbol <= this.MAX_DATA) {   
+	            for(int i = 0; i < maxvalue.length(); i++) {   
+	                char symbol = maxvalue.charAt(i);   
+	                if(symbol >= MIN_DATA && symbol <= MAX_DATA) {   
 	                    charIndex = i;   
 	                    break;   
 	                }   
 	            }   
-	            String dataStr = currentKey.substring(charIndex, currentKey.length());   
+	            String dataStr = maxvalue.substring(charIndex, maxvalue.length());   
 	            Long dataNum = Long.valueOf(dataStr);   
 	            dataNum++;   
-	            if(dataNum < this.splitDataPosition()) {   
-	                for(int i = 0; i <= this.keySize - String.valueOf(dataNum).length() - 1; i++) {   
-	                    sb.append(this.MIN_DATA);   
+	            if(dataNum < splitDataPosition()) {   
+	                for(int i = 0; i <= keySize - String.valueOf(dataNum).length() - 1; i++) {   
+	                    sb.append(MIN_DATA);   
 	                }   
 	                sb.append(dataNum);   
-	            }else if(dataNum >= this.splitDataPosition() &&    
-	                    dataNum < this.maxDateNumber()) {   
+	            }else if(dataNum >= splitDataPosition() &&    
+	                    dataNum < maxDateNumber()) {   
 	                sb.append(dataNum);   
 	            }else{   
 	                // 超过大小最大数时   
-	                if(this.keyInc) {   
+	                if(keyInc) {   
 	                    sb.append(dataNum);   
 	                }else{   
 	                    // 允许自增标志位false的时候返回空值   
@@ -129,35 +141,21 @@ public class PrimaryKey {
 	            System.out.println(e.toString());   
 	            return null;   
 	        } finally {   
-	            this.finishExecute = System.currentTimeMillis();   
+	            finishExecute = System.currentTimeMillis();   
 //	          System.out.println(PrimaryKey.class.getSimpleName() + " nextKey() Execute: "   
 //	                  + (this.finishExecute - this.startExecute) +"ms.");   
 	        }   
 	    }   
 	       
 	    /**  
-	     * 获取初始化字符串  
-	     * @return  
-	     */  
-	    public synchronized String initStartKey() {   
-	        StringBuilder sb = new StringBuilder();   
-	        sb.append(this.keyHead);   
-	        for(int i = 0; i < this.keySize - 1; i++) {   
-	            sb.append(this.MIN_DATA);   
-	        }   
-	        sb.append(this.START_DATA);   
-	        return sb.toString();   
-	    }   
-	       
-	    /**  
 	     * 获取需要补零的最大数字  
 	     * @return  
 	     */  
-	    private Long splitDataPosition() {   
+	    private static Long splitDataPosition() {   
 	        StringBuilder sb = new StringBuilder();   
-	        sb.append(this.START_DATA);   
-	        for(int i = 0; i < this.keySize - 1; i++) {   
-	            sb.append(this.MIN_DATA);   
+	        sb.append(START_DATA);   
+	        for(int i = 0; i < keySize - 1; i++) {   
+	            sb.append(MIN_DATA);   
 	        }   
 	        return Long.valueOf(sb.toString());   
 	    }   
@@ -166,10 +164,10 @@ public class PrimaryKey {
 	     * 获取最大数  
 	     * @return  
 	     */  
-	    private Long maxDateNumber() {   
+	    private static Long maxDateNumber() {   
 	        StringBuilder sb = new StringBuilder();   
-	        for(int i = 0; i < this.keySize; i++) {   
-	            sb.append(this.MAX_DATA);   
+	        for(int i = 0; i < keySize; i++) {   
+	            sb.append(MAX_DATA);   
 	        }   
 	        return Long.valueOf(sb.toString());   
 	    }   
@@ -180,75 +178,62 @@ public class PrimaryKey {
 	     * @return  
 	     * @throws Exception   
 	     */  
-	    private boolean check(String key) throws Exception {       
+	    private static boolean check(String key) throws Exception { 
 	        try {   
 	            // 空值验证   
 	            if(key == null || key.equals(""))    
 	                return false;   
 	            // key字符串长度验证   
-	            if(key.length() <= this.keyHead.length())    
+	            if(key.length() > keySize)    
 	                return false;   
-	            // 是否符合初始化串开头验证   
-	            String head = key.substring(0, this.keyHead.length()); 
-	            if(!head.equals(this.keyHead))    
-	                return false;   
-	            /**  
-	             * 串数字长度验证，当允许最大熟自增时候不检测  
-	             * 当不允许达到最大数字时验证长度合法性  
-	             */  
-	            String data = key.substring(this.keyHead.length(), key.length());   
-	            if(data.length() != this.keySize && !this.keyInc)   
-	                return false;   
-	            // 验证是否是数字串，通过一个转换变量   
-	            for(int i = 0; i < data.length(); i++) {   
-	                char symbol = data.charAt(i);   
-	                if(symbol > this.MAX_DATA || symbol < this.MIN_DATA) {   
-	                    return false;   
-	                }   
-	            }   
-	            return true;               
 	        } catch (Exception e) {    
 	            throw e;   
-	        }   
+	        }
+	    	return true;
 	    }   
 	       
 	    /**  
-	     * 验证输入的KeySize合法性  
-	     * @param keySize  
-	     * @return  
-	     */  
-	    private synchronized boolean checkSize(Integer keySize) {   
-	        if(keySize != null && keySize > 0    
-	                && keySize <= this.MAX_KEYSIZE_VALUE)   
-	            return true;   
-	        return false;   
-	    }   
-	       
-	    /**  
-	     * 验证输入的KeyHead，条件全部要求是字母  
+	     * 验证输入的KeyHead，条件全部要求是数字 
 	     * @param keyHead  
 	     * @return  
 	     */  
-	    private synchronized boolean checkHead(String keyHead) {   
+	    private static synchronized boolean checkHead(String keyHead) {   
 	        if(keyHead != null && !keyHead.equals("")) {   
-	            for(int i = 0; i < keyHead.length(); i++) {   
+	            for(int i = 0; i < keyHead.length(); i++) {
 	                char symbol = keyHead.charAt(i);   
-	                if(symbol >= this.MIN_DATA && symbol <= this.MAX_DATA) {   
-	                    return false;   
-	                }   
-	            }   
-	            return true;   
-	        }   
-	        return true;   
-	    }   
+	                if(symbol >= MIN_DATA && symbol <= MAX_DATA) {  
+	                    return true;   
+	                }else{
+	                	return false;
+	                }
+	            }    
+	        }
+	        return false;   
+	    }
+	    
+	    private static synchronized boolean checkValue(String keyValue) {   
+	        if(keyValue != null && !keyValue.equals("")) { 
+	        	if(keyValue.length()!=keySize){
+	        		System.out.println(keyValue+" : 长度不符合规则！"); 
+	        		return false;
+	        	}else{
+		            for( int i = 0; i < keyValue.length(); i++ ) {   
+		                char symbol = keyValue.charAt(i);   
+		                if(symbol >= MIN_DATA && symbol <= MAX_DATA) {  
+		                    return true;
+		                }else{
+		                	return false;
+		                }
+		            }
+	        	}
+	        }
+	        return false;   
+	    }
 	    
 	    
 	    public static void main(String[] args) {
-			PrimaryKey pk = new PrimaryKey("", 3);
-			String str = "199";
-			String str1 = pk.nextKey(str);
+			String str1 = PrimaryKey.nextKey("212102", "0010");
 			System.out.println(str1);
-			
-			
+
 		}
 }
