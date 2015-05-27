@@ -57,13 +57,26 @@
 						<option value="1">城市</option>
 						<option value="2">农村</option>
 						</select>
-				&nbsp;
+					&nbsp;
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
+				<br><br>
 					<a href="<%=basePath%>downloadExcel.action?fileName=社保核对数据" class="btn btn btn-sm">
-						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对数据
 					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadCSV.action?fileName=社保核对数据" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对数据
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadExcel.action?fileName=社保核对数据" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对结果
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadCSV.action?fileName=社保核对数据" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对结果
+					</a>		
       		</div>
 		</form>
 			</div>

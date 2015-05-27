@@ -377,24 +377,27 @@ public class ImpAction extends ActionSupport {
 			temphql = "";
 		}
 
-		if (!"".equals(begintime) && !"null".equals(begintime)) {
+		if (!"".equals(begintime) && !"null".equals(begintime)
+				&& null != begintime) {
 			temphql = temphql + " and t.col9 < '" + begintime + "'";
-		}
-		if (!"".equals(endtime) && !"null".equals(endtime)) {
+		} else if (!"".equals(endtime) && !"null".equals(endtime)
+				&& null != endtime) {
 			temphql = temphql + " and t.col9 > '" + endtime + "'";
-		}
+		} else
 
 		if (!"".equals(begintime) && !"".equals(endtime)
-				&& !"null".equals(begintime) && !"null".equals(endtime)) {
+				&& !"null".equals(begintime) && !"null".equals(endtime)
+				&& null != endtime && null != begintime) {
 			temphql = temphql + " and t.col9 between '" + begintime
 					+ " 00:00:01' and '" + endtime + " 23:59:59'";
+		} else {
 		}
 
-		if (!"".equals(onno) && !"null".equals(onno)) {
+		if (!"".equals(onno) && !"null".equals(onno) && null != onno) {
 			temphql = temphql + " and t.col1 like '" + onno + "%'";
 		}
 
-		if (!"".equals(ds) && !"null".equals(ds)) {
+		if (!"".equals(ds) && !"null".equals(ds) && null != ds) {
 			temphql = temphql + " and t.ds = '" + ds + "'";
 		}
 
