@@ -9,11 +9,15 @@
 	String _pagetype="PpInsurance";
 %>
 <title>核对结果导出</title>
-<link rel="stylesheet" href=".<%=basePath%>assets/css/jquery-ui.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-multiselect.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/select2.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/chosen.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-timepicker.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-datetimepicker.css" />
 
 <!-- ajax layout which only needs content area -->
 <div class="row">
@@ -25,7 +29,7 @@
 			<div class="widget-main">
 			 <form class="form-inline" role="form" id="searchform">	 
 			<div class="form-group">
-				<label for="imptype">选择导出类别</label>
+				<label for="imptype">选择导出类别：</label>
 		      	<select id="imptype" name="imptype" class="multiselect">
 		      			<option value="-1">全部</option>
 						<option value="1" selected="selected">新增低保</option>
@@ -35,7 +39,7 @@
 						<option value="5">分类施保</option>
 						<option value="6">边缘户</option>
 				</select>&nbsp;
-				<label for="impkind">是否关联核对数据</label>
+				<label for="impkind">是否关联核对数据：</label>
 		      	<select id="impkind" name="impkind" class="multiselect">
 						<option value="1">是</option>
 						<option value="0">否</option>
@@ -43,21 +47,15 @@
 				<input type="text" name="begintime" id="begintime" class="form-control" readonly="readonly"/>
 				至
 				<input type="text" name ="endtime" id="endtime" class="form-control"  readonly="readonly"/>
+ 
 				&nbsp;
-				来源：<select id="ds" name="ds" class="select2" data-placeholder="选择...">
+				<label for="form-field-select">所属：</label>
+					<select  class="chosen-select" id="form-field-select" name="onno" data-placeholder="请选择 . . .">
+					</select>&nbsp;
+					来源：<select id="ds" name="ds" class="select2" data-placeholder="选择...">
 						<option value="">全部</option>
 						<option value="1">城市</option>
 						<option value="2">农村</option>
-						</select>
-				&nbsp;
-				所属：<select id="onno" name="onno" class="select2" data-placeholder="选择所属...">
-						<option value="">全部</option>
-						<option value="220201">昌邑区</option>
-						<option value="220202">船营区</option>
-						<option value="220203">龙潭区</option>
-						<option value="220204">丰满区</option>
-						<option value="220205">高新区</option>
-						<option value="220206">经开区</option>
 						</select>
 				&nbsp;
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
@@ -91,6 +89,7 @@
 <script type="text/javascript">
 var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+		chosen_Init();
 		var rcount=0;
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
@@ -216,5 +215,23 @@ $.fn.serializeObject = function()
    });    
    return o;    
 };  
-
+function chosen_Init(){
+	$.ajax({
+		type : "post",
+		dataType : "json",
+		url : "<%=basePath%>page/html/content/report/getOrgList.action",
+		success : function(data) {
+			var orgs = data.orgs;
+			var len = orgs.length;
+			var a = " ";
+			for(var i=0; i<len; i++){
+				var value = orgs[i].orgId;
+				var text = orgs[i].orgName;
+				a = a + "<option value='"+ value +"'>"+ text +"</option>";
+			}
+			$("#form-field-select").append("<option value=''></option>").append(a);
+			$("#form-field-select").chosen({allow_single_deselect:true});
+		}
+	});
+}
 </script>

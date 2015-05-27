@@ -81,6 +81,9 @@ public class PpHouseproperty implements Serializable {
 	private String remark;
 
 	private Timestamp updatetime;
+	
+	@Column(length = 256)
+	private String area;
 
 	public PpHouseproperty() {
 	}
@@ -259,6 +262,14 @@ public class PpHouseproperty implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 }

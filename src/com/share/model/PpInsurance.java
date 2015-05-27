@@ -1,7 +1,9 @@
 package com.share.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -107,6 +109,9 @@ public class PpInsurance implements Serializable {
 
 	@Column(length = 1024)
 	private String remark;
+	
+	@Column(length = 256)
+	private String area;
 
 	private Timestamp updatetime;
 
@@ -367,6 +372,14 @@ public class PpInsurance implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 }

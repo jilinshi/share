@@ -79,7 +79,10 @@ public class PpFund implements Serializable {
 
 	@Column(length=1024)
 	private String remark;
-
+	
+	@Column(length = 256)
+	private String area;
+	
 	private Timestamp updatetime;
 
 	public PpFund() {
@@ -260,5 +263,14 @@ public class PpFund implements Serializable {
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
 	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+	
 
 }

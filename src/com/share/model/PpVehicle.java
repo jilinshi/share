@@ -6,79 +6,81 @@ import javax.persistence.*;
 
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the PP_VEHICLE database table.
  * 
  */
 @Entity
-@Table(name="PP_VEHICLE")
-@NamedQuery(name="PpVehicle.findAll", query="SELECT p FROM PpVehicle p")
+@Table(name = "PP_VEHICLE")
+@NamedQuery(name = "PpVehicle.findAll", query = "SELECT p FROM PpVehicle p")
 public class PpVehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col1;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col2;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col3;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col4;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col5;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col6;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col7;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col8;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String col9;
 
-	@Column(length=4)
+	@Column(length = 4)
 	private String ds;
 
-	@Column(length=15)
+	@Column(length = 15)
 	private String id15;
 
-	@Column(length=18)
+	@Column(length = 18)
 	private String id18;
 
-	@Column(length=18)
+	@Column(length = 18)
 	private String idno;
 
-	@Column(length=20)
+	@Column(length = 20)
 	private String masterid;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String mastername;
 
-	@Column(length=128)
+	@Column(length = 128)
 	private String o1;
 
-	@Column(length=128)
+	@Column(length = 128)
 	private String o2;
 
-	@Column(length=128)
+	@Column(length = 128)
 	private String o3;
 	@Id
-	@Column(name="PI_ID", nullable=false, length=256)
+	@Column(name = "PI_ID", nullable = false, length = 256)
 	private String piId;
 
-	@Column(length=256)
+	@Column(length = 256)
 	private String pname;
 
-	@Column(length=1024)
+	@Column(length = 1024)
 	private String remark;
+
+	@Column(length = 256)
+	private String area;
 
 	private Timestamp updatetime;
 
@@ -259,6 +261,14 @@ public class PpVehicle implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 }

@@ -1,7 +1,9 @@
 package com.share.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -107,6 +109,9 @@ public class PpBurial implements Serializable {
 
 	@Column(length = 256)
 	private String telephone;
+	
+	@Column(length = 256)
+	private String area;
 
 	private Timestamp updatetime;
 
@@ -367,6 +372,14 @@ public class PpBurial implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 }
