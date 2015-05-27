@@ -18,6 +18,10 @@ public class OrganizationDTO {
 	private BigDecimal parentId;
 
 	private Timestamp utime;
+	
+	private String districtsId;
+	
+	private String orgNameParent;
 
 	public long getOrgId() {
 		return orgId;
@@ -73,6 +77,22 @@ public class OrganizationDTO {
 
 	public void setUtime(Timestamp utime) {
 		this.utime = utime;
+	}
+
+	public String getDistrictsId() {
+		return districtsId;
+	}
+
+	public void setDistrictsId(String districtsId) {
+		this.districtsId = districtsId;
+	}
+
+	public String getOrgNameParent() {
+		return orgNameParent;
+	}
+
+	public void setOrgNameParent(String orgNameParent) {
+		this.orgNameParent = orgNameParent;
 	}
 
 	

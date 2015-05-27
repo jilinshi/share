@@ -1,14 +1,12 @@
 package com.share.action.sys;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
-import net.sf.json.JSONArray;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.DistrictsDTO;
+import com.share.dto.OrganizationDTO;
+import com.share.dto.ShortcutDTO;
 import com.share.service.SysService;
 
 @Controller
@@ -32,24 +32,25 @@ public class SysAction extends ActionSupport {
 	private String parentid;
 	private DistrictsDTO districtsDTO;
 	private String districtsId;
+	private OrganizationDTO organizationDTO;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String findOrgList() {
+	public String findDistrictList() {
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? order by sd.districtsId";
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = "1";
 		List<DistrictsDTO> list = sysService.querySYSDistrict(hql, param);
 		Map jsonMap = new HashMap();
-		jsonMap.put("orgs", list);
+		jsonMap.put("districts", list);
 		map = jsonMap;
 		return SUCCESS;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String findOrgListALL() {
+	public String findDistrictListALL() {
 		Map jsonMap = new HashMap();
-		List<DistrictsDTO> orgs = findChildOrgList(parentid);
+		List<DistrictsDTO> orgs = findChildDistrictList(parentid);
 		net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray
 				.fromObject(orgs);
 		// System.out.println(jsonArray);
@@ -58,7 +59,7 @@ public class SysAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	private List<DistrictsDTO> findChildOrgList(String parentid) {
+	private List<DistrictsDTO> findChildDistrictList(String parentid) {
 		List<DistrictsDTO> templist = new ArrayList<DistrictsDTO>();
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.parentId=? and sd.flag=? order by sd.districtsId";
 		Object[] param = null;
@@ -68,7 +69,7 @@ public class SysAction extends ActionSupport {
 		List<DistrictsDTO> list = sysService.querySYSDistrict(hql, param);
 		for (DistrictsDTO e : list) {
 			templist.add(e);
-			templist.addAll(findChildOrgList(e.getDistrictsId()));
+			templist.addAll(findChildDistrictList(e.getDistrictsId()));
 		}
 
 		return templist;
@@ -114,6 +115,118 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	/*	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String findOrgList(){
+		String hql = " select so from SysOrganization so where 1=1 and so.flag=? and so.orgId=? order by so.orgId";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = "1";
+		param[1] = Long.valueOf(districtsId);
+		List<OrganizationDTO> list = sysService.querySYSOrgs(hql, param);
+		Map jsonMap = new HashMap();
+		jsonMap.put("orgs", list);
+		map = jsonMap;
+		return SUCCESS;
+	}*/
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String findOrgList() {
+		Map jsonMap = new HashMap();
+		List<OrganizationDTO> orgs = findChildOrgList(parentid);
+		net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray
+				.fromObject(orgs);
+		 System.out.println(jsonArray);
+		jsonMap.put("orgs", orgs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+
+	private List<OrganizationDTO> findChildOrgList(String parentid) {
+		List<OrganizationDTO> templist = new ArrayList<OrganizationDTO>();
+		String hql = " select so from SysOrganization so where 1=1 and so.parentId=? and so.flag=? order by so.orgId";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = new BigDecimal(parentid);
+		param[1] = "1";
+		List<OrganizationDTO> list = sysService.querySYSOrgs(hql, param);
+		for (OrganizationDTO e : list) {
+			templist.add(e);
+			templist.addAll(findChildOrgList(e.getDistrictsId()));
+		}
+
+		return templist;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String findDistrictList1(){
+		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? order by sd.districtsId ";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = "1";
+		List<DistrictsDTO> list = sysService.querySYSDistrict(hql, param);
+		List<ShortcutDTO> sl = new ArrayList<ShortcutDTO>();
+		for(DistrictsDTO e:list){
+			ShortcutDTO s = new ShortcutDTO();
+			s.setId(e.getDistrictsId());
+			s.setpId(e.getParentId());
+			if("-1".equals(e.getParentId())){
+				s.setOpen(true);
+			}else{
+				s.setOpen(false);
+			}
+			s.setName(e.getDistrictsNmae());
+			sl.add(s);
+		}
+		Map jsonMap = new HashMap();
+		jsonMap.put("districts", sl);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String findOrgList1() {
+		Map jsonMap = new HashMap();
+		String hql = " select so from SysOrganization so where 1=1 and so.orgId=? and so.flag=? order by so.orgId ";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = Long.valueOf(parentid);
+		param[1] = "1";
+		List<OrganizationDTO> list = sysService.querySYSOrgs(hql, param);
+		OrganizationDTO head = list.get(0);
+		List<OrganizationDTO> orgs = findChildOrgList(parentid);
+		orgs.add(head);
+		List<ShortcutDTO> sl1 = new ArrayList<ShortcutDTO>();
+		for(OrganizationDTO e:orgs){
+			ShortcutDTO s = new ShortcutDTO();
+			s.setId(e.getDistrictsId());
+			s.setpId(e.getParentId().toString());
+			if(parentid.toString().equals(e.getDistrictsId())){
+				s.setOpen(true);
+			}else{
+				s.setOpen(true);
+			}
+			s.setName(e.getOrgName());
+			sl1.add(s);
+		}
+		jsonMap.put("orgs", sl1);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String saveOrg(){
+		Map jsonMap = new HashMap();
+		try {
+			sysService.saveSYSOrg(organizationDTO);
+			jsonMap.put("msg", "保存成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -147,6 +260,14 @@ public class SysAction extends ActionSupport {
 
 	public void setDistrictsId(String districtsId) {
 		this.districtsId = districtsId;
+	}
+
+	public OrganizationDTO getOrganizationDTO() {
+		return organizationDTO;
+	}
+
+	public void setOrganizationDTO(OrganizationDTO organizationDTO) {
+		this.organizationDTO = organizationDTO;
 	}
 
 }

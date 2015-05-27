@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.share.dao.BaseDAO;
 import com.share.dto.DistrictsDTO;
+import com.share.dto.OrganizationDTO;
 import com.share.model.SysDistrict;
+import com.share.model.SysOrganization;
 import com.share.util.StringFormat;
 
 @Service("SysService")
@@ -17,6 +19,8 @@ public class SysServiceImpl implements SysService {
 
 	@Resource
 	private BaseDAO<SysDistrict> sysDistrictDAO;
+	@Resource
+	private BaseDAO<SysOrganization> sysOrganizationDAO;
 	
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -124,5 +128,39 @@ public class SysServiceImpl implements SysService {
 		int u = sysDistrictDAO.update(hql_u, param_u);
 		
 		return u;
+	}
+	
+	@Override
+	public List<OrganizationDTO> querySYSOrgs(String hql, Object[] param) {
+		List<OrganizationDTO> list = new ArrayList<OrganizationDTO>();
+		List<SysOrganization> rs = sysOrganizationDAO.find(hql, param);
+		for (SysOrganization s : rs) {
+			OrganizationDTO e = new OrganizationDTO();
+			e.setOrgId(s.getOrgId());
+			e.setOrgCode(s.getOrgCode());
+			e.setOrgName(s.getOrgName());
+			e.setDistrictsId(s.getSysDistrict().getDistrictsId());
+			e.setFlag(s.getFlag());
+			e.setCtime(s.getCtime());
+			e.setUtime(s.getUtime());
+			e.setParentId(s.getParentId());
+			list.add(e);
+		}
+		return list;
+	}
+	
+	@Override
+	public void saveSYSOrg(OrganizationDTO organizationDTO){
+		//查询
+		String hql = " select so from SysOrganization so where 1=1 and so.flag=? and so.orgId=? ";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = "1";
+		param[1] = organizationDTO.getOrgId();
+		SysOrganization so= sysOrganizationDAO.find(hql, param).get(0);
+		//保存机构表
+		SysOrganization o = new SysOrganization();
+		
+		sysOrganizationDAO.save(o);
 	}
 }

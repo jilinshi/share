@@ -15,7 +15,7 @@
 	<div class="col-sm-3">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header">
-				<h4 class="widget-title lighter smaller">机构列表</h4>
+				<h4 class="widget-title lighter smaller">行政区划列表</h4>
 			</div>
 			<div class="widget-body" style="border: none;">
 				<div class="widget-toolbox" id="widget-toolbox-1">
@@ -53,7 +53,7 @@
 	<div class="col-sm-9">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header">
-				<h4 class="widget-title lighter smaller">添加机构</h4>
+				<h4 class="widget-title lighter smaller">添加行政区划</h4>
 			</div>
 
 			<div class="widget-body">
@@ -63,28 +63,28 @@
 						<br/>
 						<!-- #section:elements.form -->
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属辖区机构名称 </label>
+							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属辖区行政区划名称 </label>
 
 							<div class="col-sm-9">
-								<input type="text" id="text_org" placeholder="请从机构列表中选择..." class="col-xs-10 col-sm-7" disabled/>
-								<input type="hidden" id="text_hidden" name="districtsDTO.text" placeholder="请从机构列表中选择..." class="col-xs-10 col-sm-7" />
+								<input type="text" id="text_org" placeholder="请从行政区划列表中选择..." class="col-xs-10 col-sm-7" disabled/>
+								<input type="hidden" id="text_hidden" name="districtsDTO.text" placeholder="请从行政区划列表中选择..." class="col-xs-10 col-sm-7" />
 							</div>
 						</div>
 						<br/>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属辖区机构编号 </label>
+							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属辖区行政区划编号 </label>
 
 							<div class="col-sm-9">
-								<input type="text" id="districtsId" placeholder="所属辖区机构编号" class="col-xs-10 col-sm-7" disabled/>
-								<input type="hidden" id="districtsId_hidden" name="districtsDTO.districtsId" placeholder="所属辖区机构编号" class="col-xs-10 col-sm-7"/>
+								<input type="text" id="districtsId" placeholder="所属辖区行政区划编号" class="col-xs-10 col-sm-7" disabled/>
+								<input type="hidden" id="districtsId_hidden" name="districtsDTO.districtsId" placeholder="所属辖区行政区划编号" class="col-xs-10 col-sm-7"/>
 							</div>
 						</div>
 						<br/>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 新增机构名称 </label>
+							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 新增行政区划名称 </label>
 
 							<div class="col-sm-9">
-								<input type="text" id="districtsNmae" name="districtsDTO.districtsNmae" placeholder="请输入机构名称..." class="col-xs-10 col-sm-7" onBlur="v_districtsNmae()"/>
+								<input type="text" id="districtsNmae" name="districtsDTO.districtsNmae" placeholder="请输入行政区划名称..." class="col-xs-10 col-sm-7" onBlur="v_districtsNmae()"/>
 							</div>
 						</div>
 						<br/><br/><br/>
@@ -123,16 +123,15 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
 			 $.ajaxSetup({cache:false});
 			 $.ajax({ 
 		            type: "post", 
-		            url: "<%=basePath%>page/html/content/sys/findOrgList.action",
+		            url: "<%=basePath%>page/html/content/sys/findDistrictList.action",
 					dataType : "json",
-					data :{parentid:-1},
 					lang:{loading:"数据加载中……"},  
 					async : false, //必须同步等返回值
 					success : function(data) {
 						var myspin = $("#myspin");
 						var mytree = $("#mytree");
 						mytree.css("display","none");
-						var myData = data.orgs;
+						var myData = data.districts;
 						var li = "";
 						 $.each(myData, function(key, val) {	
 							if(val.parentId=="-1"){
@@ -205,7 +204,7 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
         $('#Remove').click(function () {
         	var districtsId = $("#districtsId").val();
         	if(districtsId==""){
-        		alert("请选择机构！");
+        		alert("请选择行政区划！");
         	}else{
 	        	$.ajax({ 
 		            type: "post", 
@@ -229,18 +228,18 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
         	var districtsNmae = $("#districtsNmae").val();
         	var flag = true;
         	if(text_org==""){
-        		alert("所属辖区机构名称不能为空，请从机构列表中选择！");
+        		alert("所属辖区行政区划名称不能为空，请从行政区划列表中选择！");
         		flag = false;
         		return flag;
         	}else{
         		if(districtsId.length==10){
-        			alert("不能创建新机构！");
+        			alert("不能创建新行政区划！");
         			flag = false;
         			return flag;
         		}
         	}
         	if(districtsNmae==""){
-        		alert("请填写新增机构名称！");
+        		alert("请填写新增行政区划名称！");
         		flag = false;
         		return flag;
         	}
@@ -274,7 +273,7 @@ function v_districtsNmae(){
 				var r = data.r;
 				if(r=="1"){
 					$("#sub").attr("disabled",true);
-					alert("机构编号：" + ds.districtsCode + ", 机构名称：" + ds.districtsNmae + ",已经存在！");
+					alert("行政区划编号：" + ds.districtsCode + ", 行政区划名称：" + ds.districtsNmae + ",已经存在！");
 				}else if(r=="0"){
 					$("#sub").attr("disabled",false);
 				}

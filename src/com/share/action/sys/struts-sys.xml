@@ -28,13 +28,13 @@
 			<exception-mapping result="exception-error"
 				exception="java.lang.Exception"></exception-mapping>
 		</global-exception-mappings>
-		<action name="findOrgList" method="findOrgList"
+		<action name="findDistrictList" method="findDistrictList"
 			class="sysAction">
 			<result type="json">
 				<param name="root">map</param>
 			</result>
 		</action>
-		<action name="findOrgListALL" method="findOrgListALL"
+		<action name="findDistrictListALL" method="findDistrictListALL"
 			class="sysAction">
 			<result type="json">
 				<param name="root">map</param>
@@ -53,6 +53,30 @@
 			</result>
 		</action>	
 		<action name="removeDistricts" method="removeDistricts"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="findOrgList" method="findOrgList"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="findDistrictList1" method="findDistrictList1"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="findOrgList1" method="findOrgList1"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="saveOrg" method="saveOrg"
 			class="sysAction">
 			<result type="json">
 				<param name="root">map</param>
