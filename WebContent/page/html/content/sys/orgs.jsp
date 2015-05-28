@@ -10,6 +10,13 @@
 <link rel="stylesheet" href="<%=basePath%>assets/plugins/style.css" rel="stylesheet" type="text/css" />
 <!-- ajax layout which only needs content area -->
 <div class="row">
+	<div class="space-8"></div>
+	<div class="col-sm-12">
+	<div class="alert alert-block alert-success">
+		<i class="ace-icon fa fa-bullhorn"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+		①从行政区划列表中选择相应的行政区划；②再从组织机构列表选择相应的组织机构；③新增组织机构;
+	</div>
+	</div>
 	<div class="col-sm-3">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header">
@@ -34,7 +41,7 @@
 					</div>
 				</div>
 				<div class="widget-main padding-8" style=" overflow: hidden; border: none;" id='jqxTree'>
-					<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 340px;">
+					<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 300px;">
 						<div class="zTreeDemoBackground left">
 							<ul id="treeDemo" class="ztree"></ul>
 						</div>
@@ -67,7 +74,7 @@
 					</div>
 				</div>
 				<div class="widget-main padding-8" style=" overflow: hidden; border: none;" id='jqxTree_org'>
-					<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 340px;">
+					<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 300px;">
 						<div class="zTreeDemoBackground left">
 							<ul id="treeDemo_org" class="ztree"></ul>
 						</div>
@@ -83,7 +90,7 @@
 			</div>
 
 			<div class="widget-body">
-				<div class="widget-main padding-8"  style="height: 400px;">
+				<div class="widget-main padding-8"  style="height: 360px;">
 					<form class="form-horizontal" role="form" id="myForm">
 						<div class="space-4"></div>
 						<br/>
@@ -114,7 +121,7 @@
 								<input type="text" id="orgName" name="organizationDTO.orgName" placeholder="请输入机构名称..." class="col-xs-10 col-sm-10" />
 							</div>
 						</div>
-						<br/><br/><br/>
+						<br/>
 						<div class="clearfix form-actions" >
 							<div class="col-md-offset-3 col-md-9">
 								<button class="btn btn-info" type="button" id="sub">
