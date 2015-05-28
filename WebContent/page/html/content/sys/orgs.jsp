@@ -209,7 +209,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		 $("#orgNameParent_hidden").val(treeNode.name);
 		 $("#orgId").val(treeNode.id);
 		 $("#orgId_hidden").val(treeNode.id);
-		 $("#preId_hidden").val(treeNode.pId);
+		 $("#preId_hidden").val(treeNode.genId);
 	};
 	// Expand All
     $('#ExpandAll').click(function () {
@@ -238,19 +238,34 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
     });
     //保存
     $("#sub").click(function (){
-    	 $.ajax({ 
-	            type: "post", 
-	            url: "<%=basePath%>page/html/content/sys/saveOrg.action",
-				dataType : "json",
-				async : false, //必须同步等返回值
-				data : $("#myForm").serialize(),
-				success : function(data) {
-					var msg = data.msg;
-					alert(msg);
-					var treeObj = $.fn.zTree.getZTreeObj("treeDemo_org");
-					treeObj.refresh();
-
-				}
- 	 });
+    	var orgNameParent = $("#orgNameParent").val();
+    	var orgId = $("#orgId").val();
+    	var orgName = $("#orgName").val();
+    	var flag = true;
+    	if(orgNameParent==""){
+    		alert("所属辖区组织机构名称不能为空，请从组织机构列表中选择！");
+    		flag = false;
+    		return flag;
+    	}
+    	if(orgName==""){
+    		alert("请输入新增组织机构名称！");
+    		flag = false;
+    		return flag;
+    	}
+    	if(flag){
+	    	 $.ajax({ 
+		            type: "post", 
+		            url: "<%=basePath%>page/html/content/sys/saveOrg.action",
+					dataType : "json",
+					async : false, //必须同步等返回值
+					data : $("#myForm").serialize(),
+					success : function(data) {
+						var msg = data.msg;
+						alert(msg);
+						var id = $("#orgId").val();
+						orgInit(id);
+					}
+	 		 });
+    	}
     });
 </script>

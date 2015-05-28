@@ -16,6 +16,8 @@ public class ShortcutDTO {
 	
 	private String ico;
 	
+	private String genId;
+	
 	public String getId() {
 		return id;
 	}
@@ -70,6 +72,14 @@ public class ShortcutDTO {
 
 	public void setIco(String ico) {
 		this.ico = ico;
+	}
+
+	public String getGenId() {
+		return genId;
+	}
+
+	public void setGenId(String genId) {
+		this.genId = genId;
 	}
 
 	

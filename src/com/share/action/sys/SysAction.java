@@ -192,8 +192,9 @@ public class SysAction extends ActionSupport {
 		for(OrganizationDTO e:orgs){
 			ShortcutDTO s = new ShortcutDTO();
 			s.setId(e.getOrgId()+"");
-			s.setpId(e.getParentId().toString());
-			if(parentid.toString().equals(e.getDistrictsId())){
+			s.setpId(e.getParentId());
+			s.setGenId(e.getParentId());
+			if(parentid.equals(e.getDistrictsId())){
 				s.setOpen(true);
 			}else{
 				s.setOpen(true);
