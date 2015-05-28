@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.share.dto.DistrictsDTO;
 import com.share.dto.SysLogDTO;
-import com.share.model.SysDistrict;
 
 public interface SysMgrService {
 	public void saveSysLogs(SysLogDTO l);

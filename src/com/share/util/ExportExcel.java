@@ -20,15 +20,16 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 public class ExportExcel {
 	private int LENGTH = 60000;
 
-	public <T> ByteArrayOutputStream genExcelData(LinkedHashMap title, List<HashMap> rs) {
+	public <T> ByteArrayOutputStream genExcelData(LinkedHashMap title,
+			List<HashMap> rs) {
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = null;
 		HSSFRow row = null;
 		HSSFCell cell = null;
 		Iterator columes = null;
-		
-		//标题样式
+
+		// 标题样式
 		HSSFFont font = workbook.createFont();
 		font.setFontHeightInPoints((short) 12);
 		font.setFontName("宋体");
@@ -42,9 +43,8 @@ public class ExportExcel {
 		styleTitle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
 		styleTitle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
 		styleTitle.setFont(font);
-		
-		
-		//内容样式
+
+		// 内容样式
 		HSSFCellStyle style = workbook.createCellStyle();
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 水平居中
 		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 垂直举重
@@ -52,7 +52,7 @@ public class ExportExcel {
 		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
 		style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
 		style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			columes = title.keySet().iterator();
@@ -83,20 +83,25 @@ public class ExportExcel {
 							c = 0;
 							columes = title.keySet().iterator();
 							while (columes.hasNext()) {
-								String[] tempcolname = columes.next().toString().split(",");
+								String[] tempcolname = columes.next()
+										.toString().split(",");
 								String colname = tempcolname[0];
-								String colvalue ="";
-								try{
-								  colvalue = jsonObject.getString(colname);
-								}catch(Exception e){
-									colvalue="";
+								String colvalue = "";
+								try {
+									colvalue = jsonObject.getString(colname);
+								} catch (Exception e) {
+									colvalue = "";
 								}
 								cell = row.createCell(c);
 								if (null != colvalue) {
-									if ("java.math.BigDecimal".equals(colvalue.getClass().getName())) {
+									if ("java.math.BigDecimal".equals(colvalue
+											.getClass().getName())) {
 										cell.setCellValue(colvalue.toString());
-									} else if ("java.sql.Timestamp".equals(colvalue.getClass().getName())) {
-										cell.setCellValue(colvalue.toString().substring(0, 10));
+									} else if ("java.sql.Timestamp"
+											.equals(colvalue.getClass()
+													.getName())) {
+										cell.setCellValue(colvalue.toString()
+												.substring(0, 10));
 									} else {
 										cell.setCellValue(colvalue.toString());
 									}
@@ -105,15 +110,16 @@ public class ExportExcel {
 								c++;
 							}
 						}
-						//自动适应宽度
-						for(int q = 0 ; q<title.size() ;q++){
+						// 自动适应宽度
+						for (int q = 0; q < title.size(); q++) {
 							sheet.autoSizeColumn(q, true);
 						}
-						
+
 					}
 
 					if (restcnt > 0) {
-						sheet = workbook.createSheet("第" + (sheetcnt + 1) + "页");
+						sheet = workbook
+								.createSheet("第" + (sheetcnt + 1) + "页");
 						row = sheet.createRow(0);
 						int c = 0;
 						columes = title.keySet().iterator();
@@ -133,20 +139,25 @@ public class ExportExcel {
 							c = 0;
 							columes = title.keySet().iterator();
 							while (columes.hasNext()) {
-								String[] tempcolname = columes.next().toString().split(",");
+								String[] tempcolname = columes.next()
+										.toString().split(",");
 								String colname = tempcolname[0];
-								String colvalue ="";
-								try{
-								  colvalue = jsonObject.getString(colname);
-								}catch(Exception e){
-									colvalue="";
+								String colvalue = "";
+								try {
+									colvalue = jsonObject.getString(colname);
+								} catch (Exception e) {
+									colvalue = "";
 								}
 								cell = row.createCell(c);
 								if (null != colvalue) {
-									if ("java.math.BigDecimal".equals(colvalue.getClass().getName())) {
+									if ("java.math.BigDecimal".equals(colvalue
+											.getClass().getName())) {
 										cell.setCellValue(colvalue.toString());
-									} else if ("java.sql.Timestamp".equals(colvalue.getClass().getName())) {
-										cell.setCellValue(colvalue.toString().substring(0, 10));
+									} else if ("java.sql.Timestamp"
+											.equals(colvalue.getClass()
+													.getName())) {
+										cell.setCellValue(colvalue.toString()
+												.substring(0, 10));
 									} else {
 										cell.setCellValue(colvalue.toString());
 									}
@@ -155,8 +166,8 @@ public class ExportExcel {
 								c++;
 							}
 						}
-						//自动适应宽度
-						for(int q = 0 ; q<title.size() ;q++){
+						// 自动适应宽度
+						for (int q = 0; q < title.size(); q++) {
 							sheet.autoSizeColumn(q, true);
 						}
 					}
@@ -182,20 +193,24 @@ public class ExportExcel {
 						c = 0;
 						columes = title.keySet().iterator();
 						while (columes.hasNext()) {
-							String[] tempcolname = columes.next().toString().split(",");
+							String[] tempcolname = columes.next().toString()
+									.split(",");
 							String colname = tempcolname[0];
-							String colvalue ="";
-							try{
-							  colvalue = jsonObject.getString(colname);
-							}catch(Exception e){
-								colvalue="";
+							String colvalue = "";
+							try {
+								colvalue = jsonObject.getString(colname);
+							} catch (Exception e) {
+								colvalue = "";
 							}
 							cell = row.createCell(c);
 							if (null != colvalue) {
-								if ("java.math.BigDecimal".equals(colvalue.getClass().getName())) {
+								if ("java.math.BigDecimal".equals(colvalue
+										.getClass().getName())) {
 									cell.setCellValue(colvalue.toString());
-								} else if ("java.sql.Timestamp".equals(colvalue.getClass().getName())) {
-									cell.setCellValue(colvalue.toString().substring(0, 10));
+								} else if ("java.sql.Timestamp".equals(colvalue
+										.getClass().getName())) {
+									cell.setCellValue(colvalue.toString()
+											.substring(0, 10));
 								} else {
 									cell.setCellValue(colvalue.toString());
 								}
@@ -204,8 +219,8 @@ public class ExportExcel {
 							c++;
 						}
 					}
-					//自动适应宽度
-					for(int q = 0 ; q<title.size() ;q++){
+					// 自动适应宽度
+					for (int q = 0; q < title.size(); q++) {
 						sheet.autoSizeColumn(q, true);
 					}
 				}
@@ -218,5 +233,27 @@ public class ExportExcel {
 		}
 
 		return baos;
+	}
+
+	public StringBuffer genCSV(LinkedHashMap title, List<HashMap> rs) {
+		StringBuffer sb= new StringBuffer();
+		for (Object s : rs) {
+			String tempstr="";
+			JSONObject jsonObject = JSONObject.fromObject(s);
+			Iterator columes = null;
+			columes = title.keySet().iterator();
+			while (columes.hasNext()) {
+				String[] tempcolname = columes.next().toString()
+						.split(",");
+				String colname = tempcolname[0];
+				String colvalue = "";
+				colvalue = jsonObject.getString(colname);
+				tempstr=tempstr+colvalue+",";
+			}
+			tempstr=tempstr.substring(0,tempstr.length()-1)+System.lineSeparator();
+			sb.append(tempstr);
+		}
+		return sb;
+
 	}
 }

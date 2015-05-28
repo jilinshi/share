@@ -21,22 +21,24 @@
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
 		<global-results>
-			<result name="nouser" >/logout.jsp</result>
+			<result name="nouser">/logout.jsp</result>
 		</global-results>
 		<action name="login" method="login" class="loginAction">
 			<result name="success" type="redirect">/page/html/index.jsp</result>
 			<result name="error">/login.jsp</result>
 		</action>
 		<action name="logout" method="logout" class="loginAction">
-			<result name="success" >/page/common/logout.jsp</result>
+			<result name="success">/page/common/logout.jsp</result>
 		</action>
 		<!-- 公共导出方法 -->
-	  	<action name="downloadExcel" class="downloadExcelAction">
+		<action name="downloadExcel" class="downloadExcelAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="contentDisposition">${fileName}</param>
 				<param name="inputName">excelFile</param>
 			</result>
+		</action>
+		<action name="downloadCSV" method="downloadCSV" class="downloadExcelAction">
 		</action>
 	</package>
 	<include file="/com/share/action/imp/struts-imp.xml"></include>

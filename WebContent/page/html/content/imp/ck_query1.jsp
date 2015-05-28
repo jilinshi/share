@@ -62,19 +62,19 @@
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
 				<br><br>
-					<a href="<%=basePath%>downloadExcel.action?fileName=社保核对数据" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadExcel.action?fileName=ppinsurancexls1" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对数据
 					</a>
 					&nbsp;
-					<a href="<%=basePath%>downloadCSV.action?fileName=社保核对数据" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadCSV.action?fileName=ppinsurancecsv1" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对数据
 					</a>
 					&nbsp;
-					<a href="<%=basePath%>downloadExcel.action?fileName=社保核对数据" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadExcel.action?fileName=ppinsurance" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对结果
 					</a>
 					&nbsp;
-					<a href="<%=basePath%>downloadCSV.action?fileName=社保核对数据" class="btn btn btn-sm">
+					<a href="<%=basePath%>downloadCSV.action?fileName=ppinsurancecsv" class="btn btn btn-sm">
 						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对结果
 					</a>		
       		</div>

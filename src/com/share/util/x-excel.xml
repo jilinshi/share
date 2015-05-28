@@ -64,6 +64,7 @@
 		<col id="begintime">开户日期</col>
 		<col id="area">所属</col>
 	</table>
+	<!--社保 核对结果导出xls -->
 	<table id="ppinsurance" title="社保核对数据" name="ppinsurance">
 		<col id="col1">家庭编号</col>
 		<col id="pname">低保成员姓名</col>
@@ -76,6 +77,38 @@
 		<col id="danwei">工作单位</col>
 		<col id="lqBegin">退休时间</col>
 		<col id="lqMoney">退休金</col>
+	</table>
+	<!--社保 核对结果导出csv -->
+	<table id="ppinsurancecsv" title="社保核对数据" name="ppinsurance">
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+		<col id="pname1">社保姓名</col>
+		<col id="idno1">社保身份证号码</col>
+		<col id="danwei">工作单位</col>
+		<col id="lqBegin">退休时间</col>
+		<col id="lqMoney">退休金</col>
+	</table>
+	<!--社保 核对数据导出csv -->
+	<table id="ppinsurancecsv1" title="社保核对数据" name="ppinsurancecsv">
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+	</table>
+	<!--社保 核对数据导出csv -->
+	<table id="ppinsurancexls1" title="社保核对数据" name="ppinsurancexls">
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
 	</table>
 	<table id="ppfund" title="公积金核对数据" name="ppfund">
 		<col id="pname">姓名</col>

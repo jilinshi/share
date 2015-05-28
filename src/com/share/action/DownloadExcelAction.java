@@ -2,7 +2,11 @@ package com.share.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -22,6 +28,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.share.dao.BaseDAO;
 import com.share.service.SysMgrService;
 import com.share.util.ExportExcel;
+import com.share.util.XmlExcel;
 
 @Controller
 @SuppressWarnings("all")
@@ -37,6 +44,7 @@ public class DownloadExcelAction extends ActionSupport {
 	private LinkedHashMap<String, String> title = new LinkedHashMap<String, String>();
 	private String fileName;
 	private InputStream excelFile;
+	private InputStream excelCsv;
 
 	@Resource
 	private SysMgrService sysMgrService;
@@ -54,7 +62,12 @@ public class DownloadExcelAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String execute() throws Exception {
 		Map session = ActionContext.getContext().getSession();
-		title = (LinkedHashMap<String, String>) session.get("title");
+		this.setTitle(XmlExcel.getXmlexcel().getTableMap(this.fileName));
+		if (title.size() > 0) {
+
+		} else {
+			this.setTitle((LinkedHashMap<String, String>) session.get("title"));
+		}
 		sql = (String) session.get("sql");
 		hql = (String) session.get("hql");
 		param = (List<Object>) session.get("param");
@@ -86,13 +99,71 @@ public class DownloadExcelAction extends ActionSupport {
 		}
 		ByteArrayInputStream bais = null;
 		ExportExcel ee = new ExportExcel();
-		ByteArrayOutputStream baos = ee.genExcelData(title, rs); // 鍙傛暟涓�
-																	// 棰樼洰锛岀粨鏋滐紝excel鍗锋爣
+		ByteArrayOutputStream baos = ee.genExcelData(title, rs);
 		if (null != baos) {
 			byte[] ba = baos.toByteArray();
 			bais = new ByteArrayInputStream(ba);
 		}
 		return bais;
+	}
+
+	/**
+	 * 生成csv
+	 * 
+	 * @return
+	 */
+	public InputStream getExcelCsv() {
+		List<HashMap> rs = null;
+		if (null != param) {
+			rs = sysMgrService.queryData(hql, param);
+		}
+		if (null != param1) {
+			rs = sysMgrService.queryData(hql, param1);
+		}
+
+		return excelCsv;
+	}
+
+	public String downloadCSV() {
+		try {
+			HttpServletResponse response = ServletActionContext.getResponse();
+			PrintWriter out;
+			this.setTitle(XmlExcel.getXmlexcel().getTableMap(this.fileName));
+			Map session = ActionContext.getContext().getSession();
+			sql = (String) session.get("sql");
+			hql = (String) session.get("hql");
+			param = (List<Object>) session.get("param");
+			param1 = (Object[]) session.get("param1");
+			List<HashMap> rs = null;
+			if (null != param) {
+				rs = sysMgrService.queryData(hql, param);
+			}
+			if (null != param1) {
+				rs = sysMgrService.queryData(hql, param1);
+			}
+			SimpleDateFormat bartDateFormat = new SimpleDateFormat(
+					"yyyy-MM-dd-HH-mm-ss");
+			String nowdate = bartDateFormat.format(new Date());
+			if (fileName == null || "".equals(fileName)) {
+				fileName = "CSV";
+			}
+			String fn = fileName;
+			String f = new String(
+					(fn + "(" + nowdate + ")").getBytes("gb2312"), "ISO8859-1");
+			response.setContentType("application/csv");
+			response.setHeader("Content-Disposition", "inline; filename=" + f+".csv");
+			out = new PrintWriter(new OutputStreamWriter(
+					response.getOutputStream(), "UTF-8"));
+			ExportExcel ee = new ExportExcel();
+			out.write(ee.genCSV(title, rs).toString());
+			out.flush();
+			out.close();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public String getSql() {
@@ -137,6 +208,10 @@ public class DownloadExcelAction extends ActionSupport {
 
 	public void setParam1(Object[] param1) {
 		this.param1 = param1;
+	}
+
+	public void setExcelCsv(InputStream excelCsv) {
+		this.excelCsv = excelCsv;
 	}
 
 }
