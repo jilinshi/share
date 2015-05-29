@@ -1,6 +1,5 @@
 package com.share.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,11 @@ import org.springframework.stereotype.Service;
 import com.share.dao.BaseDAO;
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.UserDTO;
 import com.share.model.SysDistrict;
 import com.share.model.SysOrganization;
+import com.share.model.SysUser;
+import com.share.util.Pager;
 import com.share.util.PrimaryKey;
 import com.share.util.StringFormat;
 
@@ -23,6 +25,8 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysDistrict> sysDistrictDAO;
 	@Resource
 	private BaseDAO<SysOrganization> sysOrganizationDAO;
+	@Resource
+	private BaseDAO<SysUser> sysUserDAO;
 	
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -197,5 +201,28 @@ public class SysServiceImpl implements SysService {
 		o.setOrgId(Long.valueOf(key));
 		o.setFlag("1");
 		sysOrganizationDAO.save(o);
+	}
+	
+	public List<UserDTO> querySYSUsers(Pager pager,
+			List<Object> param){
+		List<UserDTO> us = new ArrayList<UserDTO>();
+		String hql = " select su from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? ";
+		String hqlc = " select count(*) as cnt from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? ";
+		Long cnt = sysUserDAO.count(hqlc, param);
+		pager.setRecords(cnt);
+		List<SysUser> sus= sysUserDAO.find(hql, param, pager.pager, pager.rows);
+		for(SysUser s : sus){
+			UserDTO u = new UserDTO();
+			u.setUserId(s.getUserId());
+			u.setUaccount(s.getUaccount());
+			u.setUname(s.getUname());
+			u.setUpwds(s.getUpwds());
+			u.setFlag(s.getFlag());
+			u.setIdno(s.getIdno());
+			u.setMobilephone(s.getMobilephone());
+			u.setUtime(s.getUtime());
+			us.add(u);
+		}
+		return us;
 	}
 }

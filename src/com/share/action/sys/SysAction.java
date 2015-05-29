@@ -16,7 +16,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.ShortcutDTO;
+import com.share.dto.UserDTO;
+import com.share.model.SysOrganization;
+import com.share.model.SysUser;
 import com.share.service.SysService;
+import com.share.util.Pager;
 
 @Controller
 public class SysAction extends ActionSupport {
@@ -33,6 +37,12 @@ public class SysAction extends ActionSupport {
 	private DistrictsDTO districtsDTO;
 	private String districtsId;
 	private OrganizationDTO organizationDTO;
+	private UserDTO userDTO;
+	private String orgId;
+	 /** 当前页面 */ 
+	private String page;  
+	 /** 每页的记录数 */ 
+	private String rows;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -231,6 +241,29 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryusers(){
+		Pager pager = new Pager(page, rows, new Long(0));
+		List<Object> param = new ArrayList<Object>();
+		param.add("1");
+		SysOrganization o = new SysOrganization();
+		o.setOrgId(Long.valueOf(orgId));
+		param.add(o);
+		Map jsonMap = new HashMap();
+		if("-1".equals(orgId)){
+			
+		}else{
+			List<UserDTO> us = sysService.querySYSUsers(pager,param);
+			jsonMap.put("page", page);
+			jsonMap.put("total", pager.total);
+			jsonMap.put("records", pager.records);
+			jsonMap.put("rows", us);
+			
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -272,6 +305,38 @@ public class SysAction extends ActionSupport {
 
 	public void setOrganizationDTO(OrganizationDTO organizationDTO) {
 		this.organizationDTO = organizationDTO;
+	}
+
+	public UserDTO getUserDTO() {
+		return userDTO;
+	}
+
+	public void setUserDTO(UserDTO userDTO) {
+		this.userDTO = userDTO;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
 	}
 
 }
