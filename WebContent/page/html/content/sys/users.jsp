@@ -56,7 +56,7 @@
 				<div class="widget-toolbox" id="widget-toolbox-1">
 					<div class="btn-toolbar">
 						<div class="btn-group">
-							<button class="btn btn-sm btn-info btn-round" >
+							<button class="btn btn-sm btn-info btn-round" id="create">
 								<i class="ace-icon fa fa-plus"></i> 新建用户
 							</button>
 						</div>
@@ -153,7 +153,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				datatype : "json",
 				postData : {"orgId":orgid},
 				height : 268,
-				colNames : ['','姓名','账户','密码','手机','身份份证号码','创建时间'],
+				colNames : ['','姓名','账户','密码','手机','身份份证号码','创建时间','操作'],
 				colModel : [
 				    {name:'userId',hidden:true},
 					{name:'uname'},
@@ -161,7 +161,8 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					{name:'upwds'},
 					{name:'mobilephone'},
 					{name:'idno'},
-					{name:'utime'}
+					{name:'utime'},
+					{name:'VIEW', index:'VIEW',align:'center'}
 				], 
 				rownumbers: true,
 				autowidth : true,
@@ -173,6 +174,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				loadComplete : function() {
 					var table = this;
 					setTimeout(function(){
+						checkbutton(table);
 					}, 0);
 				}
 		
@@ -188,7 +190,20 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		        	return retVal;
 		        }
 		    } );
-	    }
+			
+ 			function checkbutton(table){
+ 				var ids = jQuery("#grid-table").jqGrid('getDataIDs');
+ 		        for (var i = 0; i < ids.length; i++) {
+ 		          var id = ids[i];
+ 		          var rowData = $("#grid-table").getRowData(id);
+				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.col1+"' class='btn btn-minier btn-success' onclick='view(\""+rowData.col1+"\",\""+rowData.idno+"\")'><i class='ace-icon fa fa-edit bigger-100'></i>编辑</button></div>"
+ 		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
+ 				}
+ 			}
+	    };
+	    $('#create').click(function () {
+	    	alert("11");
+	    });
 	});
 
 </script>
