@@ -29,7 +29,7 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysOrganization> sysOrganizationDAO;
 	@Resource
 	private BaseDAO<SysUser> sysUserDAO;
-	
+
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
 		List<DistrictsDTO> list = new ArrayList<DistrictsDTO>();
@@ -51,57 +51,57 @@ public class SysServiceImpl implements SysService {
 		}
 		return list;
 	}
-	
+
 	@Override
-	public void saveSYSDistrict(DistrictsDTO districtsDTO){
-		//查询
+	public void saveSYSDistrict(DistrictsDTO districtsDTO) {
+		// 查询
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.districtsId=? ";
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = "1";
 		param[1] = districtsDTO.getDistrictsId();
-		SysDistrict sd= sysDistrictDAO.find(hql, param).get(0);
+		SysDistrict sd = sysDistrictDAO.find(hql, param).get(0);
 		//
 		String hql_n = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.parentId=? order by sd.districtsId desc ";
 		Object[] param_n = null;
 		param_n = new Object[2];
 		param_n[0] = "1";
 		param_n[1] = districtsDTO.getDistrictsId();
-		List<SysDistrict> sds= sysDistrictDAO.find(hql_n, param_n);
-		if(sds.size()>0){
+		List<SysDistrict> sds = sysDistrictDAO.find(hql_n, param_n);
+		if (sds.size() > 0) {
 			SysDistrict s = sds.get(0);
-			//保存机构表
+			// 保存机构表
 			SysDistrict o = new SysDistrict();
 			long id = Long.valueOf(s.getDistrictsId());
-			o.setDistrictsId((id+1)+"");
+			o.setDistrictsId((id + 1) + "");
 			o.setDistrictsNmae(districtsDTO.getDistrictsNmae());
 			o.setParentId(sd.getDistrictsId());
 			o.setDistrictsCode(StringFormat.getformatting(o.getDistrictsId()));
-			o.setFullname(sd.getFullname()+districtsDTO.getDistrictsNmae());
+			o.setFullname(sd.getFullname() + districtsDTO.getDistrictsNmae());
 			o.setFlag("1");
 			sysDistrictDAO.save(o);
-		}else{
+		} else {
 			SysDistrict o = new SysDistrict();
-			o.setDistrictsId(sd.getDistrictsId()+"01");
+			o.setDistrictsId(sd.getDistrictsId() + "01");
 			o.setDistrictsNmae(districtsDTO.getDistrictsNmae());
 			o.setParentId(sd.getDistrictsId());
 			o.setDistrictsCode(StringFormat.getformatting(o.getDistrictsId()));
-			o.setFullname(sd.getFullname()+districtsDTO.getDistrictsNmae());
+			o.setFullname(sd.getFullname() + districtsDTO.getDistrictsNmae());
 			o.setFlag("1");
 			sysDistrictDAO.save(o);
 		}
 	}
-	
+
 	@Override
-	public List<DistrictsDTO> querySYSDistrict(DistrictsDTO districtsDTO){
+	public List<DistrictsDTO> querySYSDistrict(DistrictsDTO districtsDTO) {
 		List<DistrictsDTO> ds = new ArrayList<DistrictsDTO>();
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.districtsNmae=? ";
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = "1";
 		param[1] = districtsDTO.getDistrictsNmae();
-		List<SysDistrict> sds= sysDistrictDAO.find(hql, param);
-		for(SysDistrict e : sds){
+		List<SysDistrict> sds = sysDistrictDAO.find(hql, param);
+		for (SysDistrict e : sds) {
 			DistrictsDTO m = new DistrictsDTO();
 			m.setDistrictsId(e.getDistrictsId());
 			m.setDistrictsCode(e.getDistrictsCode());
@@ -113,34 +113,34 @@ public class SysServiceImpl implements SysService {
 		}
 		return ds;
 	}
-	
+
 	@Override
-	public int updateSYSDistrict(String id){
+	public int updateSYSDistrict(String id) {
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.parentId=? ";
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = "1";
 		param[1] = id;
-		List<SysDistrict> sds= sysDistrictDAO.find(hql, param);
+		List<SysDistrict> sds = sysDistrictDAO.find(hql, param);
 		String hql_u = "";
 		Object[] param_u = null;
-		if(sds.size()>0){
+		if (sds.size() > 0) {
 			hql_u = " update SysDistrict sd set sd.flag=? where sd.districtsId=? or sd.parentId=? ";
 			param_u = new Object[3];
 			param_u[0] = "0";
 			param_u[1] = id;
 			param_u[2] = id;
-		}else{
+		} else {
 			hql_u = " update SysDistrict sd set sd.flag=? where sd.districtsId=? ";
 			param_u = new Object[2];
 			param_u[0] = "0";
 			param_u[1] = id;
 		}
 		int u = sysDistrictDAO.update(hql_u, param_u);
-		
+
 		return u;
 	}
-	
+
 	@Override
 	public List<OrganizationDTO> querySYSOrgs(String hql, Object[] param) {
 		List<OrganizationDTO> list = new ArrayList<OrganizationDTO>();
@@ -159,44 +159,44 @@ public class SysServiceImpl implements SysService {
 		}
 		return list;
 	}
-	
+
 	@Override
-	public void saveSYSOrg(OrganizationDTO organizationDTO){
-		//查询
+	public void saveSYSOrg(OrganizationDTO organizationDTO) {
+		// 查询
 		String hql = " select so from SysOrganization so where 1=1 and so.flag=? and so.parentId=? order by so.orgId desc";
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = "1";
-		param[1] = organizationDTO.getOrgId()+"";
-		List<SysOrganization> sos =  sysOrganizationDAO.find(hql, param);
-		String preid="";
-		String orgid="";
-		String maxvalue="";
-		String key="";
+		param[1] = organizationDTO.getOrgId() + "";
+		List<SysOrganization> sos = sysOrganizationDAO.find(hql, param);
+		String preid = "";
+		String orgid = "";
+		String maxvalue = "";
+		String key = "";
 		SysOrganization o = new SysOrganization();
 		SysDistrict s = new SysDistrict();
-		if(sos.size()>0){
-			SysOrganization so= sysOrganizationDAO.find(hql, param).get(0);
-			//保存机构表
+		if (sos.size() > 0) {
+			SysOrganization so = sysOrganizationDAO.find(hql, param).get(0);
+			// 保存机构表
 			preid = so.getParentId().toString();
-			orgid = so.getOrgId()+"";
+			orgid = so.getOrgId() + "";
 			maxvalue = orgid.substring(preid.length());
 			key = PrimaryKey.nextKey(preid, maxvalue);
-			
+
 			o.setParentId(so.getParentId());
-		}else{
-			orgid = organizationDTO.getOrgId()+"";
-			int prikey_len=orgid.length();
-			if(prikey_len==2){
-				maxvalue="00";
-	        }else if(prikey_len==4){
-	        	maxvalue="00";
-	        }else if(prikey_len==6){
-	        	maxvalue="000";
-	        }else if(prikey_len==8||prikey_len==9){
-	        	maxvalue="000";
-	        }
-			key =  PrimaryKey.nextKey(orgid, maxvalue);
+		} else {
+			orgid = organizationDTO.getOrgId() + "";
+			int prikey_len = orgid.length();
+			if (prikey_len == 2) {
+				maxvalue = "00";
+			} else if (prikey_len == 4) {
+				maxvalue = "00";
+			} else if (prikey_len == 6) {
+				maxvalue = "000";
+			} else if (prikey_len == 8 || prikey_len == 9) {
+				maxvalue = "000";
+			}
+			key = PrimaryKey.nextKey(orgid, maxvalue);
 			o.setParentId(orgid);
 		}
 		s.setDistrictsId(organizationDTO.getParentId());
@@ -207,17 +207,17 @@ public class SysServiceImpl implements SysService {
 		o.setFlag("1");
 		sysOrganizationDAO.save(o);
 	}
-	
+
 	@Override
-	public List<UserDTO> querySYSUsers(Pager pager,
-			List<Object> param){
+	public List<UserDTO> querySYSUsers(Pager pager, List<Object> param) {
 		List<UserDTO> us = new ArrayList<UserDTO>();
 		String hql = " select su from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? order by su.utime desc";
 		String hqlc = " select count(*) as cnt from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? ";
 		Long cnt = sysUserDAO.count(hqlc, param);
 		pager.setRecords(cnt);
-		List<SysUser> sus= sysUserDAO.find(hql, param, pager.pager, pager.rows);
-		for(SysUser s : sus){
+		List<SysUser> sus = sysUserDAO
+				.find(hql, param, pager.pager, pager.rows);
+		for (SysUser s : sus) {
 			UserDTO u = new UserDTO();
 			u.setUserId(s.getUserId());
 			u.setUaccount(s.getUaccount());
@@ -231,54 +231,58 @@ public class SysServiceImpl implements SysService {
 		}
 		return us;
 	}
-	
+
 	@Override
-	public void saveSYSUser(UserDTO userDTO){
-		SysUser o = new SysUser();
+	public void saveSYSUser(UserDTO userDTO) {
+		SysUser o = this.sysUserDAO.get(SysUser.class, userDTO.getUserId());
+		if (null == o) {
+			o = new SysUser();
+		}
 		o.setUname(userDTO.getUname());
 		o.setUaccount(userDTO.getUaccount());
 		o.setUpwds(userDTO.getUpwds());
 		o.setMobilephone(userDTO.getMobilephone());
 		o.setIdno(userDTO.getIdno());
 		o.setFlag("1");
-		if(userDTO.getUserId()==0){
+		if (userDTO.getUserId() == 0) {
 			SysOrganization so = new SysOrganization();
 			so.setOrgId(Long.valueOf(userDTO.getOrgId()));
 			o.setSysOrganization(so);
 			o.setCtime(new Timestamp(new Date().getTime()));
 			o.setUtime(new Timestamp(new Date().getTime()));
 			sysUserDAO.save(o);
-		}else{
-			o.setSysOrganization(this.queryOrgById(Long.valueOf(userDTO.getOrgId())));
-			//UserDTO u = this.querySYSUserById(userDTO.getUserId());
+		} else {
+
+			o.setSysOrganization(this.queryOrgById(Long.valueOf(userDTO
+					.getOrgId())));
+			// UserDTO u = this.querySYSUserById(userDTO.getUserId());
 			o.setUserId(userDTO.getUserId());
-			//o.setCtime(u.getCtime());
+			// o.setCtime(u.getCtime());
 			o.setUtime(new Timestamp(new Date().getTime()));
 			sysUserDAO.update(o);
 		}
 
-
 	}
-	
-	public SysOrganization queryOrgById(Long oid){
+
+	public SysOrganization queryOrgById(Long oid) {
 		String hql = "  select so from SysOrganization so where 1=1 and so.orgId=? ";
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = oid;
-		SysOrganization so= sysOrganizationDAO.find(hql, param).get(0);
+		SysOrganization so = sysOrganizationDAO.find(hql, param).get(0);
 		return so;
 	}
-	
+
 	@Override
-	public UserDTO querySYSUserById(Long userId){
+	public UserDTO querySYSUserById(Long userId) {
 		UserDTO u = new UserDTO();
 		String hql = " select su from SysUser su where 1=1 and su.userId=? ";
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = userId;
-		SysUser su= sysUserDAO.find(hql, param).get(0);
+		SysUser su = sysUserDAO.find(hql, param).get(0);
 		u.setUserId(su.getUserId());
-		u.setOrgId(su.getSysOrganization().getOrgId()+"");
+		u.setOrgId(su.getSysOrganization().getOrgId() + "");
 		u.setUname(su.getUname());
 		u.setUaccount(su.getUaccount());
 		u.setUpwds(su.getUpwds());
@@ -288,9 +292,9 @@ public class SysServiceImpl implements SysService {
 		u.setUtime(su.getUtime());
 		return u;
 	}
-	
+
 	@Override
-	public void updateSYSUserById(Long userId){
+	public void updateSYSUserById(Long userId) {
 		String hql = " update SysUser u set u.flag=?, u.utime=? where u.userId=? ";
 		Object[] param = null;
 		param = new Object[3];
