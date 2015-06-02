@@ -88,5 +88,24 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="saveuser" method="saveuser"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryuser" method="queryuser"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="updateuser" method="updateuser"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		
 	</package>
 </struts>   

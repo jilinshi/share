@@ -15,4 +15,7 @@ public interface SysService {
 	public List<OrganizationDTO> querySYSOrgs(String hql, Object[] param);
 	public void saveSYSOrg(OrganizationDTO organizationDTO);
 	public List<UserDTO> querySYSUsers(Pager pager,List<Object> param);
+	public void saveSYSUser(UserDTO userDTO);
+	public UserDTO querySYSUserById(Long userId);
+	public void updateSYSUserById(Long userId);
 }

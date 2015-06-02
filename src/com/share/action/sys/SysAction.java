@@ -43,6 +43,7 @@ public class SysAction extends ActionSupport {
 	private String page;  
 	 /** 每页的记录数 */ 
 	private String rows;
+	private String userId;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -264,6 +265,43 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String saveuser(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.saveSYSUser(userDTO);
+			jsonMap.put("msg", "保存成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryuser(){
+		userDTO = sysService.querySYSUserById(Long.valueOf(userId));
+		Map jsonMap = new HashMap();
+		jsonMap.put("user", userDTO);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String updateuser(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.updateSYSUserById(Long.valueOf(userId));
+			jsonMap.put("msg", "停用成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "停用失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -337,6 +375,14 @@ public class SysAction extends ActionSupport {
 
 	public void setRows(String rows) {
 		this.rows = rows;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

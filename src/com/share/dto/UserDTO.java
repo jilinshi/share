@@ -27,6 +27,8 @@ public class UserDTO {
 	private String token;
 	
 	private SysOrganization sysOrganization;
+	
+	private String orgId;
 
 	public long getUserId() {
 		return userId;
@@ -114,6 +116,14 @@ public class UserDTO {
 
 	public void setSysOrganization(SysOrganization sysOrganization) {
 		this.sysOrganization = sysOrganization;
+	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
 	}
 
 }

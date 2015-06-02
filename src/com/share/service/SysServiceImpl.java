@@ -1,5 +1,7 @@
 package com.share.service;
 
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class SysServiceImpl implements SysService {
 		return list;
 	}
 	
+	@Override
 	public void saveSYSDistrict(DistrictsDTO districtsDTO){
 		//≤È—Ø
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.districtsId=? ";
@@ -89,6 +92,7 @@ public class SysServiceImpl implements SysService {
 		}
 	}
 	
+	@Override
 	public List<DistrictsDTO> querySYSDistrict(DistrictsDTO districtsDTO){
 		List<DistrictsDTO> ds = new ArrayList<DistrictsDTO>();
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.districtsNmae=? ";
@@ -110,6 +114,7 @@ public class SysServiceImpl implements SysService {
 		return ds;
 	}
 	
+	@Override
 	public int updateSYSDistrict(String id){
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? and sd.parentId=? ";
 		Object[] param = null;
@@ -203,10 +208,11 @@ public class SysServiceImpl implements SysService {
 		sysOrganizationDAO.save(o);
 	}
 	
+	@Override
 	public List<UserDTO> querySYSUsers(Pager pager,
 			List<Object> param){
 		List<UserDTO> us = new ArrayList<UserDTO>();
-		String hql = " select su from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? ";
+		String hql = " select su from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? order by su.utime desc";
 		String hqlc = " select count(*) as cnt from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? ";
 		Long cnt = sysUserDAO.count(hqlc, param);
 		pager.setRecords(cnt);
@@ -224,5 +230,73 @@ public class SysServiceImpl implements SysService {
 			us.add(u);
 		}
 		return us;
+	}
+	
+	@Override
+	public void saveSYSUser(UserDTO userDTO){
+		SysUser o = new SysUser();
+		o.setUname(userDTO.getUname());
+		o.setUaccount(userDTO.getUaccount());
+		o.setUpwds(userDTO.getUpwds());
+		o.setMobilephone(userDTO.getMobilephone());
+		o.setIdno(userDTO.getIdno());
+		o.setFlag("1");
+		if(userDTO.getUserId()==0){
+			SysOrganization so = new SysOrganization();
+			so.setOrgId(Long.valueOf(userDTO.getOrgId()));
+			o.setSysOrganization(so);
+			o.setCtime(new Timestamp(new Date().getTime()));
+			o.setUtime(new Timestamp(new Date().getTime()));
+			sysUserDAO.save(o);
+		}else{
+			o.setSysOrganization(this.queryOrgById(Long.valueOf(userDTO.getOrgId())));
+			//UserDTO u = this.querySYSUserById(userDTO.getUserId());
+			o.setUserId(userDTO.getUserId());
+			//o.setCtime(u.getCtime());
+			o.setUtime(new Timestamp(new Date().getTime()));
+			sysUserDAO.update(o);
+		}
+
+
+	}
+	
+	public SysOrganization queryOrgById(Long oid){
+		String hql = "  select so from SysOrganization so where 1=1 and so.orgId=? ";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = oid;
+		SysOrganization so= sysOrganizationDAO.find(hql, param).get(0);
+		return so;
+	}
+	
+	@Override
+	public UserDTO querySYSUserById(Long userId){
+		UserDTO u = new UserDTO();
+		String hql = " select su from SysUser su where 1=1 and su.userId=? ";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = userId;
+		SysUser su= sysUserDAO.find(hql, param).get(0);
+		u.setUserId(su.getUserId());
+		u.setOrgId(su.getSysOrganization().getOrgId()+"");
+		u.setUname(su.getUname());
+		u.setUaccount(su.getUaccount());
+		u.setUpwds(su.getUpwds());
+		u.setMobilephone(su.getMobilephone());
+		u.setIdno(su.getIdno());
+		u.setCtime(su.getCtime());
+		u.setUtime(su.getUtime());
+		return u;
+	}
+	
+	@Override
+	public void updateSYSUserById(Long userId){
+		String hql = " update SysUser u set u.flag=?, u.utime=? where u.userId=? ";
+		Object[] param = null;
+		param = new Object[3];
+		param[0] = "0";
+		param[1] = new Timestamp(new Date().getTime());
+		param[2] = userId;
+		sysUserDAO.update(hql, param);
 	}
 }
