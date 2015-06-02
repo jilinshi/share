@@ -243,21 +243,15 @@ public class SysServiceImpl implements SysService {
 		o.setUpwds(userDTO.getUpwds());
 		o.setMobilephone(userDTO.getMobilephone());
 		o.setIdno(userDTO.getIdno());
-		o.setFlag("1");
 		if (userDTO.getUserId() == 0) {
+			o.setCtime(new Timestamp(new Date().getTime()));
+			o.setUtime(new Timestamp(new Date().getTime()));
+			o.setFlag("1");
 			SysOrganization so = new SysOrganization();
 			so.setOrgId(Long.valueOf(userDTO.getOrgId()));
 			o.setSysOrganization(so);
-			o.setCtime(new Timestamp(new Date().getTime()));
-			o.setUtime(new Timestamp(new Date().getTime()));
 			sysUserDAO.save(o);
 		} else {
-
-			o.setSysOrganization(this.queryOrgById(Long.valueOf(userDTO
-					.getOrgId())));
-			// UserDTO u = this.querySYSUserById(userDTO.getUserId());
-			o.setUserId(userDTO.getUserId());
-			// o.setCtime(u.getCtime());
 			o.setUtime(new Timestamp(new Date().getTime()));
 			sysUserDAO.update(o);
 		}
