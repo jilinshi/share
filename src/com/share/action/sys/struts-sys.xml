@@ -106,6 +106,17 @@
 				<param name="root">map</param>
 			</result>
 		</action>
-		
+		<action name="queryUserGroup" method="queryUserGroup"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryUser" method="queryUser"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

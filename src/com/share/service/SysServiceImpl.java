@@ -1,8 +1,8 @@
 package com.share.service;
 
-import java.util.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,9 +13,11 @@ import com.share.dao.BaseDAO;
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.dto.UsergroupDTO;
 import com.share.model.SysDistrict;
 import com.share.model.SysOrganization;
 import com.share.model.SysUser;
+import com.share.model.SysUsergroup;
 import com.share.util.Pager;
 import com.share.util.PrimaryKey;
 import com.share.util.StringFormat;
@@ -29,6 +31,8 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysOrganization> sysOrganizationDAO;
 	@Resource
 	private BaseDAO<SysUser> sysUserDAO;
+	@Resource
+	private BaseDAO<SysUsergroup> sysUsergroupDAO;
 
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -296,5 +300,43 @@ public class SysServiceImpl implements SysService {
 		param[1] = new Timestamp(new Date().getTime());
 		param[2] = userId;
 		sysUserDAO.update(hql, param);
+	}
+	
+	@Override
+	public List<UsergroupDTO> querySYSUserGroupAll(){
+		List<UsergroupDTO> userlist = new ArrayList<UsergroupDTO>();
+		String hql = " select sug from SysUsergroup sug where 1=1 ";
+		List<SysUsergroup> sugs = sysUsergroupDAO.find(hql);
+		for (SysUsergroup s : sugs) {
+			UsergroupDTO u = new UsergroupDTO();
+			u.setUgId(s.getUgId());
+			u.setUgPid(s.getUgPid());
+			u.setUgName(s.getUgName());
+			u.setFlag(s.getFlag());
+			u.setCtime(s.getCtime());
+			u.setUtime(s.getUtime());
+			userlist.add(u);
+		}
+		return userlist;
+	}
+	
+	@Override
+	public List<UserDTO> querySYSUsers(List<Object> param){
+		List<UserDTO> us = new ArrayList<UserDTO>();
+		String hql = " select su from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? order by su.utime desc";
+		List<SysUser> sus = sysUserDAO.find(hql, param);
+		for (SysUser s : sus) {
+			UserDTO u = new UserDTO();
+			u.setUserId(s.getUserId());
+			u.setUaccount(s.getUaccount());
+			u.setUname(s.getUname());
+			u.setUpwds(s.getUpwds());
+			u.setFlag(s.getFlag());
+			u.setIdno(s.getIdno());
+			u.setMobilephone(s.getMobilephone());
+			u.setUtime(s.getUtime());
+			us.add(u);
+		}
+		return us;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.dto.UsergroupDTO;
 import com.share.util.Pager;
 
 public interface SysService {
@@ -18,4 +19,6 @@ public interface SysService {
 	public void saveSYSUser(UserDTO userDTO);
 	public UserDTO querySYSUserById(Long userId);
 	public void updateSYSUserById(Long userId);
+	public List<UsergroupDTO> querySYSUserGroupAll();
+	public List<UserDTO> querySYSUsers(List<Object> param);
 }

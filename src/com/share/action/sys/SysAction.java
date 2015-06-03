@@ -17,8 +17,8 @@ import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
+import com.share.dto.UsergroupDTO;
 import com.share.model.SysOrganization;
-import com.share.model.SysUser;
 import com.share.service.SysService;
 import com.share.util.Pager;
 
@@ -299,6 +299,29 @@ public class SysAction extends ActionSupport {
 			e.printStackTrace();
 			jsonMap.put("msg", "Õ£”√ ß∞‹£°");
 		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryUserGroup(){
+		List<UsergroupDTO> ugs = sysService.querySYSUserGroupAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("ugs", ugs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryUser(){
+		List<Object> param = new ArrayList<Object>();
+		param.add("1");
+		SysOrganization o = new SysOrganization();
+		o.setOrgId(Long.valueOf(orgId));
+		param.add(o);
+		List<UserDTO> ugs = sysService.querySYSUsers(param);
+		Map jsonMap = new HashMap();
+		jsonMap.put("ugs", ugs);
 		map = jsonMap;
 		return SUCCESS;
 	}
