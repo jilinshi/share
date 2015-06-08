@@ -2,8 +2,6 @@ package com.share.dto;
 
 import java.sql.Timestamp;
 
-import com.share.model.SysOrganization;
-
 public class UserDTO {
 
 	private long userId;
