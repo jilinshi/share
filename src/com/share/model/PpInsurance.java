@@ -7,115 +7,122 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+
 /**
  * The persistent class for the PP_INSURANCE database table.
  * 
  */
 @Entity
-@Table(name = "PP_INSURANCE")
-@NamedQuery(name = "PpInsurance.findAll", query = "SELECT p FROM PpInsurance p")
+@Table(name="PP_INSURANCE")
+@NamedQuery(name="PpInsurance.findAll", query="SELECT p FROM PpInsurance p")
 public class PpInsurance implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(length = 256)
+	@Column(name="A_ID")
+	private BigDecimal aId;
+
+	private String area;
+
+	@Column(name="ATTORNEY_ID")
+	private String attorneyId;
+
 	private String birthday;
 
-	@Column(length = 256)
+	private String ckmonth;
+
 	private String col1;
 
-	@Column(length = 256)
 	private String col2;
 
-	@Column(length = 256)
 	private String col3;
 
-	@Column(length = 256)
 	private String col4;
 
-	@Column(length = 256)
 	private String col5;
 
-	@Column(length = 256)
 	private String col6;
 
-	@Column(length = 256)
 	private String col7;
 
-	@Column(length = 256)
 	private String col8;
 
-	@Column(length = 256)
 	private String col9;
 
-	@Column(length = 256)
 	private String danwei;
 
-	@Column(length = 4)
 	private String ds;
 
-	@Column(name = "FILE_ID", length = 256)
+	@Column(name="FILE_ID")
 	private String fileId;
 
-	@Column(length = 15)
 	private String id15;
 
-	@Column(length = 18)
 	private String id18;
 
-	@Column(length = 18)
 	private String idno;
 
-	@Column(length = 256)
 	private String idno1;
 
-	@Column(name = "IN_ID", precision = 12)
+	@Column(name="IN_ID")
 	private BigDecimal inId;
 
-	@Column(length = 256)
 	private String inno;
 
-	@Column(name = "JF_BEGIN", length = 256)
+	@Column(name="JF_BEGIN")
 	private String jfBegin;
 
-	@Column(name = "LQ_BEGIN", length = 256)
+	@Column(name="LQ_BEGIN")
 	private String lqBegin;
 
-	@Column(name = "LQ_MONEY", length = 256)
+	@Column(name="LQ_MONEY")
 	private String lqMoney;
 
-	@Column(length = 20)
 	private String masterid;
 
-	@Column(length = 256)
 	private String mastername;
 
-	@Column(length = 128)
 	private String o1;
 
-	@Column(length = 128)
 	private String o2;
 
-	@Column(length = 128)
 	private String o3;
 	@Id
-	@Column(name = "PI_ID", nullable = false, length = 256)
-	private String piId;
+	@Column(name="PI_ID")
+	private BigDecimal piId;
 
-	@Column(length = 256)
 	private String pname;
 
-	@Column(length = 256)
 	private String pname1;
 
-	@Column(length = 1024)
 	private String remark;
-	
-	@Column(length = 256)
-	private String area;
 
 	private Timestamp updatetime;
 
 	public PpInsurance() {
+	}
+
+	public BigDecimal getAId() {
+		return this.aId;
+	}
+
+	public void setAId(BigDecimal aId) {
+		this.aId = aId;
+	}
+
+	public String getArea() {
+		return this.area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getAttorneyId() {
+		return this.attorneyId;
+	}
+
+	public void setAttorneyId(String attorneyId) {
+		this.attorneyId = attorneyId;
 	}
 
 	public String getBirthday() {
@@ -124,6 +131,14 @@ public class PpInsurance implements Serializable {
 
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getCkmonth() {
+		return this.ckmonth;
+	}
+
+	public void setCkmonth(String ckmonth) {
+		this.ckmonth = ckmonth;
 	}
 
 	public String getCol1() {
@@ -334,11 +349,11 @@ public class PpInsurance implements Serializable {
 		this.o3 = o3;
 	}
 
-	public String getPiId() {
+	public BigDecimal getPiId() {
 		return this.piId;
 	}
 
-	public void setPiId(String piId) {
+	public void setPiId(BigDecimal piId) {
 		this.piId = piId;
 	}
 
@@ -372,14 +387,6 @@ public class PpInsurance implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
 	}
 
 }

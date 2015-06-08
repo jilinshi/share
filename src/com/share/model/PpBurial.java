@@ -1,121 +1,108 @@
 package com.share.model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
 
 /**
  * The persistent class for the PP_BURIAL database table.
  * 
  */
 @Entity
-@Table(name = "PP_BURIAL")
-@NamedQuery(name = "PpBurial.findAll", query = "SELECT p FROM PpBurial p")
+@Table(name="PP_BURIAL")
+@NamedQuery(name="PpBurial.findAll", query="SELECT p FROM PpBurial p")
 public class PpBurial implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(length = 256)
+	@Column(name="A_ID")
+	private BigDecimal aId;
+
 	private String address;
 
-	@Column(length = 256)
+	private String area;
+
+	@Column(name="ATTORNEY_ID")
+	private String attorneyId;
+
+	private String ckmonth;
+
 	private String col1;
 
-	@Column(length = 256)
 	private String col2;
 
-	@Column(length = 256)
 	private String col3;
 
-	@Column(length = 256)
 	private String col4;
 
-	@Column(length = 256)
 	private String col5;
 
-	@Column(length = 256)
 	private String col6;
 
-	@Column(length = 256)
 	private String col7;
 
-	@Column(length = 256)
 	private String col8;
 
-	@Column(length = 256)
 	private String col9;
 
-	@Column(length = 256)
 	private String deathreason;
 
-	@Column(length = 4)
 	private String ds;
 
-	@Column(name = "FILE_ID", length = 256)
+	@Column(name="FILE_ID")
 	private String fileId;
 
-	@Column(length = 256)
 	private String hhtime;
 
-	@Column(length = 15)
 	private String id15;
 
-	@Column(length = 18)
 	private String id18;
 
-	@Column(length = 18)
 	private String idno;
 
-	@Column(length = 256)
 	private String idno1;
-	
-	@Column(name = "IN_ID", precision = 12)
+
+	@Column(name="IN_ID")
 	private BigDecimal inId;
 
-	@Column(length = 20)
 	private String masterid;
 
-	@Column(length = 256)
 	private String mastername;
 
-	@Column(length = 128)
 	private String o1;
 
-	@Column(length = 128)
 	private String o2;
 
-	@Column(length = 128)
 	private String o3;
 
-	@Column(name = "\"PAGE\"", length = 256)
+	@Column(name="\"PAGE\"")
 	private String page;
 	@Id
-	@Column(name = "PI_ID", nullable = false, length = 256)
-	private String piId;
+	@Column(name="PI_ID")
+	private BigDecimal piId;
 
-	@Column(length = 256)
 	private String pname;
 
-	@Column(length = 256)
 	private String pname1;
 
-	@Column(length = 256)
 	private String psex;
 
-	@Column(length = 1024)
 	private String remark;
 
-	@Column(length = 256)
 	private String telephone;
-	
-	@Column(length = 256)
-	private String area;
 
 	private Timestamp updatetime;
 
 	public PpBurial() {
+	}
+
+	public BigDecimal getAId() {
+		return this.aId;
+	}
+
+	public void setAId(BigDecimal aId) {
+		this.aId = aId;
 	}
 
 	public String getAddress() {
@@ -124,6 +111,30 @@ public class PpBurial implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getArea() {
+		return this.area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getAttorneyId() {
+		return this.attorneyId;
+	}
+
+	public void setAttorneyId(String attorneyId) {
+		this.attorneyId = attorneyId;
+	}
+
+	public String getCkmonth() {
+		return this.ckmonth;
+	}
+
+	public void setCkmonth(String ckmonth) {
+		this.ckmonth = ckmonth;
 	}
 
 	public String getCol1() {
@@ -318,11 +329,11 @@ public class PpBurial implements Serializable {
 		this.page = page;
 	}
 
-	public String getPiId() {
+	public BigDecimal getPiId() {
 		return this.piId;
 	}
 
-	public void setPiId(String piId) {
+	public void setPiId(BigDecimal piId) {
 		this.piId = piId;
 	}
 
@@ -372,14 +383,6 @@ public class PpBurial implements Serializable {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
 	}
 
 }
