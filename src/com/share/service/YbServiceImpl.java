@@ -72,7 +72,11 @@ public class YbServiceImpl implements YbService {
 		List<SysUser> rs = sysUserDAO.find(hql, param);
 		if (null != rs && rs.size() > 0) {
 			SysUser sysUser = rs.get(0);
+			sysUser.getSysOrganization().getSysDistrict();
 			BeanUtils.copyProperties(sysUser, userDTO);
+			userDTO.setOrgId(sysUser.getSysOrganization().getOrgId());
+			userDTO.setDistrictsId(sysUser.getSysOrganization()
+					.getSysDistrict().getDistrictsId());
 		} else {
 			userDTO = null;
 		}

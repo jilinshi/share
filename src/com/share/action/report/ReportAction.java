@@ -57,7 +57,7 @@ public class ReportAction extends ActionSupport {
 	private String mastername;
 	private String idcard;
 	private AttorneyrecordDTO attorneyrecordDTO;
-	
+
 	private List<File> afils;
 	private List<String> afilsFileName;
 	private List<String> afilenames;
@@ -72,7 +72,7 @@ public class ReportAction extends ActionSupport {
 		if (this.memberDTO.getOnNo() == null
 				|| "".equals(this.memberDTO.getOnNo().trim())) {
 		} else {
-			param.add(this.memberDTO.getOnNo()+"%");
+			param.add(this.memberDTO.getOnNo() + "%");
 			jwhere = jwhere + " and p.col1 like ? ";
 		}
 		if (this.memberDTO.getPaperid() == null
@@ -102,14 +102,14 @@ public class ReportAction extends ActionSupport {
 	public String getOrgList() {
 		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
 				.get("user");
-		long orgid = user.getSysOrganization().getOrgId();
+		long orgid = new Long(user.getOrgId());
 		orgs = reportService.findOrganlist(orgid);
 		Map jsonMap = new HashMap();
 		jsonMap.put("orgs", orgs);
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	/**
 	 * 单文件上传 input type=file name=single 循环逐个上传
 	 * 
@@ -120,27 +120,28 @@ public class ReportAction extends ActionSupport {
 		Map jsonMap = new HashMap();
 		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
 				.get("user");
-		long orgid = user.getSysOrganization().getOrgId();
+		long orgid = user.getOrgId();
 		String displayname = "";
 		String realname = "";
 		String type = ".jpg";
 		try {
 			// 委托数据保存
-			String code = masterid.substring(0,6);
-			String nowTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());// 当前时间
+			String code = masterid.substring(0, 6);
+			String nowTime = new SimpleDateFormat("yyyyMMddHHmmss")
+					.format(new Date());// 当前时间
 			String wtno = code + nowTime;
-			String ckmonth=nowTime.substring(0,6);
+			String ckmonth = nowTime.substring(0, 6);
 			attorneyrecordDTO.setMasteridno(masterid);
 			attorneyrecordDTO.setMastername(mastername);
 			attorneyrecordDTO.setCkmonth(ckmonth);
 			attorneyrecordDTO.setAttorneyId(wtno);
-			attorneyrecordDTO.setAttorney("第"+wtno+"号");
+			attorneyrecordDTO.setAttorney("第" + wtno + "号");
 			attorneyrecordDTO.setCkcontent("社保、公积金、殡葬、房产、驾管");
-			attorneyrecordDTO.setUpoper(orgid+"");
+			attorneyrecordDTO.setUpoper(orgid + "");
 			reportService.saveAttorneyRecord(attorneyrecordDTO);
 			// 附件保存到数据库中
 			MongoDBManager mongo = new MongoDBManager("sharefile");
-			for(int i=0;i<afils.size();i++){
+			for (int i = 0; i < afils.size(); i++) {
 				ServletActionContext.getRequest().setCharacterEncoding("UTF-8");
 				// 取得需要上传的文件数组
 				File files = afils.get(i);
@@ -151,7 +152,8 @@ public class ReportAction extends ActionSupport {
 				//
 				String id = ObjectId.get().toString();
 				DBObject metadata = null;
-				mongo.insertFile("sharefile", "attorneyfile", id, realname, "application/jpg", metadata, fis);
+				mongo.insertFile("sharefile", "attorneyfile", id, realname,
+						"application/jpg", metadata, fis);
 			}
 			mongo.close();
 			jsonMap.put("msg", "保存成功！");
@@ -166,9 +168,9 @@ public class ReportAction extends ActionSupport {
 
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getPInfo(){
+	public String getPInfo() {
 		List<MemberDTO> memberDTOs = reportService.getPersonsByFNO(masterid);
 		String mastername = memberDTOs.get(0).getMasterName();
 		String masterpaperid = memberDTOs.get(0).getMasetPaperid();
@@ -179,9 +181,9 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String getCount(){
+	public String getCount() {
 		String nowMonth = new SimpleDateFormat("yyyyMM").format(new Date());// 当前月份
 		AttorneyrecordDTO ardto = new AttorneyrecordDTO();
 		ardto.setCkmonth(nowMonth);
@@ -193,9 +195,9 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String queryPersonals(){
+	public String queryPersonals() {
 		Pager pager = new Pager(page, rows, new Long(0));
 		List<Object> param = new ArrayList<Object>();
 		String jwhere = "";
@@ -204,8 +206,9 @@ public class ReportAction extends ActionSupport {
 		} else {
 			param.add(this.memberDTO.getPaperid());
 			jwhere = jwhere + " and p.idno=? ";
-		}	
-		List<Personalinfo> rs = reportService.queryPersonalinfoAll(pager, param , jwhere);
+		}
+		List<Personalinfo> rs = reportService.queryPersonalinfoAll(pager,
+				param, jwhere);
 		Map jsonMap = new HashMap();
 		jsonMap.put("page", page);
 		jsonMap.put("total", pager.total);
@@ -214,35 +217,35 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String savePInfo(){
+	public String savePInfo() {
 		Map jsonMap = new HashMap();
-		try{
+		try {
 			reportService.savePersonalinfo(memberDTO);
 			jsonMap.put("msg", "保存成功！");
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMap.put("msg", "保存失败！");
 		}
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String valPeperid(){
+	public String valPeperid() {
 		Map jsonMap = new HashMap();
 		try {
 			String msg = IDCard.IDCardValidate(idcard);
-			if("".equals(msg)){
+			if ("".equals(msg)) {
 				List<MemberDTO> mems = reportService.queryPersonByCard(idcard);
-				if(mems.size()>0){
+				if (mems.size() > 0) {
 					jsonMap.put("mems", mems.get(0));
 					jsonMap.put("result", "1");
-				}else{
+				} else {
 					jsonMap.put("result", "2");
 				}
-			}else{
+			} else {
 				jsonMap.put("result", "3");
 				jsonMap.put("msg", msg);
 			}
@@ -253,7 +256,7 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;

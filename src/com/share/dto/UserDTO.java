@@ -25,10 +25,10 @@ public class UserDTO {
 	private Timestamp utime;
 
 	private String token;
-	
-	private SysOrganization sysOrganization;
-	
-	private String orgId;
+
+	private long orgId;
+
+	private String districtsId;
 
 	public long getUserId() {
 		return userId;
@@ -110,20 +110,22 @@ public class UserDTO {
 		this.token = token;
 	}
 
-	public SysOrganization getSysOrganization() {
-		return sysOrganization;
-	}
+	 
 
-	public void setSysOrganization(SysOrganization sysOrganization) {
-		this.sysOrganization = sysOrganization;
-	}
-
-	public String getOrgId() {
+	public long getOrgId() {
 		return orgId;
 	}
 
-	public void setOrgId(String orgId) {
+	public void setOrgId(long orgId) {
 		this.orgId = orgId;
+	}
+
+	public String getDistrictsId() {
+		return districtsId;
+	}
+
+	public void setDistrictsId(String districtsId) {
+		this.districtsId = districtsId;
 	}
 
 }

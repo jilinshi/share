@@ -71,6 +71,8 @@ public class ImpAction extends ActionSupport {
 
 	private String ds;
 
+	private String attorney;
+	
 	@SuppressWarnings("rawtypes")
 	private Map map;// 返回的json
 
@@ -400,7 +402,9 @@ public class ImpAction extends ActionSupport {
 		if (!"".equals(ds) && !"null".equals(ds) && null != ds) {
 			temphql = temphql + " and t.ds = '" + ds + "'";
 		}
-
+		if (!"".equals(this.attorney) && !"null".equals(this.attorney) && null != this.attorney) {
+			temphql = temphql + " and t.attorneyId is not null ";
+		}
 		if ("1".equals(imptype)) {
 			param = new Object[1];
 			param[0] = "新录入";
@@ -587,6 +591,14 @@ public class ImpAction extends ActionSupport {
 
 	public void setDs(String ds) {
 		this.ds = ds;
+	}
+
+	public String getAttorney() {
+		return attorney;
+	}
+
+	public void setAttorney(String attorney) {
+		this.attorney = attorney;
 	}
 
 }

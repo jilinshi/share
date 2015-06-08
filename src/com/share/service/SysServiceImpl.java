@@ -284,7 +284,7 @@ public class SysServiceImpl implements SysService {
 		param[0] = userId;
 		SysUser su = sysUserDAO.find(hql, param).get(0);
 		u.setUserId(su.getUserId());
-		u.setOrgId(su.getSysOrganization().getOrgId() + "");
+		u.setOrgId(su.getSysOrganization().getOrgId());
 		u.setUname(su.getUname());
 		u.setUaccount(su.getUaccount());
 		u.setUpwds(su.getUpwds());
@@ -305,9 +305,9 @@ public class SysServiceImpl implements SysService {
 		param[2] = userId;
 		sysUserDAO.update(hql, param);
 	}
-	
+
 	@Override
-	public List<UsergroupDTO> querySYSUserGroupAll(){
+	public List<UsergroupDTO> querySYSUserGroupAll() {
 		List<UsergroupDTO> userlist = new ArrayList<UsergroupDTO>();
 		String hql = " select sug from SysUsergroup sug where 1=1 and sug.flag='1' order by sug.utime desc ";
 		List<SysUsergroup> sugs = sysUsergroupDAO.find(hql);
@@ -323,9 +323,9 @@ public class SysServiceImpl implements SysService {
 		}
 		return userlist;
 	}
-	
+
 	@Override
-	public List<UserDTO> querySYSUsers(List<Object> param){
+	public List<UserDTO> querySYSUsers(List<Object> param) {
 		List<UserDTO> us = new ArrayList<UserDTO>();
 		String hql = " select su from SysUser su where 1=1 and su.flag=? and su.sysOrganization=? order by su.utime desc";
 		List<SysUser> sus = sysUserDAO.find(hql, param);
@@ -343,20 +343,20 @@ public class SysServiceImpl implements SysService {
 		}
 		return us;
 	}
-	
+
 	@Override
-	public void saveSYSUgrelation(List<SysUgrelation> list){
+	public void saveSYSUgrelation(List<SysUgrelation> list) {
 		BigDecimal ugid = list.get(0).getUgId();
-		String hql=" delete SysUgrelation su where su.ugId=?";
+		String hql = " delete SysUgrelation su where su.ugId=?";
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = ugid;
 		sysUgrelationDAO.executeHql(hql, param);
 		sysUgrelationDAO.saveBatch(list);
 	}
-	
+
 	@Override
-	public void saveSysUsergroup(String ugName){
+	public void saveSysUsergroup(String ugName) {
 		SysUsergroup o = new SysUsergroup();
 		o.setUgName(ugName);
 		o.setUgPid(new BigDecimal("-1"));
@@ -365,9 +365,9 @@ public class SysServiceImpl implements SysService {
 		o.setUtime(new Timestamp(new Date().getTime()));
 		sysUsergroupDAO.save(o);
 	}
-	
+
 	@Override
-	public void delSysUsergroup(String ugId){
+	public void delSysUsergroup(String ugId) {
 		String hql = " update SysUsergroup u set u.flag=?, u.utime=? where u.ugId=? ";
 		Object[] param = null;
 		param = new Object[3];
