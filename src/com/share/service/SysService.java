@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.UgrelationDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
+import com.share.model.SysUgrelation;
 import com.share.util.Pager;
 
 public interface SysService {
@@ -21,4 +23,7 @@ public interface SysService {
 	public void updateSYSUserById(Long userId);
 	public List<UsergroupDTO> querySYSUserGroupAll();
 	public List<UserDTO> querySYSUsers(List<Object> param);
+	public void saveSYSUgrelation(List<SysUgrelation> list);
+	public void saveSysUsergroup(String ugName);
+	public void delSysUsergroup(String ugId);
 }

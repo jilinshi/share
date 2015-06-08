@@ -1,5 +1,6 @@
 package com.share.service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,7 @@ import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysDistrict;
 import com.share.model.SysOrganization;
+import com.share.model.SysUgrelation;
 import com.share.model.SysUser;
 import com.share.model.SysUsergroup;
 import com.share.util.Pager;
@@ -33,6 +35,8 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysUser> sysUserDAO;
 	@Resource
 	private BaseDAO<SysUsergroup> sysUsergroupDAO;
+	@Resource
+	private BaseDAO<SysUgrelation> sysUgrelationDAO;
 
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -305,7 +309,7 @@ public class SysServiceImpl implements SysService {
 	@Override
 	public List<UsergroupDTO> querySYSUserGroupAll(){
 		List<UsergroupDTO> userlist = new ArrayList<UsergroupDTO>();
-		String hql = " select sug from SysUsergroup sug where 1=1 ";
+		String hql = " select sug from SysUsergroup sug where 1=1 and sug.flag='1' order by sug.utime desc ";
 		List<SysUsergroup> sugs = sysUsergroupDAO.find(hql);
 		for (SysUsergroup s : sugs) {
 			UsergroupDTO u = new UsergroupDTO();
@@ -338,5 +342,38 @@ public class SysServiceImpl implements SysService {
 			us.add(u);
 		}
 		return us;
+	}
+	
+	@Override
+	public void saveSYSUgrelation(List<SysUgrelation> list){
+		BigDecimal ugid = list.get(0).getUgId();
+		String hql=" delete SysUgrelation su where su.ugId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = ugid;
+		sysUgrelationDAO.executeHql(hql, param);
+		sysUgrelationDAO.saveBatch(list);
+	}
+	
+	@Override
+	public void saveSysUsergroup(String ugName){
+		SysUsergroup o = new SysUsergroup();
+		o.setUgName(ugName);
+		o.setUgPid(new BigDecimal("-1"));
+		o.setFlag("1");
+		o.setCtime(new Timestamp(new Date().getTime()));
+		o.setUtime(new Timestamp(new Date().getTime()));
+		sysUsergroupDAO.save(o);
+	}
+	
+	@Override
+	public void delSysUsergroup(String ugId){
+		String hql = " update SysUsergroup u set u.flag=?, u.utime=? where u.ugId=? ";
+		Object[] param = null;
+		param = new Object[3];
+		param[0] = "0";
+		param[1] = new Timestamp(new Date().getTime());
+		param[2] = Long.valueOf(ugId);
+		sysUsergroupDAO.update(hql, param);
 	}
 }

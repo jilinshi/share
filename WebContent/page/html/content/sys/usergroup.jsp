@@ -13,15 +13,28 @@
 <link rel="stylesheet" href="<%=basePath%>assets/plugins/myscroll.css" rel="stylesheet" type="text/css" />
 <!-- ajax layout which only needs content area -->
 <div class="row">
-	<div class="col-sm-6">
+	<form class="form-horizontal" id="myForm" method="post" >
+	<div class="col-sm-12">
+	<div class="col-xs-12 col-sm-6">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header">
 				<h4 class="widget-title lighter smaller">用户组列表</h4>
 				<div class="widget-toolbar">
-					<i class="ace-icon fa fa-arrow-right"></i>
 				</div>
 			</div>
 			<div class="widget-body">
+			<div class="widget-toolbox" id="widget-toolbox-1">
+				<div class="btn-toolbar">
+					<div class="btn-group">
+					<input type="text" style="height:29px;" name="ugName" id="ugName" placeholder="请填写......" class="col-xs-15" />
+					</div>
+					<div class="btn-group">
+						<button class="btn btn-warning btn-sm btn-round" id="create">
+							<i class="ace-icon fa fa-plus-circle"></i> 新建用户组
+						</button>
+					</div>
+				</div>
+			</div>
 			<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 290px;">
 				<ul id="tasks_ug" class="item-list">
 				</ul>
@@ -29,12 +42,19 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-xs-12 col-sm-6">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header">
 				<h4 class="widget-title lighter smaller">用户列表</h4>
 			</div>
 			<div class="widget-body">
+			<div class="widget-toolbox" id="widget-toolbox-1">
+				<div class="btn-toolbar">
+					<div class="btn-group">
+						<div style="height:29px;">&nbsp; </div>
+					</div>
+				</div>
+			</div>
 			<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 290px;">
 				<ul id="tasks_u" class="item-list">
 				</ul>
@@ -42,10 +62,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-12">
-	<div class="clearfix form-actions">
-		<div class="col-md-offset-4 col-md-12">
-			<button class="btn btn-info" type="button">
+	<div class="col-xs-12">
+		<div class="clearfix form-actions">
+		<div class="col-md-offset-4 col-md-6">
+			<button class="btn btn-info" type="button" onclick="sub();">
 				<i class="ace-icon fa fa-check bigger-110"></i>
 				保存
 			</button>
@@ -58,6 +78,8 @@
 		</div>
 	</div>
 	</div>
+	</div>
+	</form>
 	<script type="text/javascript">
 		var $path_base = "<%=basePath%>";//in Ace demo this will be used for editurl parameter
 	</script>
@@ -77,7 +99,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			type : "post",
 			dataType : "json",
 			url : "<%=basePath%>page/html/content/sys/queryUserGroup.action",
-			async : true,
+			async : false,
 			success : function(data) {
 				var myData = data.ugs;
 				var li = "";
@@ -90,22 +112,48 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.ugId+"/><span class='lbl'> "+val.ugName+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.ugId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='radio' class='ace' id="+val.ugId+" name='usergroup_radio' value='"+val.ugId+"'/><span class='lbl'> "+val.ugName+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.ugId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
 				});
 				 //置于ul中
 				$("#tasks_ug").append(li);
 			}
 		});
 	};
+	 $('#create').click(function () {
+		var ugName = $("#ugName").val();
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/sys/addUsergroup.action",
+			async : false,
+			data :{ugName:ugName},
+			success : function(data) {
+				var msg = data.msg;
+				alert(msg);
+			}
+		});
+	 });
 	function del(id){
-		alert(id);
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/sys/delUsergroup.action",
+			async : false,
+			data :{ugId:id},
+			success : function(data) {
+				var msg = data.msg;
+				alert(msg);
+				$("#tasks_ug").children().filter('li').remove();
+				InitUserGroup();
+			}
+		});
 	};
 	function InitUser(orgid){
 		$.ajax({
 			type : "post",
 			dataType : "json",
 			url : "<%=basePath%>page/html/content/sys/queryUser.action",
-			async : true,
+			async : false,
 			data :{orgId:orgid},
 			success : function(data) {
 				var myData = data.ugs;
@@ -119,11 +167,46 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.userId+"/><span class='lbl'> "+val.uname+" </span></label></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.userId+" name='user_check' value='"+val.userId+"'/><span class='lbl'> "+val.uname+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_u").append(li);
 			}
 		});
 	};
+	function sub(){
+		//用户组
+		var ugid = $("input[name='usergroup_radio']:checked").val();
+		var str_u_len = $("input[name='user_check']:checkbox:checked").size();
+		//用户
+		var userids="";
+		var i=0;
+		$("input[name='user_check']:checkbox:checked").each(function(){ 
+			i++;
+			if(i==str_u_len){
+				userids+=$(this).val();
+			}else{
+				userids+=$(this).val()+",";
+			}
+		});
+		if(ugid==""){
+			alert("请选择用户组！");
+			return;
+		}
+		if(str_u_len==0){
+			alert("请选择用户！");
+			return;
+		}
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/sys/saveUGRelation.action",
+			async : true,
+			data :{ugId:ugid,userIds:userids},
+			success : function(data) {
+				var msg = data.msg;
+				alert(msg);
+			}
+		});
+	}
 </script>

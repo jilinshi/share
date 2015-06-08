@@ -118,5 +118,23 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="saveUGRelation" method="saveUGRelation"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="addUsergroup" method="addUsergroup"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="delUsergroup" method="delUsergroup"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

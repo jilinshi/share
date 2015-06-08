@@ -19,6 +19,7 @@ import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysOrganization;
+import com.share.model.SysUgrelation;
 import com.share.service.SysService;
 import com.share.util.Pager;
 
@@ -44,6 +45,10 @@ public class SysAction extends ActionSupport {
 	 /** 每页的记录数 */ 
 	private String rows;
 	private String userId;
+	private String ogId;
+	private String userIds;
+	private String ugName;
+	private String ugId;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -325,6 +330,57 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String saveUGRelation(){
+		String[] us = userIds.split(",");
+		List<SysUgrelation> ugrs = new ArrayList<SysUgrelation>();
+		for(int i=0; i<us.length; i++){
+			SysUgrelation ugr = new SysUgrelation();
+			ugr.setUgId(new BigDecimal(ugId));
+			ugr.setUserId(new BigDecimal(us[i]));
+			ugrs.add(ugr);
+		}
+		Map jsonMap = new HashMap();
+		try{
+			sysService.saveSYSUgrelation(ugrs);
+			jsonMap.put("msg", "保存成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String addUsergroup(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.saveSysUsergroup(ugName);
+			jsonMap.put("msg", "保存成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String delUsergroup(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.delSysUsergroup(ugId);
+			jsonMap.put("msg", "删除成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "删除失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -406,6 +462,38 @@ public class SysAction extends ActionSupport {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getOgId() {
+		return ogId;
+	}
+
+	public void setOgId(String ogId) {
+		this.ogId = ogId;
+	}
+
+	public String getUserIds() {
+		return userIds;
+	}
+
+	public void setUserIds(String userIds) {
+		this.userIds = userIds;
+	}
+
+	public String getUgName() {
+		return ugName;
+	}
+
+	public void setUgName(String ugName) {
+		this.ugName = ugName;
+	}
+
+	public String getUgId() {
+		return ugId;
+	}
+
+	public void setUgId(String ugId) {
+		this.ugId = ugId;
 	}
 
 }
