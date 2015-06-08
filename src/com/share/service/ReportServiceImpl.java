@@ -88,7 +88,7 @@ public class ReportServiceImpl implements ReportService {
 		Object[] param = null;
 		param = new Object[2];
 		param[0] = orgid;
-		param[1] = new BigDecimal(orgid + "");
+		param[1] = orgid+"";
 		List<SysOrganization> rs = sysOrganizationDAO.find(hql, param);
 		for (SysOrganization s : rs) {
 			OrganizationDTO e = new OrganizationDTO();
