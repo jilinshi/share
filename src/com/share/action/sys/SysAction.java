@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.RoleDTO;
 import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
@@ -49,6 +50,9 @@ public class SysAction extends ActionSupport {
 	private String userIds;
 	private String ugName;
 	private String ugId;
+	//
+	private String roleName;
+	private String roleId;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -381,6 +385,53 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryRole(){
+		List<RoleDTO> rs = sysService.querySYSRoleAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("rs", rs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String addRole(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.saveSysRole(roleName);
+			jsonMap.put("msg", "±£´æ³É¹¦£¡");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "±£´æÊ§°Ü£¡");
+		}
+		map = jsonMap;
+		
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String delRole(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.delSysRole(roleId);
+			jsonMap.put("msg", "É¾³ý³É¹¦£¡");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "É¾³ýÊ§°Ü£¡");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryUserAll(){
+		List<UserDTO> us = sysService.querySYSUserAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("us", us);
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -494,6 +545,22 @@ public class SysAction extends ActionSupport {
 
 	public void setUgId(String ugId) {
 		this.ugId = ugId;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public String getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 
 }

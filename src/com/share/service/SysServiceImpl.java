@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 import com.share.dao.BaseDAO;
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.RoleDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysDistrict;
 import com.share.model.SysOrganization;
+import com.share.model.SysRole;
 import com.share.model.SysUgrelation;
 import com.share.model.SysUser;
 import com.share.model.SysUsergroup;
@@ -37,6 +39,8 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysUsergroup> sysUsergroupDAO;
 	@Resource
 	private BaseDAO<SysUgrelation> sysUgrelationDAO;
+	@Resource
+	private BaseDAO<SysRole> sysRoleDAO;
 
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -375,5 +379,63 @@ public class SysServiceImpl implements SysService {
 		param[1] = new Timestamp(new Date().getTime());
 		param[2] = Long.valueOf(ugId);
 		sysUsergroupDAO.update(hql, param);
+	}
+	
+	@Override
+	public List<RoleDTO> querySYSRoleAll(){
+		List<RoleDTO> rolelist = new ArrayList<RoleDTO>();
+		String hql = " select sr from SysRole sr where 1=1 and sr.flag='1' order by sr.utime desc ";
+		List<SysRole> sr = sysRoleDAO.find(hql);
+		for (SysRole s : sr) {
+			RoleDTO r = new RoleDTO();
+			r.setRoleId(s.getRoleId());
+			r.setRolename(s.getRolename());
+			r.setFlag(s.getFlag());
+			r.setCtime(s.getCtime());
+			r.setUtime(s.getUtime());
+			rolelist.add(r);
+		}
+		return rolelist;
+	}
+	
+	@Override
+	public void saveSysRole(String rolename){
+		SysRole o = new SysRole();
+		o.setRolename(rolename);
+		o.setFlag("1");
+		o.setCtime(new Timestamp(new Date().getTime()));
+		o.setUtime(new Timestamp(new Date().getTime()));
+		sysRoleDAO.save(o);
+	}
+	
+	@Override
+	public void delSysRole(String roleId){
+		String hql = " update SysRole sr set sr.flag=?, sr.utime=? where sr.roleId=? ";
+		Object[] param = null;
+		param = new Object[3];
+		param[0] = "0";
+		param[1] = new Timestamp(new Date().getTime());
+		param[2] = Long.valueOf(roleId);
+		sysRoleDAO.update(hql, param);
+	}
+	
+	public List<UserDTO> querySYSUserAll(){
+		List<UserDTO> userlist = new ArrayList<UserDTO>();
+		String hql = " select su from SysUser su where 1=1 and su.flag='1' order by su.userId ";
+		List<SysUser> su = sysUserDAO.find(hql);
+		for (SysUser s : su) {
+			UserDTO u = new UserDTO();
+			u.setUserId(s.getUserId());
+			u.setUaccount(s.getUaccount());
+			u.setUname(s.getUname());
+			u.setUpwds(s.getUpwds());
+			u.setFlag(s.getFlag());
+			u.setIdno(s.getIdno());
+			u.setMobilephone(s.getMobilephone());
+			u.setUtime(s.getUtime());
+			userlist.add(u);
+		}
+		return userlist;
+		
 	}
 }
