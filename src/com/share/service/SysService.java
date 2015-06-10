@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.share.dto.DistrictsDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.RoleDTO;
 import com.share.dto.UgrelationDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
@@ -26,4 +27,8 @@ public interface SysService {
 	public void saveSYSUgrelation(List<SysUgrelation> list);
 	public void saveSysUsergroup(String ugName);
 	public void delSysUsergroup(String ugId);
+	public List<RoleDTO> querySYSRoleAll();
+	public void saveSysRole(String rolename);
+	public void delSysRole(String roleId);
+	public List<UserDTO> querySYSUserAll();
 }
