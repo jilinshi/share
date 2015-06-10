@@ -17,9 +17,11 @@ import com.share.dto.RoleDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysDistrict;
+import com.share.model.SysGrrelation;
 import com.share.model.SysOrganization;
 import com.share.model.SysRole;
 import com.share.model.SysUgrelation;
+import com.share.model.SysUrrelation;
 import com.share.model.SysUser;
 import com.share.model.SysUsergroup;
 import com.share.util.Pager;
@@ -41,6 +43,10 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysUgrelation> sysUgrelationDAO;
 	@Resource
 	private BaseDAO<SysRole> sysRoleDAO;
+	@Resource
+	private BaseDAO<SysGrrelation> sysGrrelationDAO;
+	@Resource
+	private BaseDAO<SysUrrelation> sysUrrelationDAO;
 
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -419,6 +425,7 @@ public class SysServiceImpl implements SysService {
 		sysRoleDAO.update(hql, param);
 	}
 	
+	@Override
 	public List<UserDTO> querySYSUserAll(){
 		List<UserDTO> userlist = new ArrayList<UserDTO>();
 		String hql = " select su from SysUser su where 1=1 and su.flag='1' order by su.userId ";
@@ -437,5 +444,27 @@ public class SysServiceImpl implements SysService {
 		}
 		return userlist;
 		
+	}
+	
+	@Override
+	public void saveSYSGrrelation(List<SysGrrelation> grrs){
+		BigDecimal roleid = grrs.get(0).getRoleId();
+		String hql = " delete SysGrrelation su where su.roleId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = roleid;
+		sysGrrelationDAO.executeHql(hql, param);
+		sysGrrelationDAO.saveBatch(grrs);
+	}
+	
+	@Override
+	public void saveSYSUrrelation(List<SysUrrelation> urrs){
+		BigDecimal roleid = urrs.get(0).getRoleId();
+		String hql = " delete SysUrrelation su where su.roleId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = roleid;
+		sysUrrelationDAO.executeHql(hql, param);
+		sysUrrelationDAO.saveBatch(urrs);
 	}
 }

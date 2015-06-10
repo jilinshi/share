@@ -8,7 +8,9 @@ import com.share.dto.RoleDTO;
 import com.share.dto.UgrelationDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
+import com.share.model.SysGrrelation;
 import com.share.model.SysUgrelation;
+import com.share.model.SysUrrelation;
 import com.share.util.Pager;
 
 public interface SysService {
@@ -31,4 +33,6 @@ public interface SysService {
 	public void saveSysRole(String rolename);
 	public void delSysRole(String roleId);
 	public List<UserDTO> querySYSUserAll();
+	public void saveSYSGrrelation(List<SysGrrelation> grrs);
+	public void saveSYSUrrelation(List<SysUrrelation> urrs);
 }

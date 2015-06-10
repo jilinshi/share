@@ -160,5 +160,11 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="saveRoleRelation" method="saveRoleRelation"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

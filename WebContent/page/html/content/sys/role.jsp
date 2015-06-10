@@ -165,13 +165,14 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			}
 		});
 	};
+	var tabid="tab1";
 	function addtab(tab){
-		var tabid = tab.id;
+		tabid = tab.id;
+		$("#tasks_uergroup").children().filter('li').remove();
+		$("#tasks_u").children().filter('li').remove();
 		if(tabid=='tab1'){
-			$("#tasks_uergroup").children().filter('li').remove();
 			InitUserGroup();
 		}else if(tabid=='tab2'){
-			$("#tasks_u").children().filter('li').remove();
 			InitUser();
 		}
 	};
@@ -218,7 +219,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.ugId+" name='user_check' value='"+val.ugId+"'/><span class='lbl'> "+val.ugName+" </span></label></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.ugId+" name='usergroup_check' value='"+val.ugId+"'/><span class='lbl'> "+val.ugName+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_uergroup").append(li);
@@ -226,34 +227,73 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		});
 	};
 	function sub(){
-		//用户组
-		var ugid = $("input[name='usergroup_radio']:checked").val();
+		//角色数
+		var str_role_len = $("input[name='role_checkbox']:checkbox:checked").size();
+		//用户数
 		var str_u_len = $("input[name='user_check']:checkbox:checked").size();
+		//用户组数
+		var str_ug_len = $("input[name='usergroup_check']:checkbox:checked").size();
+		
+		//alert(tabid);
+		//alert(str_role_len+"--"+str_u_len+"--"+str_ug_len);
+
+		//角色
+		var roleids="";
+		var ri=0;
+		$("input[name='role_checkbox']:checkbox:checked").each(function(){ 
+			ri++;
+			if(ri==str_role_len){
+				roleids+=$(this).val();
+			}else{
+				roleids+=$(this).val()+",";
+			}
+		});
 		//用户
 		var userids="";
-		var i=0;
+		var ui=0;
 		$("input[name='user_check']:checkbox:checked").each(function(){ 
-			i++;
-			if(i==str_u_len){
+			ui++;
+			if(ui==str_u_len){
 				userids+=$(this).val();
 			}else{
 				userids+=$(this).val()+",";
 			}
 		});
-		if(ugid==""){
-			alert("请选择用户组！");
+		//用户组
+		var usergroudids="";
+		var ugi=0;
+		$("input[name='usergroup_check']:checkbox:checked").each(function(){ 
+			ugi++;
+			if(ugi==str_ug_len){
+				usergroudids+=$(this).val();
+			}else{
+				usergroudids+=$(this).val()+",";
+			}
+		});
+		
+		if(str_role_len==0){
+			alert("请选择角色！");
 			return;
 		}
-		if(str_u_len==0){
-			alert("请选择用户！");
-			return;
+		if(tabid=='tab1'){
+			//用户组
+			if(str_ug_len==0){
+				alert("请选择用户组！");
+				return;
+			}
+		}else if(tabid=='tab2'){
+			//用户
+			if(str_u_len==0){
+				alert("请选择用户！");
+				return;
+			}
 		}
 		$.ajax({
 			type : "post",
 			dataType : "json",
-			url : "<%=basePath%>page/html/content/sys/saveUGRelation.action",
+			url : "<%=basePath%>page/html/content/sys/saveRoleRelation.action",
 			async : true,
-			data :{ugId:ugid,userIds:userids},
+			data :{roleIds:roleids,userIds:userids,usergroudIds:usergroudids},
 			success : function(data) {
 				var msg = data.msg;
 				alert(msg);

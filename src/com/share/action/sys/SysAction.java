@@ -19,8 +19,10 @@ import com.share.dto.RoleDTO;
 import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
+import com.share.model.SysGrrelation;
 import com.share.model.SysOrganization;
 import com.share.model.SysUgrelation;
+import com.share.model.SysUrrelation;
 import com.share.service.SysService;
 import com.share.util.Pager;
 
@@ -53,6 +55,9 @@ public class SysAction extends ActionSupport {
 	//
 	private String roleName;
 	private String roleId;
+	
+	private String usergroudIds;
+	private String roleIds;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -432,6 +437,51 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String saveRoleRelation(){
+		Map jsonMap = new HashMap();
+		String[] rs = roleIds.split(",");
+		for(int i=0; i<rs.length; i++){
+			if("".equals(userIds)){
+				//用户组操作
+				String[] ugs = usergroudIds.split(",");
+				List<SysGrrelation> grrs = new ArrayList<SysGrrelation>();
+				for(int ug_i=0; ug_i<ugs.length; ug_i++){
+					SysGrrelation grr = new SysGrrelation();
+					grr.setRoleId(new BigDecimal(rs[i]));
+					grr.setUgId(new BigDecimal(ugs[ug_i]));;
+					grrs.add(grr);
+				}
+				try{
+					sysService.saveSYSGrrelation(grrs);
+					jsonMap.put("msg", "保存成功！");
+				}catch(Exception e){
+					e.printStackTrace();
+					jsonMap.put("msg", "保存失败！");
+				}
+			}else if("".equals(usergroudIds)){
+				//用户操作
+				String[] us = userIds.split(",");
+				List<SysUrrelation> urrs = new ArrayList<SysUrrelation>();
+				for(int u_i=0; u_i<us.length; u_i++){
+					SysUrrelation urr = new SysUrrelation();
+					urr.setRoleId(new BigDecimal(rs[i]));
+					urr.setUserId(new BigDecimal(us[u_i]));;
+					urrs.add(urr);
+				}
+				try{
+					sysService.saveSYSUrrelation(urrs);
+					jsonMap.put("msg", "保存成功！");
+				}catch(Exception e){
+					e.printStackTrace();
+					jsonMap.put("msg", "保存失败！");
+				}
+			}
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -561,6 +611,22 @@ public class SysAction extends ActionSupport {
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
+	}
+
+	public String getUsergroudIds() {
+		return usergroudIds;
+	}
+
+	public void setUsergroudIds(String usergroudIds) {
+		this.usergroudIds = usergroudIds;
+	}
+
+	public String getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
 	}
 
 }
