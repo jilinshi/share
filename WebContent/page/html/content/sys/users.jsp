@@ -7,7 +7,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 	UserDTO user =(UserDTO) session.getAttribute("user");
-	Long oid=user.getSysOrganization().getOrgId();
+	Long oid=user.getOrgId();
 %>
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/plugins/style.css" rel="stylesheet" type="text/css" />

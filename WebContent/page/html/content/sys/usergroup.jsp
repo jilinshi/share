@@ -7,7 +7,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 	UserDTO user =(UserDTO) session.getAttribute("user");
-	Long oid=user.getSysOrganization().getOrgId();
+	Long oid=user.getOrgId();
 %>
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/plugins/myscroll.css" rel="stylesheet" type="text/css" />
@@ -25,7 +25,7 @@
 			<div class="widget-body">
 			<div class="widget-toolbox" id="widget-toolbox-1">
 				<div class="btn-toolbar">
-					<div class="btn-group">
+					<div class="btn-group">用户组名称：
 					<input type="text" style="height:29px;" name="ugName" id="ugName" placeholder="请填写......" class="col-xs-15" />
 					</div>
 					<div class="btn-group">
@@ -121,6 +121,10 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 	};
 	 $('#create').click(function () {
 		var ugName = $("#ugName").val();
+		if(ugName==""){
+			alert("请填写用户组名称！");
+			return;
+		}
 		$.ajax({
 			type : "post",
 			dataType : "json",
