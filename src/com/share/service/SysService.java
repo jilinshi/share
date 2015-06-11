@@ -3,7 +3,11 @@ package com.share.service;
 import java.util.List;
 
 import com.share.dto.DistrictsDTO;
+import com.share.dto.FileDTO;
+import com.share.dto.FunctionDTO;
+import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.PrivilegeDTO;
 import com.share.dto.RoleDTO;
 import com.share.dto.UgrelationDTO;
 import com.share.dto.UserDTO;
@@ -35,4 +39,8 @@ public interface SysService {
 	public List<UserDTO> querySYSUserAll();
 	public void saveSYSGrrelation(List<SysGrrelation> grrs);
 	public void saveSYSUrrelation(List<SysUrrelation> urrs);
+	public List<PrivilegeDTO> querySYSPrivilegeAll();
+	public List<MenuDTO> querySYSMenusAll();
+	public List<FunctionDTO> querySYSFunctionAll();
+	public List<FileDTO> querySYSFileAll();
 }

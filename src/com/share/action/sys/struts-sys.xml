@@ -166,5 +166,29 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="queryPrivilege" method="queryPrivilege"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>	
+		<action name="queryMenus" method="queryMenus"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryFunctions" method="queryFunctions"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryFiles" method="queryFiles"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

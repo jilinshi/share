@@ -14,7 +14,11 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.DistrictsDTO;
+import com.share.dto.FileDTO;
+import com.share.dto.FunctionDTO;
+import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.PrivilegeDTO;
 import com.share.dto.RoleDTO;
 import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
@@ -479,6 +483,42 @@ public class SysAction extends ActionSupport {
 				}
 			}
 		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryPrivilege(){
+		List<PrivilegeDTO> ps = sysService.querySYSPrivilegeAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("ps", ps);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryMenus(){
+		List<MenuDTO> rs = sysService.querySYSMenusAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("rs", rs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryFunctions(){
+		List<FunctionDTO> rs = sysService.querySYSFunctionAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("rs", rs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryFiles(){
+		List<FileDTO> rs = sysService.querySYSFileAll();
+		Map jsonMap = new HashMap();
+		jsonMap.put("rs", rs);
 		map = jsonMap;
 		return SUCCESS;
 	}

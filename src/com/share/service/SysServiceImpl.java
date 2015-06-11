@@ -12,13 +12,21 @@ import org.springframework.stereotype.Service;
 
 import com.share.dao.BaseDAO;
 import com.share.dto.DistrictsDTO;
+import com.share.dto.FileDTO;
+import com.share.dto.FunctionDTO;
+import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.PrivilegeDTO;
 import com.share.dto.RoleDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysDistrict;
+import com.share.model.SysFile;
+import com.share.model.SysFunction;
 import com.share.model.SysGrrelation;
+import com.share.model.SysMenus;
 import com.share.model.SysOrganization;
+import com.share.model.SysPrivilege;
 import com.share.model.SysRole;
 import com.share.model.SysUgrelation;
 import com.share.model.SysUrrelation;
@@ -47,6 +55,14 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysGrrelation> sysGrrelationDAO;
 	@Resource
 	private BaseDAO<SysUrrelation> sysUrrelationDAO;
+	@Resource
+	private BaseDAO<SysPrivilege> sysPrivilegeDAO;
+	@Resource
+	private BaseDAO<SysMenus> sysMenusDAO;
+	@Resource
+	private BaseDAO<SysFunction> sysFunctionDAO;
+	@Resource
+	private BaseDAO<SysFile> sysFileDAO;
 
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
@@ -466,5 +482,84 @@ public class SysServiceImpl implements SysService {
 		param[0] = roleid;
 		sysUrrelationDAO.executeHql(hql, param);
 		sysUrrelationDAO.saveBatch(urrs);
+	}
+	
+	@Override
+	public List<PrivilegeDTO> querySYSPrivilegeAll(){
+		List<PrivilegeDTO> privilegelist = new ArrayList<PrivilegeDTO>();
+		String hql = " select sp from SysPrivilege sp where 1=1 and sp.flag='1' order by sp.privilegeId ";
+		List<SysPrivilege> sp = sysPrivilegeDAO.find(hql);
+		for (SysPrivilege s : sp) {
+			PrivilegeDTO p= new PrivilegeDTO();
+			p.setPrivilegeId(s.getPrivilegeId());
+			p.setPriviname(s.getPriviname());
+			p.setPrivicode(s.getPrivicode());
+			p.setRemark(s.getRemark());
+			p.setFlag(s.getFlag());
+			p.setCtime(s.getCtime());
+			privilegelist.add(p);
+		}
+		return privilegelist;
+	}
+	
+	@Override
+	public List<MenuDTO> querySYSMenusAll(){
+		List<MenuDTO> menulist = new ArrayList<MenuDTO>();
+		String hql = " select sp from SysMenus sp where 1=1 and sp.flag='1' order by sp.menuId ";
+		List<SysMenus> sp = sysMenusDAO.find(hql);
+		for (SysMenus s : sp) {
+			MenuDTO p= new MenuDTO();
+			p.setMenuId(s.getMenuId());
+			p.setPmId(s.getPmId());
+			p.setMenuname(s.getMenuname());
+			p.setMenuurl(s.getMenuurl());
+			p.setMenucode(s.getMenucode());
+			p.setRemark(s.getRemark());
+			p.setFlag(s.getFlag());
+			p.setCtime(s.getCtime());
+			p.setUtime(s.getUtime());
+			p.setIco(s.getIco());
+			menulist.add(p);
+		}
+		return menulist;
+	}
+	
+	@Override
+	public List<FunctionDTO> querySYSFunctionAll(){
+		List<FunctionDTO> functionlist = new ArrayList<FunctionDTO>();
+		String hql = " select sp from SysFunction sp where 1=1 and sp.flag='1' order by sp.functionId ";
+		List<SysFunction> sp = sysFunctionDAO.find(hql);
+		for (SysFunction s : sp) {
+			FunctionDTO p= new FunctionDTO();
+			p.setFunctionId(s.getFunctionId());
+			p.setFuncname(s.getFuncname());
+			p.setFuncdescr(s.getFuncdescr());
+			p.setMatching(s.getMatching());
+			p.setRemark(s.getRemark());
+			p.setFlag(s.getFlag());
+			p.setCtime(s.getCtime());
+			functionlist.add(p);
+		}
+		return functionlist;
+	}
+	
+	@Override
+	public List<FileDTO> querySYSFileAll(){
+		List<FileDTO> filelist = new ArrayList<FileDTO>();
+		String hql = " select sp from SysFile sp where 1=1 and sp.flag='1' order by sp.fileId ";
+		List<SysFile> sp = sysFileDAO.find(hql);
+		for (SysFile s : sp) {
+			FileDTO p= new FileDTO();
+			p.setFileId(new BigDecimal(s.getFileId()));
+			p.setFtype(s.getFtype());
+			p.setFilename(s.getFilename());
+			p.setRealname(s.getRealname());
+			p.setRealpath(s.getRealpath());
+			p.setRemark(s.getRemark());
+			p.setFlag(s.getFlag());
+			filelist.add(p);
+		}
+		return filelist;
+		
 	}
 }
