@@ -1,5 +1,6 @@
 package com.share.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.share.dto.DistrictsDTO;
@@ -9,12 +10,20 @@ import com.share.dto.MenuDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.PrivilegeDTO;
 import com.share.dto.RoleDTO;
-import com.share.dto.UgrelationDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
+import com.share.model.SysFprelation;
 import com.share.model.SysGrrelation;
+import com.share.model.SysMprelation;
+import com.share.model.SysPfrelation;
+import com.share.model.SysRprelation;
 import com.share.model.SysUgrelation;
 import com.share.model.SysUrrelation;
+import com.share.model.SysVGr;
+import com.share.model.SysVMp;
+import com.share.model.SysVRp;
+import com.share.model.SysVUg;
+import com.share.model.SysVUr;
 import com.share.util.Pager;
 
 public interface SysService {
@@ -43,4 +52,15 @@ public interface SysService {
 	public List<MenuDTO> querySYSMenusAll();
 	public List<FunctionDTO> querySYSFunctionAll();
 	public List<FileDTO> querySYSFileAll();
+	public void saveSysPrivilege(PrivilegeDTO pdto);
+	public void delSysPrivilege(String privilegeId);
+	public void saveSYSRprelation(List<SysRprelation> rrs);
+	public void saveSYSMprelation(List<SysMprelation> mrs);
+	public void saveSYSPfrelation(List<SysPfrelation> prs);
+	public void saveSYSFprelation(List<SysFprelation> frs);
+	public List<SysVUg> querySYSUgUsers(BigDecimal ugId);
+	public List<SysVGr> querySYSVGr(BigDecimal roleId);
+	public List<SysVUr> querySYSVUr(BigDecimal roleId);
+	public List<SysVRp> querySYSVRp(BigDecimal privilegeId);
+	public List<SysVMp> querySYSVMp(BigDecimal privilegeId);
 }

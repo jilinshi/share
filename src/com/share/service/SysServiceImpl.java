@@ -22,16 +22,25 @@ import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysDistrict;
 import com.share.model.SysFile;
+import com.share.model.SysFprelation;
 import com.share.model.SysFunction;
 import com.share.model.SysGrrelation;
 import com.share.model.SysMenus;
+import com.share.model.SysMprelation;
 import com.share.model.SysOrganization;
+import com.share.model.SysPfrelation;
 import com.share.model.SysPrivilege;
 import com.share.model.SysRole;
+import com.share.model.SysRprelation;
 import com.share.model.SysUgrelation;
 import com.share.model.SysUrrelation;
 import com.share.model.SysUser;
 import com.share.model.SysUsergroup;
+import com.share.model.SysVGr;
+import com.share.model.SysVMp;
+import com.share.model.SysVRp;
+import com.share.model.SysVUg;
+import com.share.model.SysVUr;
 import com.share.util.Pager;
 import com.share.util.PrimaryKey;
 import com.share.util.StringFormat;
@@ -63,7 +72,25 @@ public class SysServiceImpl implements SysService {
 	private BaseDAO<SysFunction> sysFunctionDAO;
 	@Resource
 	private BaseDAO<SysFile> sysFileDAO;
-
+	@Resource
+	private BaseDAO<SysRprelation> sysRprelationDAO;
+	@Resource
+	private BaseDAO<SysMprelation> sysMprelationDAO;
+	@Resource
+	private BaseDAO<SysPfrelation> sysPfrelationDAO;
+	@Resource
+	private BaseDAO<SysFprelation> sysFprelationDAO;
+	@Resource
+	private BaseDAO<SysVUg> sysVUgDAO;
+	@Resource
+	private BaseDAO<SysVGr> sysVGrDAO;
+	@Resource
+	private BaseDAO<SysVUr> sysVUrDAO;
+	@Resource
+	private BaseDAO<SysVRp> sysVRpDAO;
+	@Resource
+	private BaseDAO<SysVMp> sysVMpDAO;
+	
 	@Override
 	public List<DistrictsDTO> querySYSDistrict(String hql, Object[] param) {
 		List<DistrictsDTO> list = new ArrayList<DistrictsDTO>();
@@ -562,4 +589,121 @@ public class SysServiceImpl implements SysService {
 		return filelist;
 		
 	}
+	
+	@Override
+	public void saveSysPrivilege(PrivilegeDTO pdto){
+		SysPrivilege o = new SysPrivilege();
+		o.setPriviname(pdto.getPriviname());
+		o.setPrivicode(pdto.getPrivicode());
+		o.setRemark(pdto.getPriviname());
+		o.setFlag("1");
+		o.setCtime(new Timestamp(new Date().getTime()));
+		sysPrivilegeDAO.save(o);
+	}
+	
+	@Override
+	public void delSysPrivilege(String privilegeId){
+		String hql = " update SysPrivilege sp set sp.flag=? where sp.privilegeId=? ";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = "0";
+		param[1] = Long.valueOf(privilegeId);
+		sysRoleDAO.update(hql, param);
+	}
+	
+	@Override
+	public void saveSYSRprelation(List<SysRprelation> rrs){
+		BigDecimal priid = rrs.get(0).getPrivilegeId();
+		String hql = " delete SysRprelation sr where sr.privilegeId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = priid;
+		sysRprelationDAO.executeHql(hql, param);
+		sysRprelationDAO.saveBatch(rrs);
+	}
+	
+	@Override
+	public void saveSYSMprelation(List<SysMprelation> mrs){
+		BigDecimal priid = mrs.get(0).getPrivilegeId();
+		String hql = " delete SysMprelation mr where mr.privilegeId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = priid;
+		sysMprelationDAO.executeHql(hql, param);
+		sysMprelationDAO.saveBatch(mrs);
+	}
+	
+	@Override
+	public void saveSYSPfrelation(List<SysPfrelation> prs){
+		BigDecimal priid = prs.get(0).getPrivilegeId();
+		String hql = " delete SysPfrelation pr where pr.privilegeId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = priid;
+		sysPfrelationDAO.executeHql(hql, param);
+		sysPfrelationDAO.saveBatch(prs);
+	}
+	
+	@Override
+	public void saveSYSFprelation(List<SysFprelation> frs){
+		BigDecimal priid = frs.get(0).getPrivilegeId();
+		String hql = " delete SysFprelation fr where fr.privilegeId=?";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = priid;
+		sysFprelationDAO.executeHql(hql, param);
+		sysFprelationDAO.saveBatch(frs);
+	}
+	
+	@Override
+	public List<SysVUg> querySYSUgUsers(BigDecimal ugId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = ugId;
+		String hql = " select s from SysVUg s where 1=1 and s.ugId=?";
+		List<SysVUg> suus = sysVUgDAO.find(hql, param);
+		return suus;
+	}
+	
+	@Override
+	public List<SysVGr> querySYSVGr(BigDecimal roleId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = roleId;
+		String hql = " select s from SysVGr s where 1=1 and s.roleId=?";
+		List<SysVGr> sgrs = sysVGrDAO.find(hql, param);
+		return sgrs;
+	}
+	
+	@Override
+	public List<SysVUr> querySYSVUr(BigDecimal roleId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = roleId;
+		String hql = " select s from SysVUr s where 1=1 and s.roleId=?";
+		List<SysVUr> sgrs = sysVUrDAO.find(hql, param);
+		return sgrs;
+	}
+	
+	@Override
+	public List<SysVRp> querySYSVRp(BigDecimal privilegeId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = privilegeId;
+		String hql = " select s from SysVRp s where 1=1 and s.privilegeId=?";
+		List<SysVRp> srps = sysVRpDAO.find(hql, param);
+		return srps;
+		
+	}
+	
+	@Override
+	public List<SysVMp> querySYSVMp(BigDecimal privilegeId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = privilegeId;
+		String hql = " select s from SysVMp s where 1=1 and s.privilegeId=?";
+		List<SysVMp> smps = sysVMpDAO.find(hql, param);
+		return smps;
+	}
+	
 }

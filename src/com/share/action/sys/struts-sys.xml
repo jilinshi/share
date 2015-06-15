@@ -190,5 +190,41 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="addPrivilege" method="addPrivilege"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="delPrivilege" method="delPrivilege"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="savePriRelation" method="savePriRelation"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryUgChecked" method="queryUgChecked"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryGrChecked" method="queryGrChecked"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="queryUrChecked" method="queryUrChecked"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

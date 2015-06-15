@@ -11,6 +11,7 @@
 %>
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/plugins/myscroll.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<%=basePath%>assets/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css"/>
 <!-- ajax layout which only needs content area -->
 <div class="row">
 	<form class="form-horizontal" id="myForm" method="post" >
@@ -25,8 +26,11 @@
 			<div class="widget-body">
 			<div class="widget-toolbox" id="widget-toolbox-1">
 				<div class="btn-toolbar">
-					<div class="btn-group">权限名称：
-					<input type="text" style="height:29px;" name="roleName" id="roleName" placeholder="请填写......" class="input-xlarge" />
+					<div class="btn-group">
+					权限名称:
+					<input type="text" style="height:29px;" name="priviname" id="priviname" placeholder="请填写......" class="input-medium" />
+					权限编码:
+					<input type="text" style="height:29px;" name="privicode" id="privicode" placeholder="请填写......" class="input-medium" />
 					</div>
 					<div class="btn-group" >
 						<button class="btn btn-warning btn-sm btn-round" id="create">
@@ -56,12 +60,12 @@
 				<li>
 					<a data-toggle="tab" id="tab2" href="#menus" onclick="addtab(this);">菜单</a>
 				</li>
-				<li>
+				<!-- <li>
 					<a data-toggle="tab" id="tab3" href="#function" onclick="addtab(this);">功能</a>
 				</li>
 				<li>
 					<a data-toggle="tab" id="tab4" href="#file" onclick="addtab(this);">文件</a>
-				</li>
+				</li> -->
 			</ul>
 			<div class="tab-content" >
 				<div id="role" class="tab-pane in active" style="margin: -15px -13px;">
@@ -72,11 +76,12 @@
 				</div>
 				<div id="menus" class="tab-pane" style="margin: -15px -13px;">
 					<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 280px;">
-						<ul id="tasks_menus" class="item-list">
-						</ul>
+						<div class="zTreeDemoBackground left">
+							<ul id="treeDemo_menus" class="ztree"></ul>
+						</div>
 					</div>
 				</div>
-				<div id="function" class="tab-pane" style="margin: -15px -13px;">
+				<!-- <div id="function" class="tab-pane" style="margin: -15px -13px;">
 					<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 280px;">
 						<ul id="tasks_function" class="item-list">
 						</ul>
@@ -87,7 +92,7 @@
 						<ul id="tasks_file" class="item-list">
 						</ul>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			</div>
 			</div>
@@ -117,7 +122,7 @@
 	<input type="hidden" name="oid" id="oid" value="<%=oid%>"/>
 </div>
 <script type="text/javascript">
-var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
+var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath %>assets/ztree/js/jquery.ztree.excheck-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			var oid = $("#oid").val();
@@ -143,7 +148,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.privilegeId+" name='privilege_checkbox' value='"+val.privilegeId+"'/><span class='lbl'> "+val.priviname+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.privilegeId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='radio' class='ace' id="+val.privilegeId+" name='privilege_radio' value='"+val.privilegeId+"'  onclick='privilege_check(this)'/><span class='lbl'> "+val.priviname+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.privilegeId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
 				});
 				 //置于ul中
 				$("#tasks_privilege").append(li);
@@ -151,17 +156,22 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		});
 	};
 	 $('#create').click(function () {
-		var roleName = $("#roleName").val();
-		if(roleName==""){
-			alert("请填写角色名称！");
+		var priviname = $("#priviname").val();
+		var privicode = $("#privicode").val();
+		if(priviname==""){
+			alert("请填写权限名称！");
+			return;
+		}
+		if(privicode==""){
+			alert("请填写权限编码！");
 			return;
 		}
 		$.ajax({
 			type : "post",
 			dataType : "json",
-			url : "<%=basePath%>page/html/content/sys/addRole.action",
+			url : "<%=basePath%>page/html/content/sys/addPrivilege.action",
 			async : false,
-			data :{roleName:roleName},
+			data :{priviname:priviname,privicode:privicode},
 			success : function(data) {
 				var msg = data.msg;
 				alert(msg);
@@ -172,14 +182,14 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		$.ajax({
 			type : "post",
 			dataType : "json",
-			url : "<%=basePath%>page/html/content/sys/delRole.action",
+			url : "<%=basePath%>page/html/content/sys/delPrivilege.action",
 			async : false,
-			data :{roleId:id},
+			data :{privilegeId:id},
 			success : function(data) {
 				var msg = data.msg;
 				alert(msg);
-				$("#tasks_role").children().filter('li').remove();
-				InitRole();
+				$("#tasks_privilege").children().filter('li').remove();
+				InitPrivilege();
 			}
 		});
 	};
@@ -200,6 +210,16 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			InitFile();
 		}
 	};
+	
+	function privilege_check(e){
+		var privilegeid = e.id;
+		if(tabid=='tab1'){
+			
+		}else if(tabid=='tab2'){
+			
+		}
+	};
+	
 	function InitRole(){
 		$.ajax({
 			type : "post",
@@ -218,7 +238,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.roleId+" name='user_check' value='"+val.roleId+"'/><span class='lbl'> "+val.rolename+" </span></label></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.roleId+" name='role_check' value='"+val.roleId+"'/><span class='lbl'> "+val.rolename+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_role").append(li);
@@ -226,28 +246,32 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		});
 	};
 	function InitMenus(){
-		$.ajax({
-			type : "post",
-			dataType : "json",
-			url : "<%=basePath%>page/html/content/sys/queryMenus.action",
-			async : false,
-			success : function(data) {
-				var myData = data.rs;
-				var li = "";
-				var i = 0;
-				var css = "";
-				$.each(myData, function(key, val) {
-					i++;
-					if(i%2==1){
-						css="item-orange";
-					}else{
-						css="item-green"
-					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.menuId+" name='user_check' value='"+val.menuId+"'/><span class='lbl'> "+val.menuname+" </span></label></li> ";
-				});
-				 //置于ul中
-				$("#tasks_menus").append(li);
-			}
+		var setting = {
+			 check: {
+				enable: true
+			 },
+			 data: {
+				simpleData: {
+					enable: true
+				}
+			 },
+			 callback: {
+					//onClick: zTreeOnClick_org
+			 }
+		};
+		var zNodes =[
+		];
+		$.ajax({ 
+	            type: "post", 
+	            url: "<%=basePath%>page/html/content/sys/queryMenus.action",
+				dataType : "json",
+				success : function(data) {
+					var zNodes = data.rs;
+					$.fn.zTree.init($("#treeDemo_menus"), setting, zNodes);
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
 		});
 	};
 	function InitFunction(){
@@ -268,7 +292,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.functionId+" name='user_check' value='"+val.functionId+"'/><span class='lbl'> "+val.funcname+" </span></label></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.functionId+" name='function_check' value='"+val.functionId+"'/><span class='lbl'> "+val.funcname+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_function").append(li);
@@ -293,28 +317,29 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.fileId+" name='user_check' value='"+val.fileId+"'/><span class='lbl'> "+val.filename+" </span></label></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.fileId+" name='file_check' value='"+val.fileId+"'/><span class='lbl'> "+val.filename+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_file").append(li);
 			}
 		});
 	};
-	function sub(){
-		//角色数
-		var str_role_len = $("input[name='role_checkbox']:checkbox:checked").size();
-		//用户数
-		var str_u_len = $("input[name='user_check']:checkbox:checked").size();
-		//用户组数
-		var str_ug_len = $("input[name='usergroup_check']:checkbox:checked").size();
-		
-		//alert(tabid);
-		//alert(str_role_len+"--"+str_u_len+"--"+str_ug_len);
 
+	function sub(){
+		
+		var privilegeid = $("input[name='privilege_radio']:checked").val();
+		//角色数
+		var str_role_len = $("input[name='role_check']:checkbox:checked").size();
+		
+		//功能数
+		var str_function_len = $("input[name='function_check']:checkbox:checked").size();
+		//文件数
+		var str_file_len = $("input[name='file_check']:checkbox:checked").size();
+		
 		//角色
 		var roleids="";
 		var ri=0;
-		$("input[name='role_checkbox']:checkbox:checked").each(function(){ 
+		$("input[name='role_check']:checkbox:checked").each(function(){ 
 			ri++;
 			if(ri==str_role_len){
 				roleids+=$(this).val();
@@ -322,52 +347,78 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				roleids+=$(this).val()+",";
 			}
 		});
-		//用户
-		var userids="";
-		var ui=0;
-		$("input[name='user_check']:checkbox:checked").each(function(){ 
-			ui++;
-			if(ui==str_u_len){
-				userids+=$(this).val();
+		//菜单
+		var menuids="";
+		//功能
+		var functionids="";
+		var fi=0;
+		$("input[name='function_check']:checkbox:checked").each(function(){ 
+			fi++;
+			if(fi==str_function_len){
+				functionids+=$(this).val();
 			}else{
-				userids+=$(this).val()+",";
+				functionids+=$(this).val()+",";
 			}
 		});
-		//用户组
-		var usergroudids="";
-		var ugi=0;
-		$("input[name='usergroup_check']:checkbox:checked").each(function(){ 
-			ugi++;
-			if(ugi==str_ug_len){
-				usergroudids+=$(this).val();
+		//文件
+		var fileids="";
+		var fii=0;
+		$("input[name='file_check']:checkbox:checked").each(function(){ 
+			fii++;
+			if(fii==str_file_len){
+				fileids+=$(this).val();
 			}else{
-				usergroudids+=$(this).val()+",";
+				fileids+=$(this).val()+",";
 			}
 		});
-		
-		if(str_role_len==0){
-			alert("请选择角色！");
+		if(privilegeid==""){
+			alert("请选择权限！");
 			return;
 		}
 		if(tabid=='tab1'){
-			//用户组
-			if(str_ug_len==0){
-				alert("请选择用户组！");
+			//角色
+			if(str_role_len==0){
+				alert("请选择角色！");
 				return;
 			}
 		}else if(tabid=='tab2'){
-			//用户
-			if(str_u_len==0){
-				alert("请选择用户！");
+			//菜单数
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo_menus");
+			var str_menus_len = zTree.getCheckedNodes(true).length;
+
+			var nodes = zTree.getCheckedNodes(true);
+			for(var i=0;i<nodes.length;i++){
+				if(i==str_menus_len-1){
+					menuids+=nodes[i].id;
+				}else{
+					menuids+=nodes[i].id + ",";
+				}
+	         }
+			//菜单
+			if(str_menus_len==0){
+				alert("请选择菜单！");
 				return;
 			}
-		}
+		}else if(tabid=='tab3'){
+			//功能
+			if(str_function_len==0){
+				alert("请选择功能！");
+				return;
+			}
+			
+		}else if(tabid=='tab4'){
+			//文件
+			if(str_file_len==0){
+				alert("请选择文件！");
+				return;
+			}
+		} 
 		$.ajax({
 			type : "post",
 			dataType : "json",
-			url : "<%=basePath%>page/html/content/sys/saveRoleRelation.action",
+			url : "<%=basePath%>page/html/content/sys/savePriRelation.action",
 			async : true,
-			data :{roleIds:roleids,userIds:userids,usergroudIds:usergroudids},
+			data :{privilegeId:privilegeid,roleIds:roleids,menuIds:menuids,functionIds:functionids,fileIds:fileids},
 			success : function(data) {
 				var msg = data.msg;
 				alert(msg);

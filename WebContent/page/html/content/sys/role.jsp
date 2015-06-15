@@ -100,11 +100,13 @@
 </div>
 <script type="text/javascript">
 var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
+	var ugids="";
+	var uids="";
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			var oid = $("#oid").val();
 			InitRole();
-			InitUserGroup();
+			InitUserGroup(ugids);
 		});
 	});
 	function InitRole(){
@@ -125,7 +127,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.roleId+" name='role_checkbox' value='"+val.roleId+"'/><span class='lbl'> "+val.rolename+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.roleId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='radio' class='ace' id="+val.roleId+" name='role_radio' value='"+val.roleId+"' onclick='role_check(this)'/><span class='lbl'> "+val.rolename+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.roleId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
 				});
 				 //置于ul中
 				$("#tasks_role").append(li);
@@ -170,13 +172,66 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		tabid = tab.id;
 		$("#tasks_uergroup").children().filter('li').remove();
 		$("#tasks_u").children().filter('li').remove();
+		$("#tasks_role").children().filter('li').remove();
 		if(tabid=='tab1'){
-			InitUserGroup();
+			InitUserGroup(ugids);
+			InitRole();
 		}else if(tabid=='tab2'){
-			InitUser();
+			InitUser(uids);
+			InitRole();
 		}
 	};
-	function InitUser(){
+	function role_check(e){
+		var roleid = e.id;
+		if(tabid=='tab1'){
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/sys/queryGrChecked.action",
+				async : false,
+				data :{roleId:roleid},
+				success : function(data) {
+					var grs = data.grs;
+					var ids = "";
+					for(var i=0;i<grs.length;i++){
+						if(i==grs.length-1){
+							ids+=grs[i].ugId;
+						}else{
+							ids+=grs[i].ugId+"-";
+						}
+					}
+					$("#tasks_uergroup").children().filter('li').remove();
+					InitUserGroup(ids);
+				}
+			});
+		}else if(tabid=='tab2'){
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/sys/queryUrChecked.action",
+				async : false,
+				data :{roleId:roleid},
+				success : function(data) {
+					var urs = data.urs;
+					var ids = "";
+					for(var i=0;i<urs.length;i++){
+						if(i==urs.length-1){
+							ids+=urs[i].userId;
+						}else{
+							ids+=urs[i].userId+"-";
+						}
+					}
+					$("#tasks_u").children().filter('li').remove();
+					InitUser(ids)
+				}
+			});
+		}
+		
+	};
+	
+	
+	function InitUser(uids){
+		var ids = uids.split('-');
 		$.ajax({
 			type : "post",
 			dataType : "json",
@@ -194,14 +249,21 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.userId+" name='user_check' value='"+val.userId+"'/><span class='lbl'> "+val.uname+" </span></label></li> ";
+					var checked="";
+					for(var i=0; i<ids.length; i++){
+						if(ids[i]==val.userId){
+							checked='checked';
+						}
+					}
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' "+ checked +" class='ace' id="+val.userId+" name='user_check' value='"+val.userId+"'/><span class='lbl'> "+val.uname+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_u").append(li);
 			}
 		});
 	};
-	function InitUserGroup(){
+	function InitUserGroup(ugids){
+		var ids = ugids.split('-');
 		$.ajax({
 			type : "post",
 			dataType : "json",
@@ -219,7 +281,13 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.ugId+" name='usergroup_check' value='"+val.ugId+"'/><span class='lbl'> "+val.ugName+" </span></label></li> ";
+					var checked="";
+					for(var i=0; i<ids.length; i++){
+						if(ids[i]==val.ugId){
+							checked='checked';
+						}
+					}
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' "+ checked +" class='ace' id="+val.ugId+" name='usergroup_check' value='"+val.ugId+"'/><span class='lbl'> "+val.ugName+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_uergroup").append(li);
@@ -227,27 +295,14 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		});
 	};
 	function sub(){
+		var roleid = $("input[name='role_radio']:checked").val();
 		//角色数
-		var str_role_len = $("input[name='role_checkbox']:checkbox:checked").size();
+		var str_role_len = $("input[name='role_radio']:checkbox:checked").size();
 		//用户数
 		var str_u_len = $("input[name='user_check']:checkbox:checked").size();
 		//用户组数
 		var str_ug_len = $("input[name='usergroup_check']:checkbox:checked").size();
 		
-		//alert(tabid);
-		//alert(str_role_len+"--"+str_u_len+"--"+str_ug_len);
-
-		//角色
-		var roleids="";
-		var ri=0;
-		$("input[name='role_checkbox']:checkbox:checked").each(function(){ 
-			ri++;
-			if(ri==str_role_len){
-				roleids+=$(this).val();
-			}else{
-				roleids+=$(this).val()+",";
-			}
-		});
 		//用户
 		var userids="";
 		var ui=0;
@@ -271,7 +326,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			}
 		});
 		
-		if(str_role_len==0){
+		if(roleid==""){
 			alert("请选择角色！");
 			return;
 		}
@@ -293,7 +348,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			dataType : "json",
 			url : "<%=basePath%>page/html/content/sys/saveRoleRelation.action",
 			async : true,
-			data :{roleIds:roleids,userIds:userids,usergroudIds:usergroudids},
+			data :{roleId:roleid,userIds:userids,usergroudIds:usergroudids},
 			success : function(data) {
 				var msg = data.msg;
 				alert(msg);

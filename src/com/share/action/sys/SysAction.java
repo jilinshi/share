@@ -23,10 +23,19 @@ import com.share.dto.RoleDTO;
 import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
+import com.share.model.SysFprelation;
 import com.share.model.SysGrrelation;
+import com.share.model.SysMprelation;
 import com.share.model.SysOrganization;
+import com.share.model.SysPfrelation;
+import com.share.model.SysRprelation;
 import com.share.model.SysUgrelation;
 import com.share.model.SysUrrelation;
+import com.share.model.SysVGr;
+import com.share.model.SysVMp;
+import com.share.model.SysVRp;
+import com.share.model.SysVUg;
+import com.share.model.SysVUr;
 import com.share.service.SysService;
 import com.share.util.Pager;
 
@@ -62,6 +71,15 @@ public class SysAction extends ActionSupport {
 	
 	private String usergroudIds;
 	private String roleIds;
+	
+	private String priviname;
+	private String privicode;
+	private String privilegeId;
+	
+	private String privilegeIds;
+	private String menuIds;
+	private String functionIds;
+	private String fileIds;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -445,44 +463,42 @@ public class SysAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String saveRoleRelation(){
 		Map jsonMap = new HashMap();
-		String[] rs = roleIds.split(",");
-		for(int i=0; i<rs.length; i++){
-			if("".equals(userIds)){
-				//用户组操作
-				String[] ugs = usergroudIds.split(",");
-				List<SysGrrelation> grrs = new ArrayList<SysGrrelation>();
-				for(int ug_i=0; ug_i<ugs.length; ug_i++){
-					SysGrrelation grr = new SysGrrelation();
-					grr.setRoleId(new BigDecimal(rs[i]));
-					grr.setUgId(new BigDecimal(ugs[ug_i]));;
-					grrs.add(grr);
-				}
-				try{
-					sysService.saveSYSGrrelation(grrs);
-					jsonMap.put("msg", "保存成功！");
-				}catch(Exception e){
-					e.printStackTrace();
-					jsonMap.put("msg", "保存失败！");
-				}
-			}else if("".equals(usergroudIds)){
-				//用户操作
-				String[] us = userIds.split(",");
-				List<SysUrrelation> urrs = new ArrayList<SysUrrelation>();
-				for(int u_i=0; u_i<us.length; u_i++){
-					SysUrrelation urr = new SysUrrelation();
-					urr.setRoleId(new BigDecimal(rs[i]));
-					urr.setUserId(new BigDecimal(us[u_i]));;
-					urrs.add(urr);
-				}
-				try{
-					sysService.saveSYSUrrelation(urrs);
-					jsonMap.put("msg", "保存成功！");
-				}catch(Exception e){
-					e.printStackTrace();
-					jsonMap.put("msg", "保存失败！");
-				}
+		if("".equals(userIds)){
+			//用户组操作
+			String[] ugs = usergroudIds.split(",");
+			List<SysGrrelation> grrs = new ArrayList<SysGrrelation>();
+			for(int ug_i=0; ug_i<ugs.length; ug_i++){
+				SysGrrelation grr = new SysGrrelation();
+				grr.setRoleId(new BigDecimal(roleId));
+				grr.setUgId(new BigDecimal(ugs[ug_i]));;
+				grrs.add(grr);
+			}
+			try{
+				sysService.saveSYSGrrelation(grrs);
+				jsonMap.put("msg", "保存成功！");
+			}catch(Exception e){
+				e.printStackTrace();
+				jsonMap.put("msg", "保存失败！");
+			}
+		}else if("".equals(usergroudIds)){
+			//用户操作
+			String[] us = userIds.split(",");
+			List<SysUrrelation> urrs = new ArrayList<SysUrrelation>();
+			for(int u_i=0; u_i<us.length; u_i++){
+				SysUrrelation urr = new SysUrrelation();
+				urr.setRoleId(new BigDecimal(roleId));
+				urr.setUserId(new BigDecimal(us[u_i]));;
+				urrs.add(urr);
+			}
+			try{
+				sysService.saveSYSUrrelation(urrs);
+				jsonMap.put("msg", "保存成功！");
+			}catch(Exception e){
+				e.printStackTrace();
+				jsonMap.put("msg", "保存失败！");
 			}
 		}
+		
 		map = jsonMap;
 		return SUCCESS;
 	}
@@ -500,7 +516,18 @@ public class SysAction extends ActionSupport {
 	public String queryMenus(){
 		List<MenuDTO> rs = sysService.querySYSMenusAll();
 		Map jsonMap = new HashMap();
-		jsonMap.put("rs", rs);
+		List<ShortcutDTO> sl1 = new ArrayList<ShortcutDTO>();
+		for(MenuDTO e:rs){
+			ShortcutDTO s = new ShortcutDTO();
+			s.setId(e.getMenuId()+"");
+			s.setpId(e.getPmId()+"");
+			s.setGenId(e.getMenucode());
+			s.setOpen(true);
+			s.setName(e.getMenuname());
+			s.setIco("http:\\\\localhost:8080\\share\\assets\\ztree\\css\\zTreeStyle\\img\\diy\\1_open.png");
+			sl1.add(s);
+		}
+		jsonMap.put("rs", sl1);
 		map = jsonMap;
 		return SUCCESS;
 	}
@@ -522,7 +549,168 @@ public class SysAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String addPrivilege(){
+		Map jsonMap = new HashMap();
+		try{
+			PrivilegeDTO pdto = new PrivilegeDTO();
+			pdto.setPriviname(priviname);
+			pdto.setPrivicode(privicode);
+			sysService.saveSysPrivilege(pdto);
+			jsonMap.put("msg", "保存成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String delPrivilege(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.delSysPrivilege(privilegeId);
+			jsonMap.put("msg", "删除成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "删除失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String savePriRelation(){
+		Map jsonMap = new HashMap();
+		String[] ps = privilegeIds.split(",");
+		for(int i=0; i<ps.length; i++){
+			if(!"".equals(roleIds)){
+				//角色绑定操作
+				String[] rs = roleIds.split(",");
+				List<SysRprelation> rrs = new ArrayList<SysRprelation>();
+				for(int rr_i=0; rr_i<rs.length; rr_i++){
+					SysRprelation rr = new SysRprelation();
+					rr.setRoleId(new BigDecimal(rs[rr_i]));
+					rr.setPrivilegeId(new BigDecimal(ps[i]));;
+					rrs.add(rr);
+				}
+				try{
+					sysService.saveSYSRprelation(rrs);
+					jsonMap.put("msg", "保存成功！");
+				}catch(Exception e){
+					e.printStackTrace();
+					jsonMap.put("msg", "保存失败！");
+				}
+			}else if(!"".equals(menuIds)){
+				//菜单绑定操作
+				String[] ms = menuIds.split(",");
+				List<SysMprelation> mrs = new ArrayList<SysMprelation>();
+				for(int mr_i=0; mr_i<ms.length; mr_i++){
+					SysMprelation mr = new SysMprelation();
+					mr.setMenuId(new BigDecimal(ms[mr_i]));
+					mr.setPrivilegeId(new BigDecimal(ps[i]));;
+					mrs.add(mr);
+				}
+				try{
+					sysService.saveSYSMprelation(mrs);
+					jsonMap.put("msg", "保存成功！");
+				}catch(Exception e){
+					e.printStackTrace();
+					jsonMap.put("msg", "保存失败！");
+				}
+			}else if(!"".equals(functionIds)){
+				//功能绑定操作
+				String[] fs = functionIds.split(",");
+				List<SysPfrelation> prs = new ArrayList<SysPfrelation>();
+				for(int pr_i=0; pr_i<fs.length; pr_i++){
+					SysPfrelation pr = new SysPfrelation();
+					pr.setFunctionId(new BigDecimal(fs[pr_i]));
+					pr.setPrivilegeId(new BigDecimal(ps[i]));;
+					prs.add(pr);
+				}
+				try{
+					sysService.saveSYSPfrelation(prs);
+					jsonMap.put("msg", "保存成功！");
+				}catch(Exception e){
+					e.printStackTrace();
+					jsonMap.put("msg", "保存失败！");
+				}
+			}else if(!"".equals(fileIds)){
+				//文件绑定操作
+				String[] files = fileIds.split(",");
+				List<SysFprelation> frs = new ArrayList<SysFprelation>();
+				for(int fr_i=0; fr_i<files.length; fr_i++){
+					SysFprelation fr = new SysFprelation();
+					fr.setFileId(new BigDecimal(files[fr_i]));
+					fr.setPrivilegeId(new BigDecimal(ps[i]));;
+					frs.add(fr);
+				}
+				try{
+					sysService.saveSYSFprelation(frs);
+					jsonMap.put("msg", "保存成功！");
+				}catch(Exception e){
+					e.printStackTrace();
+					jsonMap.put("msg", "保存失败！");
+				}
+			}
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryUgChecked(){
+		BigDecimal ugid = new BigDecimal(ugId);
+		List<SysVUg> ugs = sysService.querySYSUgUsers(ugid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("ugs", ugs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryGrChecked(){
+		BigDecimal roleid = new BigDecimal(roleId);
+		List<SysVGr> grs = sysService.querySYSVGr(roleid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("grs", grs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryUrChecked(){
+		BigDecimal roleid = new BigDecimal(roleId);
+		List<SysVUr> urs = sysService.querySYSVUr(roleid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("urs", urs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryRpChecked(){
+		BigDecimal privilegeid = new BigDecimal(privilegeId);
+		List<SysVRp> rps = sysService.querySYSVRp(privilegeid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("rps", rps);
+		map = jsonMap;
+		return SUCCESS;
+	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryMpChecked(){
+		BigDecimal privilegeid = new BigDecimal(privilegeId);
+		List<SysVMp> mps = sysService.querySYSVMp(privilegeid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("mps", mps);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
 		return map;
@@ -667,6 +855,62 @@ public class SysAction extends ActionSupport {
 
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
+	}
+
+	public String getPriviname() {
+		return priviname;
+	}
+
+	public void setPriviname(String priviname) {
+		this.priviname = priviname;
+	}
+
+	public String getPrivicode() {
+		return privicode;
+	}
+
+	public void setPrivicode(String privicode) {
+		this.privicode = privicode;
+	}
+
+	public String getPrivilegeId() {
+		return privilegeId;
+	}
+
+	public void setPrivilegeId(String privilegeId) {
+		this.privilegeId = privilegeId;
+	}
+
+	public String getPrivilegeIds() {
+		return privilegeIds;
+	}
+
+	public void setPrivilegeIds(String privilegeIds) {
+		this.privilegeIds = privilegeIds;
+	}
+
+	public String getMenuIds() {
+		return menuIds;
+	}
+
+	public void setMenuIds(String menuIds) {
+		this.menuIds = menuIds;
+	}
+
+	public String getFunctionIds() {
+		return functionIds;
+	}
+
+	public void setFunctionIds(String functionIds) {
+		this.functionIds = functionIds;
+	}
+
+	public String getFileIds() {
+		return fileIds;
+	}
+
+	public void setFileIds(String fileIds) {
+		this.fileIds = fileIds;
 	}
 
 }

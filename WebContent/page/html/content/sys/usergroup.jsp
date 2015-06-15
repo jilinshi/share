@@ -87,11 +87,12 @@
 </div>
 <script type="text/javascript">
 var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
+	var oid = $("#oid").val();
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
-			var oid = $("#oid").val();
 			InitUserGroup();
-			InitUser(oid);
+			var userids="";
+			InitUser(oid,userids);
 		});
 	});
 	function InitUserGroup(){
@@ -112,14 +113,14 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='radio' class='ace' id="+val.ugId+" name='usergroup_radio' value='"+val.ugId+"'/><span class='lbl'> "+val.ugName+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.ugId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
+					li += " <li class='"+css+"'><label class='inline'><input type='radio' class='ace' id="+val.ugId+" name='usergroup_radio' value='"+val.ugId+"' onclick='usergroup_check(this)' /><span class='lbl'> "+val.ugName+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.ugId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
 				});
 				 //置于ul中
 				$("#tasks_ug").append(li);
 			}
 		});
 	};
-	 $('#create').click(function () {
+	$('#create').click(function () {
 		var ugName = $("#ugName").val();
 		if(ugName==""){
 			alert("请填写用户组名称！");
@@ -136,7 +137,30 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				alert(msg);
 			}
 		});
-	 });
+	});
+	function usergroup_check(e){
+		var ugid = e.id;
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/sys/queryUgChecked.action",
+			async : false,
+			data :{ugId:ugid},
+			success : function(data) {
+				var ugs = data.ugs;
+				var ids = "";
+				for(var i=0;i<ugs.length;i++){
+					if(i==ugs.length-1){
+						ids+=ugs[i].userId;
+					}else{
+						ids+=ugs[i].userId+"-";
+					}
+				}
+				$("#tasks_u").children().filter('li').remove();
+				InitUser(oid,ids);
+			}
+		});
+	};
 	function del(id){
 		$.ajax({
 			type : "post",
@@ -152,13 +176,14 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			}
 		});
 	};
-	function InitUser(orgid){
+	function InitUser(oid,userids){
+		var ids = userids.split('-');
 		$.ajax({
 			type : "post",
 			dataType : "json",
 			url : "<%=basePath%>page/html/content/sys/queryUser.action",
-			async : false,
-			data :{orgId:orgid},
+			async : true,
+			data : {orgId:oid},
 			success : function(data) {
 				var myData = data.ugs;
 				var li = "";
@@ -171,7 +196,13 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.userId+" name='user_check' value='"+val.userId+"'/><span class='lbl'> "+val.uname+" </span></label></li> ";
+					var checked="";
+					for(var i=0; i<ids.length; i++){
+						if(ids[i]==val.userId){
+							checked='checked';
+						}
+					}
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' "+ checked +" class='ace' id="+val.userId+" name='user_check' value='"+val.userId+"'/><span class='lbl'> "+val.uname+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_u").append(li);
