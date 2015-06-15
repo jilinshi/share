@@ -123,11 +123,12 @@
 </div>
 <script type="text/javascript">
 var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath %>assets/ztree/js/jquery.ztree.excheck-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
+	var roleids="";
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			var oid = $("#oid").val();
 			InitPrivilege();
-			InitRole();
+			InitRole(roleids);
 		});
 	});
 	function InitPrivilege(){
@@ -214,13 +215,33 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 	function privilege_check(e){
 		var privilegeid = e.id;
 		if(tabid=='tab1'){
-			
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/sys/queryRpChecked.action",
+				async : false,
+				data :{privilegeId:privilegeid},
+				success : function(data) {
+					var rps = data.rps;
+					var ids = "";
+					for(var i=0;i<rps.length;i++){
+						if(i==rps.length-1){
+							ids+=rps[i].roleId;
+						}else{
+							ids+=rps[i].roleId+"-";
+						}
+					}
+					$("#tasks_role").children().filter('li').remove();
+					InitRole(ids);
+				}
+			});
 		}else if(tabid=='tab2'){
 			
 		}
 	};
 	
-	function InitRole(){
+	function InitRole(roleids){
+		var ids = roleids.split('-');
 		$.ajax({
 			type : "post",
 			dataType : "json",
@@ -238,7 +259,13 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					}else{
 						css="item-green"
 					}
-					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' class='ace' id="+val.roleId+" name='role_check' value='"+val.roleId+"'/><span class='lbl'> "+val.rolename+" </span></label></li> ";
+					var checked="";
+					for(var i=0; i<ids.length; i++){
+						if(ids[i]==val.roleId){
+							checked='checked';
+						}
+					}
+					li += " <li class='"+css+"'><label class='inline'><input type='checkbox' "+ checked +" class='ace' id="+val.roleId+" name='role_check' value='"+val.roleId+"'/><span class='lbl'> "+val.rolename+" </span></label></li> ";
 				});
 				 //置于ul中
 				$("#tasks_role").append(li);
