@@ -124,6 +124,7 @@
 <script type="text/javascript">
 var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath %>assets/ztree/js/jquery.ztree.excheck-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
 	var roleids="";
+	var menuids="";
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			var oid = $("#oid").val();
@@ -197,19 +198,22 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 	var tabid="tab1";
 	function addtab(tab){
 		tabid = tab.id;
+		$("#tasks_privilege").children().filter('li').remove();
 		$("#tasks_role").children().filter('li').remove();
 		$("#tasks_menus").children().filter('li').remove();
-		$("#tasks_function").children().filter('li').remove();
-		$("#tasks_file").children().filter('li').remove();
+		/* $("#tasks_function").children().filter('li').remove();
+		$("#tasks_file").children().filter('li').remove(); */
 		if(tabid=='tab1'){
-			InitRole();
+			InitRole(roleids);
+			InitPrivilege();
 		}else if(tabid=='tab2'){
-			InitMenus();
-		}else if(tabid=='tab3'){
+			InitMenus(menuids);
+			InitPrivilege();
+		}/* else if(tabid=='tab3'){
 			InitFunction();
 		}else if(tabid=='tab4'){
 			InitFile();
-		}
+		} */
 	};
 	
 	function privilege_check(e){
@@ -236,7 +240,25 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				}
 			});
 		}else if(tabid=='tab2'){
-			
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/sys/queryMpChecked.action",
+				async : false,
+				data :{privilegeId:privilegeid},
+				success : function(data) {
+					var mps = data.mps;
+					var ids = "";
+					for(var i=0;i<mps.length;i++){
+						if(i==mps.length-1){
+							ids+=mps[i].menuId;
+						}else{
+							ids+=mps[i].menuId+"-";
+						}
+					}
+					InitMenus(ids);
+				}
+			});
 		}
 	};
 	
@@ -272,7 +294,8 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			}
 		});
 	};
-	function InitMenus(){
+	function InitMenus(menuids){	
+		var ids = menuids.split('-');
 		var setting = {
 			 check: {
 				enable: true
@@ -295,13 +318,25 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				success : function(data) {
 					var zNodes = data.rs;
 					$.fn.zTree.init($("#treeDemo_menus"), setting, zNodes);
+					var treeObj = $.fn.zTree.getZTreeObj("treeDemo_menus");
+					for (var i=0; i<zNodes.length;  i++) {
+						for(var j=0; j<ids.length; j++){
+							if(ids[j]==zNodes[i].id){
+								var node = treeObj.getNodeByTId(zNodes[i].id);
+								treeObj.checkNode(node, true, false);
+
+							}
+						}
+					}
+
+					
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
 					alert(errorThrown);
 				}
 		});
 	};
-	function InitFunction(){
+	<%-- function InitFunction(){
 		$.ajax({
 			type : "post",
 			dataType : "json",
@@ -350,7 +385,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				$("#tasks_file").append(li);
 			}
 		});
-	};
+	}; --%>
 
 	function sub(){
 		
@@ -358,10 +393,10 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		//角色数
 		var str_role_len = $("input[name='role_check']:checkbox:checked").size();
 		
-		//功能数
+/* 		//功能数
 		var str_function_len = $("input[name='function_check']:checkbox:checked").size();
 		//文件数
-		var str_file_len = $("input[name='file_check']:checkbox:checked").size();
+		var str_file_len = $("input[name='file_check']:checkbox:checked").size(); */
 		
 		//角色
 		var roleids="";
@@ -376,7 +411,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		});
 		//菜单
 		var menuids="";
-		//功能
+		/* //功能
 		var functionids="";
 		var fi=0;
 		$("input[name='function_check']:checkbox:checked").each(function(){ 
@@ -397,7 +432,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			}else{
 				fileids+=$(this).val()+",";
 			}
-		});
+		}); */
 		if(privilegeid==""){
 			alert("请选择权限！");
 			return;
@@ -412,7 +447,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			//菜单数
 			var zTree = $.fn.zTree.getZTreeObj("treeDemo_menus");
 			var str_menus_len = zTree.getCheckedNodes(true).length;
-
+			alert(str_menus_len);
 			var nodes = zTree.getCheckedNodes(true);
 			for(var i=0;i<nodes.length;i++){
 				if(i==str_menus_len-1){
@@ -421,12 +456,12 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					menuids+=nodes[i].id + ",";
 				}
 	         }
-			//菜单
+			/* //菜单
 			if(str_menus_len==0){
 				alert("请选择菜单！");
 				return;
-			}
-		}else if(tabid=='tab3'){
+			} */
+		}/* else if(tabid=='tab3'){
 			//功能
 			if(str_function_len==0){
 				alert("请选择功能！");
@@ -439,13 +474,13 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				alert("请选择文件！");
 				return;
 			}
-		} 
+		}  */
 		$.ajax({
 			type : "post",
 			dataType : "json",
 			url : "<%=basePath%>page/html/content/sys/savePriRelation.action",
 			async : true,
-			data :{privilegeId:privilegeid,roleIds:roleids,menuIds:menuids,functionIds:functionids,fileIds:fileids},
+			data :{privilegeId:privilegeid,roleIds:roleids,menuIds:menuids},
 			success : function(data) {
 				var msg = data.msg;
 				alert(msg);

@@ -465,15 +465,15 @@ public class SysAction extends ActionSupport {
 		Map jsonMap = new HashMap();
 		if("".equals(userIds)){
 			//用户组操作
-			String[] ugs = usergroudIds.split(",");
-			List<SysGrrelation> grrs = new ArrayList<SysGrrelation>();
-			for(int ug_i=0; ug_i<ugs.length; ug_i++){
-				SysGrrelation grr = new SysGrrelation();
-				grr.setRoleId(new BigDecimal(roleId));
-				grr.setUgId(new BigDecimal(ugs[ug_i]));;
-				grrs.add(grr);
-			}
 			try{
+				String[] ugs = usergroudIds.split(",");
+				List<SysGrrelation> grrs = new ArrayList<SysGrrelation>();
+				for(int ug_i=0; ug_i<ugs.length; ug_i++){
+					SysGrrelation grr = new SysGrrelation();
+					grr.setRoleId(new BigDecimal(roleId));
+					grr.setUgId(new BigDecimal(ugs[ug_i]));;
+					grrs.add(grr);
+				}
 				sysService.saveSYSGrrelation(grrs);
 				jsonMap.put("msg", "保存成功！");
 			}catch(Exception e){
@@ -482,15 +482,15 @@ public class SysAction extends ActionSupport {
 			}
 		}else if("".equals(usergroudIds)){
 			//用户操作
-			String[] us = userIds.split(",");
-			List<SysUrrelation> urrs = new ArrayList<SysUrrelation>();
-			for(int u_i=0; u_i<us.length; u_i++){
-				SysUrrelation urr = new SysUrrelation();
-				urr.setRoleId(new BigDecimal(roleId));
-				urr.setUserId(new BigDecimal(us[u_i]));;
-				urrs.add(urr);
-			}
 			try{
+				String[] us = userIds.split(",");
+				List<SysUrrelation> urrs = new ArrayList<SysUrrelation>();
+				for(int u_i=0; u_i<us.length; u_i++){
+					SysUrrelation urr = new SysUrrelation();
+					urr.setRoleId(new BigDecimal(roleId));
+					urr.setUserId(new BigDecimal(us[u_i]));;
+					urrs.add(urr);
+				}
 				sysService.saveSYSUrrelation(urrs);
 				jsonMap.put("msg", "保存成功！");
 			}catch(Exception e){
@@ -585,78 +585,75 @@ public class SysAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String savePriRelation(){
 		Map jsonMap = new HashMap();
-		String[] ps = privilegeIds.split(",");
-		for(int i=0; i<ps.length; i++){
-			if(!"".equals(roleIds)){
-				//角色绑定操作
+		if(!"".equals(roleIds)){
+			//角色绑定操作
+			try{
 				String[] rs = roleIds.split(",");
 				List<SysRprelation> rrs = new ArrayList<SysRprelation>();
 				for(int rr_i=0; rr_i<rs.length; rr_i++){
 					SysRprelation rr = new SysRprelation();
 					rr.setRoleId(new BigDecimal(rs[rr_i]));
-					rr.setPrivilegeId(new BigDecimal(ps[i]));;
+					rr.setPrivilegeId(new BigDecimal(privilegeId));;
 					rrs.add(rr);
 				}
-				try{
-					sysService.saveSYSRprelation(rrs);
-					jsonMap.put("msg", "保存成功！");
-				}catch(Exception e){
-					e.printStackTrace();
-					jsonMap.put("msg", "保存失败！");
-				}
-			}else if(!"".equals(menuIds)){
-				//菜单绑定操作
+				sysService.saveSYSRprelation(rrs);
+				jsonMap.put("msg", "保存成功！");
+			}catch(Exception e){
+				e.printStackTrace();
+				jsonMap.put("msg", "保存失败！");
+			}
+		}else if(!"".equals(menuIds)){
+			//菜单绑定操作
+			try{
 				String[] ms = menuIds.split(",");
 				List<SysMprelation> mrs = new ArrayList<SysMprelation>();
 				for(int mr_i=0; mr_i<ms.length; mr_i++){
 					SysMprelation mr = new SysMprelation();
 					mr.setMenuId(new BigDecimal(ms[mr_i]));
-					mr.setPrivilegeId(new BigDecimal(ps[i]));;
+					mr.setPrivilegeId(new BigDecimal(privilegeId));;
 					mrs.add(mr);
 				}
-				try{
-					sysService.saveSYSMprelation(mrs);
-					jsonMap.put("msg", "保存成功！");
-				}catch(Exception e){
-					e.printStackTrace();
-					jsonMap.put("msg", "保存失败！");
-				}
-			}else if(!"".equals(functionIds)){
-				//功能绑定操作
-				String[] fs = functionIds.split(",");
-				List<SysPfrelation> prs = new ArrayList<SysPfrelation>();
-				for(int pr_i=0; pr_i<fs.length; pr_i++){
-					SysPfrelation pr = new SysPfrelation();
-					pr.setFunctionId(new BigDecimal(fs[pr_i]));
-					pr.setPrivilegeId(new BigDecimal(ps[i]));;
-					prs.add(pr);
-				}
-				try{
-					sysService.saveSYSPfrelation(prs);
-					jsonMap.put("msg", "保存成功！");
-				}catch(Exception e){
-					e.printStackTrace();
-					jsonMap.put("msg", "保存失败！");
-				}
-			}else if(!"".equals(fileIds)){
-				//文件绑定操作
-				String[] files = fileIds.split(",");
-				List<SysFprelation> frs = new ArrayList<SysFprelation>();
-				for(int fr_i=0; fr_i<files.length; fr_i++){
-					SysFprelation fr = new SysFprelation();
-					fr.setFileId(new BigDecimal(files[fr_i]));
-					fr.setPrivilegeId(new BigDecimal(ps[i]));;
-					frs.add(fr);
-				}
-				try{
-					sysService.saveSYSFprelation(frs);
-					jsonMap.put("msg", "保存成功！");
-				}catch(Exception e){
-					e.printStackTrace();
-					jsonMap.put("msg", "保存失败！");
-				}
+				sysService.saveSYSMprelation(mrs);
+				jsonMap.put("msg", "保存成功！");
+			}catch(Exception e){
+				e.printStackTrace();
+				jsonMap.put("msg", "保存失败！");
 			}
-		}
+		}/*else if(!"".equals(functionIds)){
+			//功能绑定操作
+			String[] fs = functionIds.split(",");
+			List<SysPfrelation> prs = new ArrayList<SysPfrelation>();
+			for(int pr_i=0; pr_i<fs.length; pr_i++){
+				SysPfrelation pr = new SysPfrelation();
+				pr.setFunctionId(new BigDecimal(fs[pr_i]));
+				pr.setPrivilegeId(new BigDecimal(ps[i]));;
+				prs.add(pr);
+			}
+			try{
+				sysService.saveSYSPfrelation(prs);
+				jsonMap.put("msg", "保存成功！");
+			}catch(Exception e){
+				e.printStackTrace();
+				jsonMap.put("msg", "保存失败！");
+			}
+		}else if(!"".equals(fileIds)){
+			//文件绑定操作
+			String[] files = fileIds.split(",");
+			List<SysFprelation> frs = new ArrayList<SysFprelation>();
+			for(int fr_i=0; fr_i<files.length; fr_i++){
+				SysFprelation fr = new SysFprelation();
+				fr.setFileId(new BigDecimal(files[fr_i]));
+				fr.setPrivilegeId(new BigDecimal(ps[i]));;
+				frs.add(fr);
+			}
+			try{
+				sysService.saveSYSFprelation(frs);
+				jsonMap.put("msg", "保存成功！");
+			}catch(Exception e){
+				e.printStackTrace();
+				jsonMap.put("msg", "保存失败！");
+			}
+		}*/
 		map = jsonMap;
 		return SUCCESS;
 	}
