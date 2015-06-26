@@ -57,11 +57,31 @@
 						<option value="1">城市</option>
 						<option value="2">农村</option>
 						</select>&nbsp;
+					<label for="attorney">授权书：</label>
+					<select id="attorney" name="attorney" class="select2" data-placeholder="选择...">
+						<option value="">全部</option>
+						<option value="1" selected="selected">有</option>
+						<option value="0">无</option>
+						</select>
+					&nbsp;
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
-					<a href="<%=basePath%>downloadExcel.action?fileName=公积金数据查询" class="btn btn btn-sm">
-						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
+					<br><br>
+					<a href="<%=basePath%>downloadExcel.action?fileName=ppfundxls1" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对数据
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadCSV.action?fileName=ppfundcsv1" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对数据
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadExcel.action?fileName=ppfund" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对结果
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadCSV.action?fileName=ppfundcsv" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对结果
 					</a>
       		</div>
 		</form>

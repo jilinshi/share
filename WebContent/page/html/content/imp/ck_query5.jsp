@@ -13,6 +13,11 @@
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-multiselect.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/select2.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/chosen.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-timepicker.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/daterangepicker.css" />
+<link rel="stylesheet" href="<%=basePath%>assets/css/bootstrap-datetimepicker.css" />
 
 <!-- ajax layout which only needs content area -->
 <div class="row">
@@ -39,11 +44,43 @@
 						<option value="1">是</option>
 						<option value="0">否</option>
 				</select>&nbsp;
+				时间：
+				<input type="text" name="begintime" id="begintime" class="form-control" readonly="readonly"/>
+				至
+				<input type="text" name ="endtime" id="endtime" class="form-control"  readonly="readonly"/>&nbsp;
+				<label for="form-field-select">所属：</label>
+					<select  class="chosen-select" id="form-field-select" name="onno" data-placeholder="请选择 . . .">
+					</select>&nbsp;
+					来源：<select id="ds" name="ds" class="chosen-select" data-placeholder="选择...">
+						<option value="">全部</option>
+						<option value="1">城市</option>
+						<option value="2">农村</option>
+						</select>&nbsp;
+					<label for="attorney">授权书：</label>
+					<select id="attorney" name="attorney" class="select2" data-placeholder="选择...">
+						<option value="">全部</option>
+						<option value="1" selected="selected">有</option>
+						<option value="0">无</option>
+						</select>
+					&nbsp;
 				<button type="button" class="btn btn-info btn-sm"  onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
-					<a href="<%=basePath%>downloadExcel.action?fileName=车辆" class="btn btn btn-sm">
-						<i class="ace-icon fa fa-file-excel-o bigger-110"></i>导出Excel
+					<br><br>
+					<a href="<%=basePath%>downloadExcel.action?fileName=ppvehiclexls1" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对数据
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadCSV.action?fileName=ppvehiclecsv1" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对数据
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadExcel.action?fileName=ppvehicle" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按Excel导出核对结果
+					</a>
+					&nbsp;
+					<a href="<%=basePath%>downloadCSV.action?fileName=ppvehiclecsv" class="btn btn btn-sm">
+						<i class="ace-icon fa fa-file-excel-o bigger-90"></i>按CSV导出核对结果
 					</a>
       		</div>
 		</form>
@@ -70,7 +107,7 @@
 <script type="text/javascript">
 var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-		
+		chosen_Init();
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
 		$(window).on('resize.jqGrid', function () {
@@ -159,6 +196,17 @@ var scripts = [null,"<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=b
 								
 								if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 							})
+							$( "#begintime" ).datepicker({
+								showOtherMonths: true,
+								selectOtherMonths: false,
+								format: 'yyyy-mm-dd',
+								
+							});
+							$( "#endtime" ).datepicker({
+								showOtherMonths: true,
+								selectOtherMonths: false,
+								format: 'yyyy-mm-dd'
+							});
 						}
 					});
 					
@@ -183,5 +231,23 @@ $.fn.serializeObject = function()
    });    
    return o;    
 };  
-
+function chosen_Init(){
+	$.ajax({
+		type : "post",
+		dataType : "json",
+		url : "<%=basePath%>page/html/content/report/getOrgList.action",
+		success : function(data) {
+			var orgs = data.orgs;
+			var len = orgs.length;
+			var a = " ";
+			for(var i=0; i<len; i++){
+				var value = orgs[i].orgId;
+				var text = orgs[i].orgName;
+				a = a + "<option value='"+ value +"'>"+ text +"</option>";
+			}
+			$("#form-field-select").append("<option value=''></option>").append(a);
+			$("#form-field-select").chosen({allow_single_deselect:true});
+		}
+	});
+}
 </script>

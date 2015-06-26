@@ -110,6 +110,7 @@
 		<col id="o2">街道</col>
 		<col id="o3">社区</col>
 	</table>
+	<!-- 公积金 核对结果导出xls -->
 	<table id="ppfund" title="公积金核对数据" name="ppfund">
 		<col id="pname">姓名</col>
 		<col id="idno">身份证号</col>
@@ -124,6 +125,36 @@
 		<col id="begintime">开户日期</col>
 		<col id="area">区</col>
 	</table>
+	<!-- 公积金 核对结果导出csv -->
+	<table id="ppfundcsv" title="公积金核对数据" name="ppfundcsv">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号</col>
+		<col id="gjjaccount">公积金账号</col>
+		<col id="bname">所有人姓名</col>
+		<col id="bidno">所有人身份证号</col>
+		<col id="cardinal">缴存基数</col>
+		<col id="lasttime">最后缴款日</col>
+		<col id="banlance">账户余额</col>
+		<col id="unitname">单位名称</col>
+		<col id="state">状态</col>
+		<col id="begintime">开户日期</col>
+		<col id="area">区</col>
+	</table>
+	<!-- 公积金 核对数据导出xls -->
+	<table id="ppfundexls1" title="公积金核对数据" name="ppfundexls">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号</col>
+		<col id="gjjaccount">公积金账号</col>
+		<col id="area">区</col>
+	</table>
+	<!-- 公积金 核对数据导出csv -->
+	<table id="ppfundecsv1" title="公积金核对数据" name="ppfundecsv">
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号</col>
+		<col id="gjjaccount">公积金账号</col>
+		<col id="area">区</col>
+	</table>
+	<!-- 殡葬 核对结果导出xls -->
 	<table id="ppburial" title="殡葬核对数据" name="ppburial">
 		<col id="col1">家庭编号</col>
 		<col id="pname">低保成员姓名</col>
@@ -135,6 +166,37 @@
 		<col id="idno1">身份证_殡葬</col>
 		<col id="hhtime">火化时间</col>
 	</table>
+	<!-- 殡葬 核对结果导出csv -->
+	<table id="ppburialcsv" title="殡葬核对数据" name="ppburialcsv">
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+		<col id="pname1">姓名_殡葬</col>
+		<col id="idno1">身份证_殡葬</col>
+		<col id="hhtime">火化时间</col>
+	</table>
+	<!-- 殡葬 核对数据导出xls -->
+	<table id="ppburialxls1" title="殡葬核对数据" name="ppburialxls">
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+	</table>
+	<!-- 殡葬 核对数据导出csv -->
+	<table id="ppburialcsv1" title="殡葬核对数据" name="ppburialcsv">
+		<col id="col1">家庭编号</col>
+		<col id="pname">低保成员姓名</col>
+		<col id="idno">低保身份证号码</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+	</table>
+	<!-- 房产  核对结果导出xls -->
 	<table id="pphouseproperty" title="房产核对数据" name="pphouseproperty">
 		<col id="col1">家庭编号</col>
 		<col id="pname">姓名</col>
@@ -153,6 +215,44 @@
 		<col id="bltime">办理日期</col>
 		<col id="subject">类型</col>
 	</table>
+	<!-- 房产 核对结果导出csv -->
+	<table id="pphousepropertycsv" title="房产核对数据" name="pphousepropertycsv">
+		<col id="col1">家庭编号</col>
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号（18位）</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+		<col id="ggtime">归档日期</col>
+		<col id="slyw">受理业务</col>
+		<col id="fczh">房产证号</col>
+		<col id="bname">所有人</col>
+		<col id="bidno">所有人身份证号</col>
+		<col id="zuoluo">坐落</col>
+		<col id="mianji">面积</col>
+		<col id="remark">备注</col>
+		<col id="bltime">办理日期</col>
+		<col id="subject">类型</col>
+	</table>
+	<!-- 房产 核对数据导出xls -->
+	<table id="pphousepropertyxls1" title="房产核对数据" name="pphousepropertyxls">
+		<col id="col1">家庭编号</col>
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号（18位）</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+	</table>
+	<!-- 房产 核对数据导出csv -->
+		<table id="pphousepropertycsv1" title="房产核对数据" name="pphousepropertycsv">
+		<col id="col1">家庭编号</col>
+		<col id="pname">姓名</col>
+		<col id="idno">身份证号（18位）</col>
+		<col id="o1">区</col>
+		<col id="o2">街道</col>
+		<col id="o3">社区</col>
+	</table>
+	<!-- 驾管  核对结果导出xls -->
 	<table id="ppvehicle" title="车辆核对数据" name="ppvehicle">
 		<col id="col1"> 家庭编号</col>
 		<col id="pname"> 低保成员姓名</col>
@@ -165,5 +265,37 @@
 		<col id="motoNo"> 发动机号</col>
 		<col id="buytime"> 购置时间</col>
 		<col id="vtype"> 类型</col>
+	</table>
+	<!-- 驾管 核对结果导出csv -->
+	<table id="ppvehiclecsv" title="车辆核对数据" name="ppvehiclecsv">
+		<col id="col1"> 家庭编号</col>
+		<col id="pname"> 低保成员姓名</col>
+		<col id="idno"> 低保身份证号码</col>
+		<col id="o1"> 区</col>
+		<col id="o2"> 街道</col>
+		<col id="o3"> 社区</col>
+		<col id="vehicalNo"> 车牌号</col>
+		<col id="brand"> 品牌</col>
+		<col id="motoNo"> 发动机号</col>
+		<col id="buytime"> 购置时间</col>
+		<col id="vtype"> 类型</col>
+	</table>
+	<!-- 驾管 核对数据导出xls -->
+	<table id="ppvehiclexls1" title="车辆核对数据" name="ppvehiclexls">
+		<col id="col1"> 家庭编号</col>
+		<col id="pname"> 低保成员姓名</col>
+		<col id="idno"> 低保身份证号码</col>
+		<col id="o1"> 区</col>
+		<col id="o2"> 街道</col>
+		<col id="o3"> 社区</col>
+	</table>
+	<!-- 驾管 核对数据导出xls -->
+	<table id="ppvehiclecsv1" title="车辆核对数据" name="ppvehiclecsv">
+		<col id="col1"> 家庭编号</col>
+		<col id="pname"> 低保成员姓名</col>
+		<col id="idno"> 低保身份证号码</col>
+		<col id="o1"> 区</col>
+		<col id="o2"> 街道</col>
+		<col id="o3"> 社区</col>
 	</table>
 </excel>
