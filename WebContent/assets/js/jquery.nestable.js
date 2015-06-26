@@ -132,9 +132,9 @@
                 //window.addEventListener(eCancel, onEndEvent, false);
             } else {
 			*/
-                list.el.on(eStart, onStartEvent);
-                list.w.on(eMove, onMoveEvent);
-                list.w.on(eEnd, onEndEvent);
+                //list.el.on(eStart, onStartEvent);
+                //list.w.on(eMove, onMoveEvent);
+                //list.w.on(eEnd, onEndEvent);
             //}
 
         },

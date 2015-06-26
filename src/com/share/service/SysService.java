@@ -14,6 +14,7 @@ import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
 import com.share.model.SysFprelation;
 import com.share.model.SysGrrelation;
+import com.share.model.SysMenus;
 import com.share.model.SysMprelation;
 import com.share.model.SysPfrelation;
 import com.share.model.SysRprelation;
@@ -63,4 +64,8 @@ public interface SysService {
 	public List<SysVUr> querySYSVUr(BigDecimal roleId);
 	public List<SysVRp> querySYSVRp(BigDecimal privilegeId);
 	public List<SysVMp> querySYSVMp(BigDecimal privilegeId);
+	public List<SysMenus> queryMenuCodeByPmid(String menuId);
+	public List<SysMenus> queryMenuCodeById(String menuId);
+	public void createMenu(MenuDTO menuDTO);
+	public int delMenu(Long menuId);
 }

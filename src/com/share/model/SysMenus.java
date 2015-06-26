@@ -18,8 +18,6 @@ public class SysMenus implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SYS_MENUS_MENUID_GENERATOR", sequenceName="SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SYS_MENUS_MENUID_GENERATOR")
 	@Column(name="MENU_ID", unique=true, nullable=false, precision=12)
 	private long menuId;
 

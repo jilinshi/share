@@ -238,5 +238,35 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="queryMenuCode" method="queryMenuCode"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="savemenu" method="savemenu"
+			class="sysAction">
+			<result name="success">
+				/page/common/result.jsp
+			</result>
+		</action>
+		<action name="querymenubyid" method="querymenubyid"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="querymenubypmid" method="querymenubypmid"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="delmenu" method="delmenu"
+			class="sysAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

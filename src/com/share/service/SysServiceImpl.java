@@ -532,7 +532,7 @@ public class SysServiceImpl implements SysService {
 	@Override
 	public List<MenuDTO> querySYSMenusAll(){
 		List<MenuDTO> menulist = new ArrayList<MenuDTO>();
-		String hql = " select sp from SysMenus sp where 1=1 and sp.flag='1' order by sp.menuId ";
+		String hql = " select sp from SysMenus sp where 1=1 and sp.flag='1' order by sp.menucode ";
 		List<SysMenus> sp = sysMenusDAO.find(hql);
 		for (SysMenus s : sp) {
 			MenuDTO p= new MenuDTO();
@@ -704,6 +704,58 @@ public class SysServiceImpl implements SysService {
 		String hql = " select s from SysVMp s where 1=1 and s.privilegeId=?";
 		List<SysVMp> smps = sysVMpDAO.find(hql, param);
 		return smps;
+	}
+	
+	@Override
+	public List<SysMenus> queryMenuCodeByPmid(String menuId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = new BigDecimal(menuId);
+		String hql = " select s from SysMenus s where 1=1 and s.flag='1' and s.pmId=? order by s.menucode desc";
+		List<SysMenus> sm= sysMenusDAO.find(hql,param);
+		return sm;
+	}
+	
+	@Override
+	public List<SysMenus> queryMenuCodeById(String menuId){
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = Long.valueOf(menuId);
+		String hql = " select s from SysMenus s where 1=1 and s.flag='1' and s.menuId=? order by s.menucode desc";
+		List<SysMenus> sm= sysMenusDAO.find(hql,param);
+		return sm;
+	}
+	
+	@Override
+	public void createMenu(MenuDTO menuDTO){
+		String hql = " select s from SysMenus s where 1=1 and s.flag='1' order by s.menuId desc";
+		List<SysMenus> sm= sysMenusDAO.find(hql);
+		Long id = sm.get(0).getMenuId();
+		System.out.println(id+1);
+		SysMenus o = new SysMenus();
+		o.setMenuId(id+1);
+		o.setMenuname(menuDTO.getMenuname());
+		o.setMenucode(menuDTO.getMenucode());
+		o.setMenuurl(menuDTO.getMenuurl());
+		o.setIco(menuDTO.getIco());
+		o.setFlag("1");
+		o.setCtime(new Timestamp(new Date().getTime()));
+		o.setUtime(new Timestamp(new Date().getTime()));
+		o.setPmId(menuDTO.getPmId());
+		o.setRemark(menuDTO.getRemark());
+		sysMenusDAO.save(o);
+	}
+	
+	@Override
+	public int delMenu(Long menuId){
+		String hql = " update SysMenus s set s.flag=? , s.utime=? where 1=1 and s.menuId=?";
+		Object[] param = null;
+		param = new Object[3];
+		param[0] = "0";
+		param[1] = new Timestamp(new Date().getTime());
+		param[2] = menuId;
+		int u = sysMenusDAO.update(hql, param);
+		return u;
 	}
 	
 }

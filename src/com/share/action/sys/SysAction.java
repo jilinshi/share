@@ -23,11 +23,10 @@ import com.share.dto.RoleDTO;
 import com.share.dto.ShortcutDTO;
 import com.share.dto.UserDTO;
 import com.share.dto.UsergroupDTO;
-import com.share.model.SysFprelation;
 import com.share.model.SysGrrelation;
+import com.share.model.SysMenus;
 import com.share.model.SysMprelation;
 import com.share.model.SysOrganization;
-import com.share.model.SysPfrelation;
 import com.share.model.SysRprelation;
 import com.share.model.SysUgrelation;
 import com.share.model.SysUrrelation;
@@ -56,6 +55,7 @@ public class SysAction extends ActionSupport {
 	private OrganizationDTO organizationDTO;
 	private UserDTO userDTO;
 	private String orgId;
+	private MenuDTO menuDTO;
 	 /** 当前页面 */ 
 	private String page;  
 	 /** 每页的记录数 */ 
@@ -80,6 +80,8 @@ public class SysAction extends ActionSupport {
 	private String menuIds;
 	private String functionIds;
 	private String fileIds;
+	
+	private String menuId;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String findDistrictList() {
@@ -94,7 +96,7 @@ public class SysAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 	public String findDistrictListALL() {
 		Map jsonMap = new HashMap();
 		List<DistrictsDTO> orgs = findChildDistrictList(parentid);
@@ -524,7 +526,7 @@ public class SysAction extends ActionSupport {
 			s.setGenId(e.getMenucode());
 			s.setOpen(true);
 			s.setName(e.getMenuname());
-			s.setIco("http:\\\\localhost:8080\\share\\assets\\ztree\\css\\zTreeStyle\\img\\diy\\1_open.png");
+			s.setIco(e.getIco());
 			sl1.add(s);
 		}
 		jsonMap.put("rs", sl1);
@@ -704,6 +706,97 @@ public class SysAction extends ActionSupport {
 		List<SysVMp> mps = sysService.querySYSVMp(privilegeid);
 		Map jsonMap = new HashMap();
 		jsonMap.put("mps", mps);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String queryMenuCode(){
+		List<SysMenus> sms = sysService.queryMenuCodeByPmid(menuId);
+		String newMenuCode = "";
+		if(sms.size()>0){
+			String mcode = sms.get(0).getMenucode();
+			String end=mcode.substring(mcode.length()-1);
+			Integer i = Integer.valueOf(end);
+			newMenuCode = mcode.substring(0,mcode.length()-1)+(i+1);
+			System.out.print(mcode + ":" +newMenuCode);
+		}else{
+			List<SysMenus> sm = sysService.queryMenuCodeById(menuId);
+			newMenuCode = sm.get(0).getMenucode()+"0001";
+		}
+		Map jsonMap = new HashMap();
+		jsonMap.put("code", newMenuCode);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String savemenu(){
+		Map jsonMap = new HashMap();
+		try{
+			sysService.createMenu(menuDTO);
+			jsonMap.put("msg", "保存成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			jsonMap.put("msg", "保存失败！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String querymenubyid(){
+		SysMenus sm = sysService.queryMenuCodeById(menuId).get(0);
+		MenuDTO md = new MenuDTO();
+		md.setMenuId(sm.getMenuId());
+		md.setMenuname(sm.getMenuname());
+		md.setMenucode(sm.getMenucode());
+		md.setMenuurl(sm.getMenuurl());
+		md.setPmId(sm.getPmId());
+		md.setIco(sm.getIco());
+		md.setFlag(sm.getFlag());
+		md.setRemark(sm.getRemark());
+		md.setCtime(sm.getCtime());
+		md.setUtime(sm.getUtime());
+		Map jsonMap = new HashMap();
+		jsonMap.put("sm", md);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String querymenubypmid(){
+		List<SysMenus> sms = sysService.queryMenuCodeByPmid(menuId);
+		List<MenuDTO> ms = new ArrayList<MenuDTO>();
+		for(SysMenus sm : sms){
+			MenuDTO md = new MenuDTO();
+			md.setMenuId(sm.getMenuId());
+			md.setMenuname(sm.getMenuname());
+			md.setMenucode(sm.getMenucode());
+			md.setMenuurl(sm.getMenuurl());
+			md.setPmId(sm.getPmId());
+			md.setIco(sm.getIco());
+			md.setFlag(sm.getFlag());
+			md.setRemark(sm.getRemark());
+			md.setCtime(sm.getCtime());
+			md.setUtime(sm.getUtime());
+			ms.add(md);
+		}
+		Map jsonMap = new HashMap();
+		jsonMap.put("ms", ms);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String delmenu(){
+		Map jsonMap = new HashMap();
+		int u = sysService.delMenu(Long.valueOf(menuId));
+		if(u>0){
+			jsonMap.put("msg", "删除成功！");
+		}else{
+			jsonMap.put("msg", "删除失败！");
+		}
 		map = jsonMap;
 		return SUCCESS;
 	}
@@ -908,6 +1001,22 @@ public class SysAction extends ActionSupport {
 
 	public void setFileIds(String fileIds) {
 		this.fileIds = fileIds;
+	}
+
+	public MenuDTO getMenuDTO() {
+		return menuDTO;
+	}
+
+	public void setMenuDTO(MenuDTO menuDTO) {
+		this.menuDTO = menuDTO;
+	}
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
 	}
 
 }

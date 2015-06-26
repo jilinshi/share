@@ -17538,7 +17538,7 @@ th[aria-selected=true] .ui-jqgrid-sortable {
   display: block;
   margin: 0;
   padding: 0;
-  max-width: 600px;
+  max-width: 5000px;
   list-style: none;
   line-height: 20px;
 }
