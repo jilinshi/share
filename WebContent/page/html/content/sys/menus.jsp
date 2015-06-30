@@ -9,6 +9,9 @@
 	UserDTO user =(UserDTO) session.getAttribute("user");
 	Long oid=user.getOrgId();
 %>
+<meta http-equiv="pragma" content="no-cache"> 
+<meta http-equiv="cache-control" content="no-cache"> 
+<meta http-equiv="expires" content="0">
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/chosen.css" />
@@ -62,22 +65,22 @@
 	<div id="dialog-confirm" class="hide">
 		<div class="row">
 			<div class="col-xs-12">
-				<form class="form-horizontal" id="myForm_menu" method="post" action="<%=basePath%>page/html/content/sys/savemenu.action" target="tempiframe" >
+				<form class="form-horizontal" id="myForm_menu" method="post" action="<%=basePath%>page/html/content/sys/saveMenu.action" target="tempiframe" >
 					<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 父菜单名称 </label>
+					<label class="col-sm-3 control-label no-padding-right" for="select_pmid"> 父菜单名称 </label>
 						<div class="col-sm-9">
 							<select style="width:275px;" id="select_pmid" name="menuDTO.pmId" data-placeholder="请选择 . . ." >
 							</select>
 						</div>
 					</div>
 					<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 菜单名称 </label>
+					<label class="col-sm-3 control-label no-padding-right" for="menuname"> 菜单名称 </label>
 						<div class="col-sm-9">
 							<input type="text" name="menuDTO.menuname" id="menuname" placeholder="请填写......" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 菜单编码 </label>
+					<label class="col-sm-3 control-label no-padding-right" for="menucode"> 菜单编码 </label>
 						<div class="col-sm-9">
 							<input type="text" id="menucode" placeholder="" class="col-xs-10 col-sm" disabled/>
 							<input type="hidden" name="menuDTO.menucode" id="menucode_hidden" placeholder="请填写......" class="col-xs-10 col-sm" />
@@ -85,19 +88,19 @@
 						</div>
 					</div>
 					<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 菜单连接 </label>
+					<label class="col-sm-3 control-label no-padding-right" for="menuurl"> 菜单连接 </label>
 						<div class="col-sm-9">
 							<input type="text" name="menuDTO.menuurl" id="menuurl" placeholder="请填写全路径......" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 图标 </label>
+					<label class="col-sm-3 control-label no-padding-right" for="ico"> 图标 </label>
 						<div class="col-sm-9">
 							<input type="text" name="menuDTO.ico" id="ico" placeholder="请填写......" class="col-xs-10 col-sm" />
 						</div>
 					</div>
 					<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="wtdanwei"> 备注 </label>
+					<label class="col-sm-3 control-label no-padding-right" for="remark"> 备注 </label>
 						<div class="col-sm-9">
 							<input type="text" name="menuDTO.remark" id="remark" placeholder="请填写......" class="col-xs-10 col-sm" />
 						</div>
@@ -132,59 +135,112 @@ $('#CollapseAll_list').click(function () {
 	$('.dd').nestable('collapseAll');
 });
 
-$('#create_menu').click(function (){
-	$("#select_pmid option[value='0']").attr("selected",true);
-	document.getElementById("myForm_menu").reset();
-	var dialog = $("#dialog-confirm").removeClass('hide').dialog({
-		autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
-	    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
-		hide:true,
-		resizable: true,
-		width: '480',
-		modal: true,
-		title: "新建菜单",
-		buttons: [ 
-					{
-						text: "关闭",
-						"class" : "btn btn-minier",
-						click: function() {
-							$("#select_pmid").chosen("destroy"); 
-							document.getElementById("myForm_menu").reset();
-							$( this ).dialog( "close" );
-						} 
-					},
-					{
-						text: "保存",
-						"class" : "btn btn-primary btn-minier",
-						click: function() {
-						    var pmId=$("#select_pmid").children('option:selected').val();
-							var menuname = $("#menuname").val();
-							var menuurl = $("#menuurl").val();
-							var ico = $("#ico").val();
-							var remark = $("#remark").val();
-							if(pmId==""){
-								alert("请选择父菜单");
-								return false;
-							}
-							if(menuname==""){
-								alert("请填写菜单名称！");
-								return false;
-							}
-							if(menuurl==""){
-								alert("请填写菜单连接（页面全路径）！");
-								return false;
-							}
-							var params=$("#myForm_menu").serialize();
-							document.getElementById("myForm_menu").submit();
-							dialog.dialog("close");
-							$("#select_pmid").chosen("destroy"); 
-						} 
-					}
-				]
+function chosen_Init(){
+	$.ajax({
+		type : "post",
+		dataType : "json",
+		async:  false,
+		url : "<%=basePath%>page/html/content/sys/queryMenus.action",
+		success : function(data) {
+			var myData = data.rs;
+			var len = myData.length;
+			var a = " ";
+			for(var i=0; i<len; i++){
+				var value = myData[i].id;
+				var text = myData[i].name+"__"+myData[i].genId+"";
+				a = a + "<option value='"+ value +"'>"+ text +"</option>";
+			}
+			
+			$("#select_pmid").append("<option value='0'></option><option value='-1'>根目录</option>").append(a);
+			//$("#select_pmid").chosen({allow_single_deselect:true});
+			
+		}
 	});
-	chosen_Init();
-	dialog.dialog("open");
+};
+
+var dialog = $("#dialog-confirm").removeClass('hide').dialog({
+	autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
+    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
+	hide:true,
+	resizable: true,
+	width: '480',
+	modal: true,
+	title: "编辑菜单",
+	buttons: [ 
+				{
+					text: "关闭",
+					"class" : "btn btn-minier",
+					click: function() {
+						$("#select_pmid").chosen("destroy"); 
+						document.getElementById("myForm_menu").reset();
+						$( this ).dialog( "close" );
+					} 
+				},
+				{
+					text: "保存",
+					"class" : "btn btn-primary btn-minier",
+					click: function() {
+						var pmId=$("#select_pmid").children('option:selected').val();
+						var menuname = $("#menuname").val();
+						var menuurl = $("#menuurl").val();
+						var ico = $("#ico").val();
+						var remark = $("#remark").val();
+						if(pmId=="0"){
+							alert("请选择父菜单");
+							return false;
+						}
+						if(menuname==""){
+							alert("请填写菜单名称！");
+							return false;
+						}
+						if(menuurl==""){
+							alert("请填写菜单连接（页面全路径）！");
+							return false;
+						}
+						document.getElementById("myForm_menu").submit();
+						dialog.dialog("close");
+					} 
+				}
+			]
 });
+
+$('#create_menu').click(function (){
+	
+	document.getElementById("myForm_menu").reset();
+	dialog.dialog("open");
+	chosen_Init();
+	$("#select_pmid option[value='0']").attr("selected",true);
+	$("#select_pmid").chosen();
+	
+});
+
+function menu_edit(id){
+	 $.ajax({
+		type : "post",
+		dataType : "json",
+		async : false,
+		url : "<%=basePath%>page/html/content/sys/querymenubyid.action",
+		data : {menuId:id},
+		success : function(data) {
+			var m = data.sm;
+			//$("#select_pmid option[value='"+m.pmId+"']").attr("selected","selected");
+			//$("#select_pmid").val(m.pmId);
+			$("#menuId_hidden").val(m.menuId);
+			$("#menuname").val(m.menuname);
+			$("#menuurl").val(m.menuurl);
+			$("#ico").val(m.ico);
+			$("#remark").val(m.remark);
+			$("#menucode_hidden").val(m.menucode);
+			$("#menucode").val(m.menucode);
+			dialog.dialog("open");
+			chosen_Init();
+			$("#select_pmid option[value='"+m.pmId+"']").attr("selected","selected");
+			$("#select_pmid").chosen();
+		}
+	});
+	
+};
+
 function InitList(){
 	$.ajax({
 		type : "post",
@@ -230,77 +286,6 @@ function InitList(){
 	});
 };
 
-function menu_edit(id){
-	//document.getElementById("myForm_menu").reset();
-	var dialog = $("#dialog-confirm").removeClass('hide').dialog({
-		autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
-	    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
-		hide:true,
-		resizable: true,
-		width: '480',
-		modal: true,
-		title: "编辑菜单",
-		buttons: [ 
-					{
-						text: "关闭",
-						"class" : "btn btn-minier",
-						click: function() {
-							$("#select_pmid").chosen("destroy"); 
-							document.getElementById("myForm_menu").reset();
-							$( this ).dialog( "close" );
-						} 
-					},
-					{
-						text: "保存",
-						"class" : "btn btn-primary btn-minier",
-						click: function() {
-							var pmId=$("#select_pmid").children('option:selected').val();
-							var menuname = $("#menuname").val();
-							var menuurl = $("#menuurl").val();
-							var ico = $("#ico").val();
-							var remark = $("#remark").val();
-							if(pmId==""){
-								alert("请选择父菜单");
-								return false;
-							}
-							if(menuname==""){
-								alert("请填写菜单名称！");
-								return false;
-							}
-							if(menuurl==""){
-								alert("请填写菜单连接（页面全路径）！");
-								return false;
-							}
-							document.getElementById("myForm_menu").submit();
-							dialog.dialog("close");
-						} 
-					}
-				]
-	});
-	
-	$.ajax({
-		type : "post",
-		dataType : "json",
-		async : true,
-		url : "<%=basePath%>page/html/content/sys/querymenubyid.action",
-		data : {menuId:id},
-		success : function(data) {
-			var m = data.sm;
-			$("#select_pmid option[value='"+m.pmId+"']").attr("selected",true);
-			$("#menuId_hidden").val(m.menuId);
-			$("#menuname").val(m.menuname);
-			$("#menuurl").val(m.menuurl);
-			$("#ico").val(m.ico);
-			$("#remark").val(m.remark);
-			$("#menucode_hidden").val(m.menucode);
-			$("#menucode").val(m.menucode);
-			chosen_Init();
-			dialog.dialog("open");
-		}
-	});
-	
-};
-
 function menu_del(id){
 	$.ajax({
 		type : "post",
@@ -332,26 +317,7 @@ function menu_del(id){
 	
 };
 
-function chosen_Init(){
-	$.ajax({
-		type : "post",
-		dataType : "json",
-		async: true,
-		url : "<%=basePath%>page/html/content/sys/queryMenus.action",
-		success : function(data) {
-			var myData = data.rs;
-			var len = myData.length;
-			var a = " ";
-			for(var i=0; i<len; i++){
-				var value = myData[i].id;
-				var text = myData[i].name+"__"+myData[i].genId+"";
-				a = a + "<option value='"+ value +"'>"+ text +"</option>";
-			}
-			$("#select_pmid").append("<option value='0'></option><option value='-1'>根目录</option>").append(a);
-			$("#select_pmid").chosen({allow_single_deselect:true});
-		}
-	});
-};
+
 $("#select_pmid").on('change', function(evt, params) {
 	var value=$("#select_pmid").children('option:selected').val();
 	//计算菜单code

@@ -731,7 +731,7 @@ public class SysAction extends ActionSupport {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String savemenu(){
+	public String saveMenu(){
 		Map jsonMap = new HashMap();
 		try{
 			sysService.createMenu(menuDTO);

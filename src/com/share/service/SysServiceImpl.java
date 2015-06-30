@@ -733,7 +733,7 @@ public class SysServiceImpl implements SysService {
 		Long id = sm.get(0).getMenuId();
 		System.out.println(id+1);
 		SysMenus o = new SysMenus();
-		o.setMenuId(id+1);
+		o.setMenuId(Long.valueOf(id+1));
 		o.setMenuname(menuDTO.getMenuname());
 		o.setMenucode(menuDTO.getMenucode());
 		o.setMenuurl(menuDTO.getMenuurl());

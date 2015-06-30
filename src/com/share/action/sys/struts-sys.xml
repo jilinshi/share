@@ -244,7 +244,7 @@
 				<param name="root">map</param>
 			</result>
 		</action>
-		<action name="savemenu" method="savemenu"
+		<action name="saveMenu" method="saveMenu"
 			class="sysAction">
 			<result name="success">
 				/page/common/result.jsp
