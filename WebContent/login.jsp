@@ -72,23 +72,23 @@
 
 											<div class="space-6"></div>
 
-											<form id="form-dl" action="${pageContext.request.contextPath}/login.action" method="post">
+											<form id="form-dl" action="${pageContext.request.contextPath}/login.action" method="post" onsubmit="return toVaild()">
 											<input type="hidden" name="token" value="95588"/>
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input name="username" type="text" class="form-control" placeholder="用户名" />
+															<input id="username" name="username" type="text" class="form-control" placeholder="用户名" />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input name="password" type="password" class="form-control" placeholder="密码" />
+															<input id="password" name="password" type="password" class="form-control" placeholder="密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
-
+													<div id="msg" align="center"> </div>
 													<div class="space"></div>
 
 													<div class="clearfix">
@@ -301,7 +301,6 @@
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='<%=basePath%>assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
 		</script>
-
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {
@@ -350,8 +349,30 @@
 		</script>
 	</body>
 	<script type="text/javascript">
-if(window.opener!=null){
-	window.opener.close();
-}
-</script>
+		if(window.opener!=null){
+			window.opener.close();
+		}
+		function toVaild(){
+			var username = $("#username").val();
+			var password = $("#password").val();
+			if(username==""&&password!=""){
+				document.getElementById("msg").innerHTML = "<font style='font-size:xx-small;color:red;'>请输入用户名！</font>";
+				return false;
+			}else if(password==""&&username!=""){
+				document.getElementById("msg").innerHTML = "<font style='font-size:xx-small;color:red;'>请输入密码！</font>";
+				return false;
+			}else if(username==""&&password==""){
+				document.getElementById("msg").innerHTML = "<font style='font-size:xx-small;color:red;'>请输入用户名和密码！</font>";
+				return false;
+			}
+			return true;
+		};
+		document.onkeydown = function() {
+			if(event.keyCode == 13) {
+				if(toVaild()){
+					document.getElementById("form-dl").submit();
+				}
+			 }
+		};
+	</script>
 </html>
