@@ -711,7 +711,7 @@ public class SysServiceImpl implements SysService {
 		Object[] param = null;
 		param = new Object[1];
 		param[0] = new BigDecimal(menuId);
-		String hql = " select s from SysMenus s where 1=1 and s.flag='1' and s.pmId=? order by s.menucode desc";
+		String hql = " select s from SysMenus s where 1=1 and s.pmId=? order by s.menucode desc";
 		List<SysMenus> sm= sysMenusDAO.find(hql,param);
 		return sm;
 	}
@@ -727,23 +727,30 @@ public class SysServiceImpl implements SysService {
 	}
 	
 	@Override
-	public void createMenu(MenuDTO menuDTO){
-		String hql = " select s from SysMenus s where 1=1 and s.flag='1' order by s.menuId desc";
-		List<SysMenus> sm= sysMenusDAO.find(hql);
-		Long id = sm.get(0).getMenuId();
-		System.out.println(id+1);
+	public void saveMenu(MenuDTO menuDTO){
 		SysMenus o = new SysMenus();
-		o.setMenuId(Long.valueOf(id+1));
 		o.setMenuname(menuDTO.getMenuname());
 		o.setMenucode(menuDTO.getMenucode());
 		o.setMenuurl(menuDTO.getMenuurl());
 		o.setIco(menuDTO.getIco());
-		o.setFlag("1");
-		o.setCtime(new Timestamp(new Date().getTime()));
-		o.setUtime(new Timestamp(new Date().getTime()));
 		o.setPmId(menuDTO.getPmId());
 		o.setRemark(menuDTO.getRemark());
-		sysMenusDAO.save(o);
+		if(menuDTO.getMenuId()==0){
+			String hql = " select s from SysMenus s where 1=1 order by s.menuId desc";
+			List<SysMenus> sm= sysMenusDAO.find(hql);
+			Long id = sm.get(0).getMenuId();
+			o.setMenuId(Long.valueOf(id+1));
+			o.setFlag("1");
+			o.setCtime(new Timestamp(new Date().getTime()));
+			o.setUtime(o.getCtime());
+			sysMenusDAO.save(o);
+		}else{
+			o.setMenuId(menuDTO.getMenuId());
+			o.setUtime(new Timestamp(new Date().getTime()));
+			o.setCtime(menuDTO.getCtime());
+			o.setFlag(menuDTO.getFlag());
+			sysMenusDAO.update(o);
+		}
 	}
 	
 	@Override

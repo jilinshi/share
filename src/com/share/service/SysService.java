@@ -66,6 +66,6 @@ public interface SysService {
 	public List<SysVMp> querySYSVMp(BigDecimal privilegeId);
 	public List<SysMenus> queryMenuCodeByPmid(String menuId);
 	public List<SysMenus> queryMenuCodeById(String menuId);
-	public void createMenu(MenuDTO menuDTO);
+	public void saveMenu(MenuDTO menuDTO);
 	public int delMenu(Long menuId);
 }

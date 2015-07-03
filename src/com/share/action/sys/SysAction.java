@@ -733,12 +733,22 @@ public class SysAction extends ActionSupport {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String saveMenu(){
 		Map jsonMap = new HashMap();
+		String msg = "";
 		try{
-			sysService.createMenu(menuDTO);
-			jsonMap.put("msg", "保存成功！");
+			
+			if(menuDTO.getMenuId()==0){
+				msg="保存";
+			}else{
+				msg="修改";
+				List<SysMenus> sms = sysService.queryMenuCodeById(menuDTO.getMenuId()+"");
+				menuDTO.setCtime(sms.get(0).getCtime());
+				menuDTO.setFlag(sms.get(0).getFlag());
+			}
+			sysService.saveMenu(menuDTO);
+			jsonMap.put("msg", msg+"成功！");
 		}catch(Exception e){
 			e.printStackTrace();
-			jsonMap.put("msg", "保存失败！");
+			jsonMap.put("msg", msg+"失败！");
 		}
 		map = jsonMap;
 		return SUCCESS;

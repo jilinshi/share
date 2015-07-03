@@ -41,6 +41,11 @@
 							<i class="ace-icon fa fa-plus-circle white"></i>新建菜单
 						</button>
 					</div>
+					<div class="btn-group">
+						<button class="btn btn-sm btn-info btn-success btn-round" id="reload_menu">
+							<i class="ace-icon fa fa-undo white"></i>刷新菜单
+						</button>
+					</div>
 				</div>
 			</div>
 		<div data-spy="scroll" data-offset="0" class="scrollspy-example" style="height: 400px;">
@@ -199,19 +204,25 @@ var dialog = $("#dialog-confirm").removeClass('hide').dialog({
 						}
 						document.getElementById("myForm_menu").submit();
 						dialog.dialog("close");
+						// parent.location.reload();
 					} 
 				}
 			]
 });
 
 $('#create_menu').click(function (){
-	
-	document.getElementById("myForm_menu").reset();
 	dialog.dialog("open");
 	chosen_Init();
+	document.getElementById("myForm_menu").reset();
+	$("#menuId_hidden").val(0);
+	$('#menuurl').attr("readonly",false);
 	$("#select_pmid option[value='0']").attr("selected",true);
 	$("#select_pmid").chosen();
-	
+});
+
+$('#reload_menu').click(function (){
+	$("#menulist").children().filter('li').remove();
+	InitList();
 });
 
 function menu_edit(id){
@@ -234,6 +245,11 @@ function menu_edit(id){
 			$("#menucode").val(m.menucode);
 			dialog.dialog("open");
 			chosen_Init();
+			if(m.menuurl=='#'){
+				$('#menuurl').attr("readonly","readonly");				
+			}else{
+				$('#menuurl').attr("readonly",false);	
+			}
 			$("#select_pmid option[value='"+m.pmId+"']").attr("selected","selected");
 			$("#select_pmid").chosen();
 		}
@@ -330,6 +346,13 @@ $("#select_pmid").on('change', function(evt, params) {
 			var code = data.code;
 			$('#menucode').val(code);
 			$('#menucode_hidden').val(code);
+			if(value==-1){
+				$('#menuurl').val('#');
+				$('#menuurl').attr("readonly","readonly");
+			}else{
+				$('#menuurl').val('');
+				$('#menuurl').attr("readonly",false);
+			}
 		}
 	});
 	
