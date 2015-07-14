@@ -635,18 +635,18 @@ public class ImpServiceImpl<T> implements ImpService {
 			// 220204194908081249 王桂仙 204023 吉林远东药业集团股份有限公司 1949-8-8 00:00:00
 			// 1968-11-1 00:00:00 2001-1-8 00:00:00 1633.28
 			ResInsurance e = new ResInsurance();
-			e.setIdno(o[0]);
-			e.setPname(o[1]);
-			e.setInno(o[2]);
-			e.setDanwei(o[3]);
-			e.setBirthday(o[4]);
-			e.setJfBegin(o[5]);
-			e.setLqBegin(o[6]);
-			e.setLqMoney(o[7]);
+			e.setIdno(o[1]);
+			e.setPname(o[2]);
+			e.setInno(o[3]);
+			e.setDanwei(o[4]);
+			e.setBirthday(o[5]);
+			e.setJfBegin(o[6]);
+			e.setLqBegin(o[7]);
+			e.setLqMoney(o[8]);
 			e.setFileId(this.getImpdatainfo().getFileId().toString());
 			r.add(e);
 		}
-		resInsuranceDAO.saveBatch(r);
+		resInsuranceDAO.saveBatch(r); 
 		return rs;
 	}
 

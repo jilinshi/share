@@ -250,8 +250,8 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 						css="item-green"
 					}
 					var checked="";
-					for(var i=0; i<ids.length; i++){
-						if(ids[i]==val.userId){
+					for(var j=0; j<ids.length; j++){
+						if(ids[j]==val.userId){
 							checked='checked';
 						}
 					}
@@ -282,8 +282,8 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 						css="item-green"
 					}
 					var checked="";
-					for(var i=0; i<ids.length; i++){
-						if(ids[i]==val.ugId){
+					for(var j=0; j<ids.length; j++){
+						if(ids[j]==val.ugId){
 							checked='checked';
 						}
 					}

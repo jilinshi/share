@@ -111,7 +111,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					if(i%2==1){
 						css="item-orange";
 					}else{
-						css="item-green"
+						css="item-green";
 					}
 					li += " <li class='"+css+"'><label class='inline'><input type='radio' class='ace' id="+val.ugId+" name='usergroup_radio' value='"+val.ugId+"' onclick='usergroup_check(this)' /><span class='lbl'> "+val.ugName+" </span></label><div class='pull-right action-buttons'><span class='vbar'></span><a href='javascript:del("+val.ugId+");'  class='red'><i class='ace-icon fa fa-trash-o bigger-130'></i></a></div></li> ";
 				});
@@ -194,11 +194,11 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					if(i%2==1){
 						css="item-orange";
 					}else{
-						css="item-green"
+						css="item-green";
 					}
 					var checked="";
-					for(var i=0; i<ids.length; i++){
-						if(ids[i]==val.userId){
+					for(var j=0; j<ids.length; j++){
+						if(ids[j]==val.userId){
 							checked='checked';
 						}
 					}

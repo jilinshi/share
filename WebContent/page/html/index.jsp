@@ -8,6 +8,7 @@
 			+ path + "/";
 	UserDTO user =(UserDTO) session.getAttribute("user");
 	String uname=user.getUname();
+	Long id = user.getUserId();
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -34,7 +35,7 @@
 
 <!-- text fonts -->
 <link rel="stylesheet" href="../../assets/css/ace-fonts.css" />
-
+<link rel="stylesheet" href="../../assets/css/jquery-ui.css" />
 <!-- ace styles -->
 <link rel="stylesheet" href="../../assets/css/ace.css"
 	class="ace-main-stylesheet" id="main-ace-style" />
@@ -306,7 +307,7 @@
 									
 							</a></li>-->
 
-							<li><a href="#page/profile"> <i
+							<li><a href="javascript:userinfo();"> <i
 									class="ace-icon fa fa-user"></i> 个人信息
 							</a></li> 
 
@@ -454,7 +455,7 @@
 											<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
 										</select>
 									</div>
-									<span>&nbsp; Choose Skin</span>
+									<span>&nbsp; 选择皮肤</span>
 								</div>
 
 								<!-- /section:settings.skins -->
@@ -463,7 +464,7 @@
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-navbar" /> <label class="lbl"
-										for="ace-settings-navbar"> Fixed Navbar</label>
+										for="ace-settings-navbar"> 固定-标题栏</label>
 								</div>
 
 								<!-- /section:settings.navbar -->
@@ -472,7 +473,7 @@
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-sidebar" /> <label class="lbl"
-										for="ace-settings-sidebar"> Fixed Sidebar</label>
+										for="ace-settings-sidebar"> 固定-菜单栏</label>
 								</div>
 
 								<!-- /section:settings.sidebar -->
@@ -481,7 +482,7 @@
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-breadcrumbs" /> <label class="lbl"
-										for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+										for="ace-settings-breadcrumbs"> 固定-导航栏</label>
 								</div>
 
 								<!-- /section:settings.breadcrumbs -->
@@ -490,7 +491,7 @@
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-rtl" /> <label class="lbl"
-										for="ace-settings-rtl"> Right To Left (rtl)</label>
+										for="ace-settings-rtl"> 翻转页面(左、右)</label>
 								</div>
 
 								<!-- /section:settings.rtl -->
@@ -499,7 +500,7 @@
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-add-container" /> <label class="lbl"
-										for="ace-settings-add-container"> Inside <b>.container</b>
+										for="ace-settings-add-container"> 网页显示模式</b>
 									</label>
 								</div>
 
@@ -512,19 +513,19 @@
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-hover" /> <label class="lbl"
-										for="ace-settings-hover"> Submenu on Hover</label>
+										for="ace-settings-hover"> 子菜单展开模式</label>
 								</div>
 
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-compact" /> <label class="lbl"
-										for="ace-settings-compact"> Compact Sidebar</label>
+										for="ace-settings-compact"> 主菜单显示模式</label>
 								</div>
 
 								<div class="ace-settings-item">
 									<input type="checkbox" class="ace ace-checkbox-2"
 										id="ace-settings-highlight" /> <label class="lbl"
-										for="ace-settings-highlight"> Alt. Active Item</label>
+										for="ace-settings-highlight"> 主菜单选中样式</label>
 								</div>
 
 								<!-- /section:basics/sidebar.options -->
@@ -542,7 +543,9 @@
 					<!-- /.page-content-area -->
 				</div>
 				<!-- /.page-content -->
+				
 			</div>
+			
 		</div>
 		<!-- /.main-content -->
 
@@ -572,7 +575,54 @@
 		</a>
 	</div>
 	<!-- /.main-container -->
-
+	<div id="dialog-info" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<!-- <div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right" for="select_pmid"> 用户名 </label>
+					<div class="col-sm-9">
+						<input type="text" name="userDTO。uaccount" id="uaccount" placeholder="请填写......" class="col-xs-10 col-sm" disabled/>
+					</div>
+				</div> -->
+				<form class="form-horizontal" id="myForm" method="post">
+				<div class="profile-user-info profile-user-info-striped">
+					
+					<div class="profile-info-row">
+						<div class="profile-info-name">用户名</div>
+						<div class="profile-info-value">
+							<input type="text" name="userDTO.uaccount" id="uaccount" class="col-xs-10 col-sm " />
+						</div>
+					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">密码</div>
+						<div class="profile-info-value">
+						 	<input type="text" name="userDTO.upwds" id="upwds" class="col-xs-10 col-sm"/>
+						 </div>
+					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">姓名</div>
+						<div class="profile-info-value">
+							<input type="text" name="userDTO.uname" id="uname" class="col-xs-10 col-sm"/>
+						</div>
+					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">身份证号码</div>
+						<div class="profile-info-value">
+							<input type="text" name="userDTO.idno" id="idno" class="col-xs-10 col-sm"/>
+						</div>
+					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">联系方式</div>
+						<div class="profile-info-value">
+							<input type="text" name="userDTO.mobilephone" id="mobilephone" class="col-xs-10 col-sm"/>
+						</div>
+					</div>
+				</div>
+				<!-- </form> -->
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="<%=id%>" id="uid">
 	<!-- basic scripts -->
 
 	<!--[if !IE]> -->
@@ -593,6 +643,51 @@
 		if ('ontouchstart' in document.documentElement)
 			document.write("<script src='../../assets/js/jquery.mobile.custom.js'>"
 							+ "<"+"/script>");
+		
+		function userinfo(){
+			var id = $("#uid").val();
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/sys/queryuser.action",
+				data: {userId : id},
+				async : true,
+				success : function(data) {
+					var user = data.user;
+					$("#uaccount").val(user.uaccount);
+					$("#upwds").val(user.upwds);
+					$("#uname").val(user.uname);
+					$("#idno").val(user.idno);
+					$("#mobilephone").val(user.mobilephone);
+					$("userid").val(user.userId);
+				}
+			});
+			var dialog = $("#dialog-info").removeClass('hide').dialog({
+				autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
+			    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
+				hide:true,
+				resizable: true,
+				width: '450',
+				modal: true,
+				title: "个人信息",
+				buttons: [ 
+							{
+								text: "关闭",
+								"class" : "btn btn-minier",
+								click: function() {
+									$( this ).dialog( "close" );
+								} 
+							},
+							{
+								text: "保存",
+								"class" : "btn btn-primary btn-minier",
+								click: function() {
+
+								} 
+							}
+						]
+			}).dialog("open");
+		}
 	</script>
 	<script src="../../assets/js/bootstrap.js"></script>
 
@@ -618,5 +713,6 @@
 	<script src="../../assets/js/ace/ace.settings-skin.js"></script>
 	<script src="../../assets/js/ace/ace.widget-on-reload.js"></script>
 	<script src="../../assets/js/ace/ace.searchbox-autocomplete.js"></script>
+	<script src="../../assets/js/jquery-ui.js"></script>
 </body>
 </html>

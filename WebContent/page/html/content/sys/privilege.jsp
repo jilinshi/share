@@ -49,7 +49,7 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header">
-				<h4 class="widget-title lighter smaller"> （角色/菜单/功能/文件）列表</h4>
+				<h4 class="widget-title lighter smaller"> （角色/菜单）列表</h4>
 			</div>
 			<div class="widget-body">
 			<div class="tabbable">
@@ -282,8 +282,8 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 						css="item-green"
 					}
 					var checked="";
-					for(var i=0; i<ids.length; i++){
-						if(ids[i]==val.roleId){
+					for(var j=0; j<ids.length; j++){
+						if(ids[j]==val.roleId){
 							checked='checked';
 						}
 					}
