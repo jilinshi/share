@@ -36,6 +36,7 @@
 <!-- text fonts -->
 <link rel="stylesheet" href="../../assets/css/ace-fonts.css" />
 <link rel="stylesheet" href="../../assets/css/jquery-ui.css" />
+<link rel="stylesheet" href="../../assets/css/chosen.css" />
 <!-- ace styles -->
 <link rel="stylesheet" href="../../assets/css/ace.css"
 	class="ace-main-stylesheet" id="main-ace-style" />
@@ -547,6 +548,7 @@
 			</div>
 			
 		</div>
+		
 		<!-- /.main-content -->
 
 		<div class="footer">
@@ -578,51 +580,52 @@
 	<div id="dialog-info" class="hide">
 		<div class="row">
 			<div class="col-xs-12">
-				<!-- <div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="select_pmid"> 用户名 </label>
-					<div class="col-sm-9">
-						<input type="text" name="userDTO。uaccount" id="uaccount" placeholder="请填写......" class="col-xs-10 col-sm" disabled/>
-					</div>
-				</div> -->
-				<form class="form-horizontal" id="myForm" method="post">
+				<form class="form-horizontal" id="myForm_user" method="post" >
 				<div class="profile-user-info profile-user-info-striped">
-					
+					<div class="profile-info-row">
+						<div class="profile-info-name">所属机构</div>
+						<div class="profile-info-value">
+							<select style="width:225px;" class="chosen-select" id="i_orgId" name="userDTO.orgId" data-placeholder="请选择 . . ."></select>
+						</div>
+					</div>
 					<div class="profile-info-row">
 						<div class="profile-info-name">用户名</div>
 						<div class="profile-info-value">
-							<input type="text" name="userDTO.uaccount" id="uaccount" class="col-xs-10 col-sm " />
+							<input type="text" name="userDTO.uaccount" id="i_uaccount" class="col-xs-10 col-sm " />
 						</div>
 					</div>
 					<div class="profile-info-row">
 						<div class="profile-info-name">密码</div>
 						<div class="profile-info-value">
-						 	<input type="text" name="userDTO.upwds" id="upwds" class="col-xs-10 col-sm"/>
+						 	<input type="text" name="userDTO.upwds" id="i_upwds" class="col-xs-10 col-sm"/>
 						 </div>
 					</div>
 					<div class="profile-info-row">
 						<div class="profile-info-name">姓名</div>
 						<div class="profile-info-value">
-							<input type="text" name="userDTO.uname" id="uname" class="col-xs-10 col-sm"/>
+							<input type="text" name="userDTO.uname" id="i_uname" class="col-xs-10 col-sm"/>
 						</div>
 					</div>
 					<div class="profile-info-row">
 						<div class="profile-info-name">身份证号码</div>
 						<div class="profile-info-value">
-							<input type="text" name="userDTO.idno" id="idno" class="col-xs-10 col-sm"/>
+							<input type="text" name="userDTO.idno" id="i_idno" class="col-xs-10 col-sm"/>
 						</div>
 					</div>
 					<div class="profile-info-row">
 						<div class="profile-info-name">联系方式</div>
 						<div class="profile-info-value">
-							<input type="text" name="userDTO.mobilephone" id="mobilephone" class="col-xs-10 col-sm"/>
+							<input type="text" name="userDTO.mobilephone" id="i_mobilephone" class="col-xs-10 col-sm"/>
 						</div>
 					</div>
 				</div>
-				<!-- </form> -->
+				<input type="hidden" name="userDTO.userId" id="i_userid"/>
+				</form>
 			</div>
 		</div>
 	</div>
 	<input type="hidden" value="<%=id%>" id="uid">
+	
 	<!-- basic scripts -->
 
 	<!--[if !IE]> -->
@@ -644,24 +647,28 @@
 			document.write("<script src='../../assets/js/jquery.mobile.custom.js'>"
 							+ "<"+"/script>");
 		
-		function userinfo(){
-			var id = $("#uid").val();
+		
+		function chosenInit(){
 			$.ajax({
 				type : "post",
 				dataType : "json",
-				url : "<%=basePath%>page/html/content/sys/queryuser.action",
-				data: {userId : id},
-				async : true,
+				url : "<%=basePath%>page/html/content/sys/findOrgList1.action",
+				async : false,
 				success : function(data) {
-					var user = data.user;
-					$("#uaccount").val(user.uaccount);
-					$("#upwds").val(user.upwds);
-					$("#uname").val(user.uname);
-					$("#idno").val(user.idno);
-					$("#mobilephone").val(user.mobilephone);
-					$("userid").val(user.userId);
+					var orgs = data.orgs;
+					var len = orgs.length;
+					var a = " ";
+					for(var i=0; i<len; i++){
+						var value = orgs[i].id;
+						var text = orgs[i].name;
+						a = a + "<option value='"+ value +"'>"+ text +"</option>";
+					}
+					$("#i_orgId").append("<option value=' '> </option>").append(a);
+					//$("#i_orgId").chosen({allow_single_deselect:true});
 				}
 			});
+		};
+		function userinfo(){
 			var dialog = $("#dialog-info").removeClass('hide').dialog({
 				autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
 			    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
@@ -682,12 +689,46 @@
 								text: "保存",
 								"class" : "btn btn-primary btn-minier",
 								click: function() {
-
+									$.ajax({
+										type : "post",
+										dataType : "json",
+										url : "<%=basePath%>page/html/content/sys/saveuser.action",
+										data:$('#myForm_user').serialize(),
+										async : true,
+										success : function(data) {
+											var msg = data.msg;
+											dialog.dialog( "close" );
+											alert(msg);
+										}
+									});
 								} 
 							}
 						]
-			}).dialog("open");
-		}
+			});
+			var id = $("#uid").val();
+			$.ajax({
+				type : "post",
+				dataType : "json",
+				url : "<%=basePath%>page/html/content/sys/queryuser.action",
+				data: {userId : id},
+				async : true,
+				success : function(data) {
+					var user = data.user;
+					$("#i_uaccount").val(user.uaccount);
+					$("#i_upwds").val(user.upwds);
+					$("#i_uname").val(user.uname);
+					$("#i_idno").val(user.idno);
+					$("#i_mobilephone").val(user.mobilephone);
+					$("#i_userid").val(user.userId);
+					dialog.dialog( "open" );
+					chosenInit();
+					$("#i_orgId option[value='"+user.orgId+"']").attr("selected","selected");
+					$("#i_orgId").chosen();
+				}
+			});
+			
+		};
+		
 	</script>
 	<script src="../../assets/js/bootstrap.js"></script>
 
@@ -714,5 +755,6 @@
 	<script src="../../assets/js/ace/ace.widget-on-reload.js"></script>
 	<script src="../../assets/js/ace/ace.searchbox-autocomplete.js"></script>
 	<script src="../../assets/js/jquery-ui.js"></script>
+	<script src="../../assets/js/chosen.jquery.js"></script>
 </body>
 </html>

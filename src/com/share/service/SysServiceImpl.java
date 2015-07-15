@@ -304,6 +304,9 @@ public class SysServiceImpl implements SysService {
 		o.setUpwds(userDTO.getUpwds());
 		o.setMobilephone(userDTO.getMobilephone());
 		o.setIdno(userDTO.getIdno());
+		SysOrganization so2 = new SysOrganization();
+		so2.setOrgId(userDTO.getOrgId());
+		o.setSysOrganization(so2);
 		if (userDTO.getUserId() == 0) {
 			o.setCtime(new Timestamp(new Date().getTime()));
 			o.setUtime(new Timestamp(new Date().getTime()));
