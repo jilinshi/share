@@ -8,7 +8,7 @@
 %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
@@ -23,7 +23,7 @@
 
 		<!-- text fonts -->
 		<link rel="stylesheet" href="<%=basePath%>assets/css/ace-fonts.css" />
-
+		<link rel="stylesheet" href="<%=basePath%>assets/css/chosen.css" />
 		<!-- ace styles -->
 		<link rel="stylesheet" href="<%=basePath%>assets/css/ace.css" />
 
@@ -137,7 +137,7 @@
 											</div>
 
 											<div>
-												<a href="#" data-target="#signup-box" class="user-signup-link">
+												<a href="#" data-target="#signup-box" class="user-signup-link" >
 													注册
 													<i class="ace-icon fa fa-arrow-right"></i>
 												</a>
@@ -195,15 +195,14 @@
 												新用户注册
 											</h4>
 
-											<div class="space-6"></div>
-											<p> 开始填写信息 </p>
+ 											<div class="space-6"></div>
+											<!--<p> 开始填写信息 </p> -->
 
 											<form>
 												<fieldset>
 													<!-- <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email" />
-															<i class="ace-icon fa fa-envelope"></i>
+														<span>
+															<select style="width:290px;" class="chosen-select" id="zc_orgId" name="userDTO.orgId" data-placeholder="请选择机构"></select>
 														</span>
 													</label> -->
 
@@ -285,10 +284,11 @@
 		</div><!-- /.main-container -->
 
 		<!-- basic scripts -->
-
+		
 		<!--[if !IE]> -->
 		<script type="text/javascript">
-			window.jQuery || document.write("<script src='<%=basePath%>assets/js/jquery.js'>"+"<"+"/script>");
+			window.jQuery
+			|| document.write("<script src='<%=basePath%>assets/js/jquery.js'>"+"<"+"/script>");
 		</script>
 
 		<!-- <![endif]-->
@@ -298,6 +298,7 @@
  window.jQuery || document.write("<script src='<%=basePath%>assets/js/jquery1x.js'>"+"<"+"/script>");
 </script>
 <![endif]-->
+		<script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='<%=basePath%>assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
 		</script>
@@ -316,7 +317,7 @@
 			 $("#dl1").click(function(){
 				 //alert($("#form-dl").serialize());
 				 $("#form-dl").submit();
-			 });  
+			 });
 			});
 			
 			

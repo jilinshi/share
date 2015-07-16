@@ -582,12 +582,32 @@
 			<div class="col-xs-12">
 				<form class="form-horizontal" id="myForm_user" method="post" >
 				<div class="profile-user-info profile-user-info-striped">
-					<div class="profile-info-row">
+					<!-- <div class="profile-info-row">
 						<div class="profile-info-name">所属机构</div>
 						<div class="profile-info-value">
 							<select style="width:225px;" class="chosen-select" id="i_orgId" name="userDTO.orgId" data-placeholder="请选择 . . ."></select>
 						</div>
+					</div> -->
+					<div class="profile-info-row">
+						<div class="profile-info-name">姓名</div>
+						<div class="profile-info-value">
+							<!-- <input type="text" name="userDTO.uname" id="i_uname" class="col-xs-10 col-sm"/> -->
+							<span id="i_uname"></span>
+						</div>
 					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">身份证号码</div>
+						<div class="profile-info-value">
+							<!-- <input type="text" name="userDTO.idno" id="i_idno" class="col-xs-10 col-sm"/> -->
+							<span id="i_idno"></span>
+						</div>
+					</div>
+					<!-- <div class="profile-info-row">
+						<div class="profile-info-name">联系方式</div>
+						<div class="profile-info-value">
+							<input type="text" name="userDTO.mobilephone" id="i_mobilephone" class="col-xs-10 col-sm"/>
+						</div>
+					</div> -->
 					<div class="profile-info-row">
 						<div class="profile-info-name">用户名</div>
 						<div class="profile-info-value">
@@ -599,24 +619,6 @@
 						<div class="profile-info-value">
 						 	<input type="text" name="userDTO.upwds" id="i_upwds" class="col-xs-10 col-sm"/>
 						 </div>
-					</div>
-					<div class="profile-info-row">
-						<div class="profile-info-name">姓名</div>
-						<div class="profile-info-value">
-							<input type="text" name="userDTO.uname" id="i_uname" class="col-xs-10 col-sm"/>
-						</div>
-					</div>
-					<div class="profile-info-row">
-						<div class="profile-info-name">身份证号码</div>
-						<div class="profile-info-value">
-							<input type="text" name="userDTO.idno" id="i_idno" class="col-xs-10 col-sm"/>
-						</div>
-					</div>
-					<div class="profile-info-row">
-						<div class="profile-info-name">联系方式</div>
-						<div class="profile-info-value">
-							<input type="text" name="userDTO.mobilephone" id="i_mobilephone" class="col-xs-10 col-sm"/>
-						</div>
 					</div>
 				</div>
 				<input type="hidden" name="userDTO.userId" id="i_userid"/>
@@ -648,7 +650,7 @@
 							+ "<"+"/script>");
 		
 		
-		function chosenInit(){
+		<%-- function chosenInit(){
 			$.ajax({
 				type : "post",
 				dataType : "json",
@@ -667,7 +669,7 @@
 					//$("#i_orgId").chosen({allow_single_deselect:true});
 				}
 			});
-		};
+		}; --%>
 		function userinfo(){
 			var dialog = $("#dialog-info").removeClass('hide').dialog({
 				autoOpen: false,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
@@ -716,14 +718,15 @@
 					var user = data.user;
 					$("#i_uaccount").val(user.uaccount);
 					$("#i_upwds").val(user.upwds);
-					$("#i_uname").val(user.uname);
-					$("#i_idno").val(user.idno);
-					$("#i_mobilephone").val(user.mobilephone);
+					//$("#i_uname").val(user.uname);
+					//$("#i_idno").val(user.idno);
+					document.getElementById("i_uname").innerHTML=user.uname;
+					document.getElementById("i_idno").innerHTML=user.idno;
 					$("#i_userid").val(user.userId);
 					dialog.dialog( "open" );
-					chosenInit();
+					/* chosenInit();
 					$("#i_orgId option[value='"+user.orgId+"']").attr("selected","selected");
-					$("#i_orgId").chosen();
+					$("#i_orgId").chosen(); */
 				}
 			});
 			
