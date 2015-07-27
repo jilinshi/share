@@ -57,16 +57,18 @@ public class YbServiceImpl implements YbService {
 		String hql = "";
 		Object[] param = null;
 		if ("95588".equals(userDTO.getToken())) {
-			hql = "select emp from SysUser emp where emp.uaccount=? and emp.upwds=?";
-			param = new Object[2];
-			param[0] = userDTO.getUaccount();
-			param[1] = userDTO.getUpwds();
-		} else {
-			hql = "select emp from SysUser emp where emp.uaccount=? and emp.upwds=? and emp.idno=?";
+			hql = "select emp from SysUser emp where emp.uaccount=? and emp.upwds=? and emp.flag=?";
 			param = new Object[3];
 			param[0] = userDTO.getUaccount();
 			param[1] = userDTO.getUpwds();
+			param[2] = "1";
+		} else {
+			hql = "select emp from SysUser emp where emp.uaccount=? and emp.upwds=? and emp.idno=? and emp.flag=?";
+			param = new Object[4];
+			param[0] = userDTO.getUaccount();
+			param[1] = userDTO.getUpwds();
 			param[2] = userDTO.getToken();
+			param[3] = "1";
 		}
 
 		List<SysUser> rs = sysUserDAO.find(hql, param);

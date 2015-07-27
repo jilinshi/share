@@ -9,9 +9,12 @@
 				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
 			<interceptor name="authorityInterceptor"
 				class="com.share.interceptor.AuthorityInterceptor"></interceptor>
+			<interceptor name="securityInterceptor"
+				class="com.share.interceptor.SecurityInterceptor"></interceptor>
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="authorityInterceptor" />
 				<interceptor-ref name="operationlogInterceptor" />
+				<interceptor-ref name="securityInterceptor" />
 				<interceptor-ref name="fileUpload">
 					<param name="maximumSize">5242880</param>
 				</interceptor-ref>

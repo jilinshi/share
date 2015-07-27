@@ -14,9 +14,14 @@
 		<interceptors>
 			<interceptor name="operationlogInterceptor"
 				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
+			<interceptor name="authorityInterceptor"
+				class="com.share.interceptor.AuthorityInterceptor"></interceptor>
+			<interceptor name="securityInterceptor"
+				class="com.share.interceptor.SecurityInterceptor"></interceptor>
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="operationlogInterceptor" />
+				<interceptor-ref name="securityInterceptor" />
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
@@ -25,7 +30,7 @@
 		</global-results>
 		<action name="login" method="login" class="loginAction">
 			<result name="success" type="redirect">/page/html/index.jsp</result>
-			<result name="error">/login.jsp</result>
+			<result name="result">/page/common/logout.jsp</result>
 		</action>
 		<action name="logout" method="logout" class="loginAction">
 			<result name="success">/page/common/logout.jsp</result>

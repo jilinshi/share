@@ -122,6 +122,7 @@
 <script src="<%=basePath%>assets/js/jquery-ui.js"></script>
 <script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 <script src="<%=basePath%>assets/js/jquery.nestable.js"></script>
+<script src="<%=basePath%>assets/js/publicSetup.js"></script>
 <script type="text/javascript">
 var scripts = [null, null ]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
@@ -139,7 +140,10 @@ $('#ExpandAll_list').click(function () {
 $('#CollapseAll_list').click(function () {
 	$('.dd').nestable('collapseAll');
 });
-
+function login(){
+	window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
+	window.open('', '_self');
+};
 function chosen_Init(){
 	$.ajax({
 		type : "post",

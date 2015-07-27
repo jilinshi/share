@@ -6,7 +6,6 @@
 			+ path + "/";
 	String token=request.getParameter("token");
 %>
-
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
@@ -97,7 +96,7 @@
 															<span class="lbl">记住我</span>
 														</label>
 
-														<button id="dl1" type="button" class="width-35 pull-right btn btn-sm btn-primary">
+														<button id="dl1" type="button" class="width-35 pull-right btn btn-sm btn-primary" >
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">登陆</span>
 														</button>
@@ -284,7 +283,7 @@
 		</div><!-- /.main-container -->
 
 		<!-- basic scripts -->
-		
+</body>	
 		<!--[if !IE]> -->
 		<script type="text/javascript">
 			window.jQuery
@@ -294,10 +293,10 @@
 		<!-- <![endif]-->
 
 		<!--[if IE]>
-<script type="text/javascript">
- window.jQuery || document.write("<script src='<%=basePath%>assets/js/jquery1x.js'>"+"<"+"/script>");
-</script>
-<![endif]-->
+		<script type="text/javascript">
+		 window.jQuery || document.write("<script src='<%=basePath%>assets/js/jquery1x.js'>"+"<"+"/script>");
+		</script>
+		<![endif]-->
 		<script src="<%=basePath%>assets/js/chosen.jquery.js"></script>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='<%=basePath%>assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
@@ -348,7 +347,7 @@
 			 
 			});
 		</script>
-	</body>
+
 	<script type="text/javascript">
 		if(window.opener!=null){
 			window.opener.close();

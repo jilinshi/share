@@ -45,6 +45,7 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,
 	private String password;
 	private String token;
 	private String ace;
+	private String result;
 
 	public String login() {
 
@@ -86,7 +87,8 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,
 
 			String info = "操作:用户登录-登录名:aaa-结果:失败";
 			saveSyslog(request, userDTO, info);
-			return "nouser";
+			result = "用户名或密码错误，请重新登陆！";
+			return "result";
 		}
 
 	}
@@ -123,7 +125,9 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,
 				+ ">");
 		l.setLogInfo(info);
 		l.setUrl(request.getServletPath());
-		l.setUserId(new BigDecimal(userDTO.getUserId()));
+		if(userDTO!=null){
+			l.setUserId(new BigDecimal(userDTO.getUserId()));
+		}
 		sysMgrService.saveSysLogs(l);
 	}
 
@@ -191,6 +195,14 @@ public class LoginAction extends ActionSupport implements ServletRequestAware,
 	public void setServletResponse(HttpServletResponse response) {
 		this.response=response;
 		
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 }
