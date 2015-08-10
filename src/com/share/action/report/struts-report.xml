@@ -23,7 +23,7 @@
 		<global-results>
 			<result name="login" type="redirect" >/logout.action</result>
 			<result name="input" type="redirect">/page/common/noright.jsp</result>
-			<result name="exception-error">/error.jsp</result>
+			<result name="exception-error">/page/common/result.jsp</result>
 		</global-results>
 		<global-exception-mappings>
             <exception-mapping result="exception-error" exception="java.lang.Exception"></exception-mapping>

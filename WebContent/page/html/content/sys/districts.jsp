@@ -114,7 +114,7 @@
 		</script>
 </div>
 <script type="text/javascript">
-var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %>assets/plugins/jqx/jqxexpander.js","<%=basePath %>assets/plugins/jqx/jqxbuttons.js","<%=basePath %>assets/plugins/jqx/jqxscrollbar.js","<%=basePath %>assets/plugins/jqx/jqxtree.js","<%=basePath %>assets/plugins/jqx/jqxcheckbox.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
+var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %>assets/plugins/jqx/jqxexpander.js","<%=basePath %>assets/plugins/jqx/jqxbuttons.js","<%=basePath %>assets/plugins/jqx/jqxscrollbar.js","<%=basePath %>assets/plugins/jqx/jqxtree.js","<%=basePath %>assets/plugins/jqx/jqxcheckbox.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/publicSetup.js", null ]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			InitTree();
@@ -183,11 +183,7 @@ var scripts = [null,"<%=basePath %>assets/plugins/jqx/jqxcore.js","<%=basePath %
 				        myspin.css("display","none");
 				        mytree.css("display","");
 
-					},
-					error : function(XMLHttpRequest, textStatus, errorThrown) {
-						alert(errorThrown);
 					}
-					
 				});
 		}
 		// Expand All
@@ -281,5 +277,9 @@ function v_districtsNmae(){
 	        
 	 	});
 	}
-}
+};
+function returnLogin(){
+	window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
+	window.open('', '_self');
+};
 </script>

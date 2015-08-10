@@ -9,12 +9,9 @@
 				class="com.share.interceptor.OperationlogInterceptor"></interceptor>
 			<interceptor name="authorityInterceptor"
 				class="com.share.interceptor.AuthorityInterceptor"></interceptor>
-			<interceptor name="securityInterceptor"
-				class="com.share.interceptor.SecurityInterceptor"></interceptor>
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="authorityInterceptor" />
 				<interceptor-ref name="operationlogInterceptor" />
-				<interceptor-ref name="securityInterceptor" />
 				<interceptor-ref name="fileUpload">
 					<param name="maximumSize">5242880</param>
 				</interceptor-ref>
@@ -22,15 +19,15 @@
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
-		<global-results>
+		<!-- <global-results>
 			<result name="login" type="redirect">/logout.action</result>
 			<result name="input" type="redirect">/page/common/noright.jsp</result>
-			<result name="exception-error">/error.jsp</result>
+			<result name="exception-error">/page/common/result.jsp</result>
 		</global-results>
 		<global-exception-mappings>
 			<exception-mapping result="exception-error"
 				exception="java.lang.Exception"></exception-mapping>
-		</global-exception-mappings>
+		</global-exception-mappings> -->
 		<action name="findDistrictList" method="findDistrictList"
 			class="sysAction">
 			<result type="json">

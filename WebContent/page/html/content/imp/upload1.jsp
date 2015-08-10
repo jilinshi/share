@@ -36,7 +36,7 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null,"../../assets/js/dropzone.js", null]
+	var scripts = [null,"../../assets/js/dropzone.js", "<%=basePath%>assets/js/publicSetup.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 	  //inline scripts related to this page
 		 jQuery(function($){
@@ -114,4 +114,8 @@
 
 						});
 					});
+	function returnLogin(){
+		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
+		window.open('', '_self');
+	};
 </script>

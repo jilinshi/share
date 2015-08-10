@@ -42,7 +42,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
+	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/publicSetup.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			var grid_selector = "#grid-table";
@@ -194,5 +194,8 @@
         var jsonuserinfo = $('#searchform').serializeObject();  
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
-	
+	function returnLogin(){
+		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
+		window.open('', '_self');
+	};
 </script>

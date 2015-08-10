@@ -9,13 +9,13 @@ $.ajaxSetup({
     		
     	}else if(textStatus=="parsererror"){
     		sessionTimeOut();
-    		login();
+    		returnLogin();
     	}else if(textStatus=="notmodified"){
     		sessionTimeOut();
-    		login();
+    		returnLogin();
     	}else if(textStatus=="error"){
     		noLimit();
-    		login();
+    		returnLogin();
     	}
         
     }

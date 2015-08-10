@@ -20,11 +20,11 @@
 <script type="text/javascript">
 	var scripts = [null, null]
 	jQuery(function($) {
-		window.opener = null;
-
+		if(window.opener!=null){
+			window.opener.close();
+		}
 		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
 		window.open('', '_self');
-		  //window.close();
 	});
 	<%-- $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		alert("11");

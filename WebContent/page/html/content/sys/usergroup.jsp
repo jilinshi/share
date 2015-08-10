@@ -85,9 +85,8 @@
 	</script>
 	<input type="hidden" name="oid" id="oid" value="<%=oid%>"/>
 </div>
-<script src="<%=basePath%>assets/js/publicSetup.js"></script>
 <script type="text/javascript">
-var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
+var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/publicSetup.js", null ]
 	var oid = $("#oid").val();
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
@@ -96,10 +95,6 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			InitUser(oid,userids);
 		});
 	});
-	function login(){
-		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
-		window.open('', '_self');
-	};
 	function InitUserGroup(){
 		$.ajax({
 			type : "post",
@@ -248,5 +243,9 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				alert(msg);
 			}
 		});
-	}
+	};
+	function returnLogin(){
+		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
+		window.open('', '_self');
+	};
 </script>

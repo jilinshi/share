@@ -38,7 +38,7 @@
 var changeGridOptions;
 var _basepath='<%=basePath%>';
 var _ftype='<%=ftype%>';
-	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>page/html/content/imp/myextra.js", null];
+	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>page/html/content/imp/myextra.js","<%=basePath%>assets/js/publicSetup.js", null];
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 	  //inline scripts related to this page
 		 var grid_data = 
@@ -327,4 +327,8 @@ var _ftype='<%=ftype%>';
 		});
 	});
 	});
+	function returnLogin(){
+		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
+		window.open('', '_self');
+	};
 </script>
