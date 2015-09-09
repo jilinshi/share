@@ -5,8 +5,8 @@ $.ajaxSetup({
     timeout : 1000, //超时时间设置，单位毫秒
     complete: function(XMLHttpRequest, textStatus) {
     	//"success","timeout", "error", "notmodified" 和 "parsererror"。
+    	alert(textStatus);
     	if(textStatus=="success"){
-    		
     	}else if(textStatus=="parsererror"){
     		sessionTimeOut();
     		returnLogin();

@@ -1,29 +1,26 @@
 package com.share.model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
 
 /**
  * The persistent class for the PP_INSURANCE database table.
  * 
  */
 @Entity
-@Table(name="PP_INSURANCE")
-@NamedQuery(name="PpInsurance.findAll", query="SELECT p FROM PpInsurance p")
+@Table(name = "PP_INSURANCE")
+@NamedQuery(name = "PpInsurance.findAll", query = "SELECT p FROM PpInsurance p")
 public class PpInsurance implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="A_ID")
+	@Column(name = "A_ID")
 	private BigDecimal aId;
 
 	private String area;
 
-	@Column(name="ATTORNEY_ID")
+	@Column(name = "ATTORNEY_ID")
 	private String attorneyId;
 
 	private String birthday;
@@ -52,7 +49,7 @@ public class PpInsurance implements Serializable {
 
 	private String ds;
 
-	@Column(name="FILE_ID")
+	@Column(name = "FILE_ID")
 	private String fileId;
 
 	private String id15;
@@ -63,19 +60,19 @@ public class PpInsurance implements Serializable {
 
 	private String idno1;
 
-	@Column(name="IN_ID")
+	@Column(name = "IN_ID")
 	private BigDecimal inId;
 
 	private String inno;
 
-	@Column(name="JF_BEGIN")
+	@Column(name = "JF_BEGIN")
 	private String jfBegin;
 
-	@Column(name="LQ_BEGIN")
+	@Column(name = "LQ_BEGIN")
 	private String lqBegin;
 
-	@Column(name="LQ_MONEY")
-	private String lqMoney;
+	@Column(name = "LQ_MONEY")
+	private BigDecimal lqMoney;
 
 	private String masterid;
 
@@ -87,7 +84,7 @@ public class PpInsurance implements Serializable {
 
 	private String o3;
 	@Id
-	@Column(name="PI_ID")
+	@Column(name = "PI_ID")
 	private BigDecimal piId;
 
 	private String pname;
@@ -301,11 +298,11 @@ public class PpInsurance implements Serializable {
 		this.lqBegin = lqBegin;
 	}
 
-	public String getLqMoney() {
+	public BigDecimal getLqMoney() {
 		return this.lqMoney;
 	}
 
-	public void setLqMoney(String lqMoney) {
+	public void setLqMoney(BigDecimal lqMoney) {
 		this.lqMoney = lqMoney;
 	}
 

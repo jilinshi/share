@@ -2,6 +2,7 @@ package com.share.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -17,34 +18,29 @@ public class ResInsurance implements Serializable {
 	@Id
 	@SequenceGenerator(name="RES_INSURANCE_INID_GENERATOR", sequenceName="SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RES_INSURANCE_INID_GENERATOR")
-	@Column(name="IN_ID", unique=true, nullable=false, precision=12)
+	@Column(name="IN_ID")
 	private long inId;
 
-	@Column(length=256)
 	private String birthday;
 
-	@Column(length=256)
 	private String danwei;
 
-	@Column(name="FILE_ID", length=256)
+	@Column(name="FILE_ID")
 	private String fileId;
 
-	@Column(length=256)
 	private String idno;
 
-	@Column(length=256)
 	private String inno;
 
-	@Column(name="JF_BEGIN", length=256)
+	@Column(name="JF_BEGIN")
 	private String jfBegin;
 
-	@Column(name="LQ_BEGIN", length=256)
+	@Column(name="LQ_BEGIN")
 	private String lqBegin;
 
-	@Column(name="LQ_MONEY", length=256)
-	private String lqMoney;
+	@Column(name="LQ_MONEY")
+	private BigDecimal lqMoney;
 
-	@Column(length=256)
 	private String pname;
 
 	public ResInsurance() {
@@ -114,11 +110,11 @@ public class ResInsurance implements Serializable {
 		this.lqBegin = lqBegin;
 	}
 
-	public String getLqMoney() {
+	public BigDecimal getLqMoney() {
 		return this.lqMoney;
 	}
 
-	public void setLqMoney(String lqMoney) {
+	public void setLqMoney(BigDecimal lqMoney) {
 		this.lqMoney = lqMoney;
 	}
 

@@ -45,6 +45,7 @@ import com.share.util.BigTxt;
 import com.share.util.CreatAndReadExcel;
 import com.share.util.IDCard;
 import com.share.util.Pager;
+import com.share.util.RegexUtil;
 import com.share.util.XmlExcel;
 
 @Service("impService")
@@ -121,8 +122,7 @@ public class ImpServiceImpl<T> implements ImpService {
 
 		Object[] param = new Object[1];
 		param[0] = fileDTO.getFileId();
-		Impdatainfo l = impdatainfoDAO.get(
-				"select e from Impdatainfo e where e.fileId=?", param);
+		Impdatainfo l = impdatainfoDAO.get("select e from Impdatainfo e where e.fileId=?", param);
 		setImpdatainfo(l);
 
 		String hql = "update Impdatainfo m set m.operstat=? where m.infoId=?";
@@ -133,30 +133,24 @@ public class ImpServiceImpl<T> implements ImpService {
 
 		params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql(
-				"delete CkInsurance t where t.impdatainfo= ?", params);
+		ckInsuranceDAO.executeHql("delete CkInsurance t where t.impdatainfo= ?", params);
 
 		params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql("delete CkFund t where t.impdatainfo= ?",
-				params);
+		ckInsuranceDAO.executeHql("delete CkFund t where t.impdatainfo= ?", params);
 
 		params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql(
-				"delete CkHouseproperty t where t.impdatainfo= ?", params);
+		ckInsuranceDAO.executeHql("delete CkHouseproperty t where t.impdatainfo= ?", params);
 		params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql("delete CkVehicle t where t.impdatainfo= ?",
-				params);
+		ckInsuranceDAO.executeHql("delete CkVehicle t where t.impdatainfo= ?", params);
 		params = new Object[1];
 		params[0] = this.getImpdatainfo().getFileId().toString();
-		ckInsuranceDAO.executeHql("delete ResBurial t where t.fileId= ?",
-				params);
+		ckInsuranceDAO.executeHql("delete ResBurial t where t.fileId= ?", params);
 		params = new Object[1];
 		params[0] = this.getImpdatainfo().getFileId().toString();
-		ckInsuranceDAO.executeHql("delete ResInsurance t where t.fileId= ?",
-				params);
+		ckInsuranceDAO.executeHql("delete ResInsurance t where t.fileId= ?", params);
 
 		return fileDTO;
 	}
@@ -167,8 +161,7 @@ public class ImpServiceImpl<T> implements ImpService {
 		String hqlc = "select count(*) as cnt from VImpfile t where t.ftype=?";
 		Long cnt = vImpfileDAO.count(hqlc, param);
 		pager.setRecords(cnt);
-		List<VImpfile> rs = vImpfileDAO.find(hql, param, pager.pager,
-				pager.rows);
+		List<VImpfile> rs = vImpfileDAO.find(hql, param, pager.pager, pager.rows);
 		return rs;
 	}
 
@@ -543,8 +536,7 @@ public class ImpServiceImpl<T> implements ImpService {
 		log.info("begin saveFileGrid");
 		Object[] param = new Object[1];
 		param[0] = fileDTO.getFileId();
-		Impdatainfo l = impdatainfoDAO.get(
-				"select e from Impdatainfo e where e.fileId=?", param);
+		Impdatainfo l = impdatainfoDAO.get("select e from Impdatainfo e where e.fileId=?", param);
 		setImpdatainfo(l);
 		fileDTO.setRealpath(l.getRealpath());
 		try {
@@ -628,25 +620,35 @@ public class ImpServiceImpl<T> implements ImpService {
 	}
 
 	private List<String> savedata6(List<String> rs) {
-		List<ResInsurance> r = new ArrayList<ResInsurance>();
-		resInsuranceDAO.executeHql("delete ResInsurance t", null);
-		for (String s : rs) {
-			String[] o = s.split("	");
-			// 220204194908081249 王桂仙 204023 吉林远东药业集团股份有限公司 1949-8-8 00:00:00
-			// 1968-11-1 00:00:00 2001-1-8 00:00:00 1633.28
-			ResInsurance e = new ResInsurance();
-			e.setIdno(o[1]);
-			e.setPname(o[2]);
-			e.setInno(o[3]);
-			e.setDanwei(o[4]);
-			e.setBirthday(o[5]);
-			e.setJfBegin(o[6]);
-			e.setLqBegin(o[7]);
-			e.setLqMoney(o[8]);
-			e.setFileId(this.getImpdatainfo().getFileId().toString());
-			r.add(e);
+		try {
+			List<ResInsurance> r = new ArrayList<ResInsurance>();
+			resInsuranceDAO.executeHql("delete ResInsurance t", null);
+			for (String s : rs) {
+				String[] o = s.split("	");
+				// 220204194908081249 王桂仙 204023 吉林远东药业集团股份有限公司 1949-8-8
+				// 00:00:00
+				// 1968-11-1 00:00:00 2001-1-8 00:00:00 1633.28
+				ResInsurance e = new ResInsurance();
+				e.setIdno(o[1]);
+				e.setPname(o[2]);
+				e.setInno(o[3]);
+				e.setDanwei(o[4]);
+				e.setBirthday(o[5]);
+				e.setJfBegin(o[6]);
+				e.setLqBegin(o[7]);
+				e.setFileId(this.getImpdatainfo().getFileId().toString());
+				if (RegexUtil.checkNumber(o[8])) {
+					e.setLqMoney(new BigDecimal(o[8]));
+					r.add(e);
+				} else {
+					log.info(o[1] + "**" + o[2] + "**" + o[3] + "**" + o[4] + "**" + o[5] + "**" + o[6] + "**" + o[7]
+							+ "**" + o[8] + "**");
+				}
+			}
+			resInsuranceDAO.saveBatch(r);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		resInsuranceDAO.saveBatch(r); 
 		return rs;
 	}
 
@@ -669,8 +671,7 @@ public class ImpServiceImpl<T> implements ImpService {
 	private List<VehicleDTO> savedata5(List<List<Object>> rs) {
 		Object[] params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckVehicleDAO.executeHql("delete CkVehicle t where t.impdatainfo= ?",
-				params);
+		ckVehicleDAO.executeHql("delete CkVehicle t where t.impdatainfo= ?", params);
 		List<VehicleDTO> g = this.convert5(rs);
 		List<CkVehicle> r = new ArrayList<CkVehicle>();
 		for (VehicleDTO s : g) {
@@ -686,8 +687,7 @@ public class ImpServiceImpl<T> implements ImpService {
 	private List<HousepropertyDTO> savedata4(List<List<Object>> rs) {
 		Object[] params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckHousepropertyDAO.executeHql(
-				"delete CkHouseproperty t where t.impdatainfo= ?", params);
+		ckHousepropertyDAO.executeHql("delete CkHouseproperty t where t.impdatainfo= ?", params);
 		List<HousepropertyDTO> g = this.convert4(rs);
 		List<CkHouseproperty> r = new ArrayList<CkHouseproperty>();
 		for (HousepropertyDTO s : g) {
@@ -703,8 +703,7 @@ public class ImpServiceImpl<T> implements ImpService {
 	private List<BurialDTO> savedata3(List<List<Object>> rs) {
 		Object[] params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckBurialDAO.executeHql("delete CkBurial t where t.impdatainfo= ?",
-				params);
+		ckBurialDAO.executeHql("delete CkBurial t where t.impdatainfo= ?", params);
 		List<BurialDTO> g = this.convert3(rs);
 		List<CkBurial> r = new ArrayList<CkBurial>();
 		for (BurialDTO s : g) {
@@ -720,8 +719,7 @@ public class ImpServiceImpl<T> implements ImpService {
 	private List<FundDTO> savedata2(List<List<Object>> rs) {
 		Object[] params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql("delete CkFund t where t.impdatainfo= ?",
-				params);
+		ckInsuranceDAO.executeHql("delete CkFund t where t.impdatainfo= ?", params);
 		List<FundDTO> g = this.convert2(rs);
 		List<CkFund> r = new ArrayList<CkFund>();
 		for (FundDTO s : g) {
@@ -737,8 +735,7 @@ public class ImpServiceImpl<T> implements ImpService {
 	private List<InsuranceDTO> savedata1(List<List<Object>> rs) {
 		Object[] params = new Object[1];
 		params[0] = this.getImpdatainfo();
-		ckInsuranceDAO.executeHql(
-				"delete CkInsurance t where t.impdatainfo= ?", params);
+		ckInsuranceDAO.executeHql("delete CkInsurance t where t.impdatainfo= ?", params);
 		List<InsuranceDTO> g = this.convert1(rs);
 		List<CkInsurance> r = new ArrayList<CkInsurance>();
 		for (InsuranceDTO s : g) {
@@ -753,8 +750,7 @@ public class ImpServiceImpl<T> implements ImpService {
 
 	@SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
 	@Override
-	public <T> List<T> queryCheckData(Pager pager, String hql, Object[] param,
-			String clz) {
+	public <T> List<T> queryCheckData(Pager pager, String hql, Object[] param, String clz) {
 		List<T> list = new ArrayList<T>();
 		String table = clz;
 		log.info("查询>>>>>" + table);
@@ -770,11 +766,9 @@ public class ImpServiceImpl<T> implements ImpService {
 				pager.setRecords(cnt);
 				log.info("查询总数>>>>>" + hqlc);
 			}
-			list = (List<T>) ppInsuranceDAO.find(hql, param, pager.pager,
-					pager.rows);
+			list = (List<T>) ppInsuranceDAO.find(hql, param, pager.pager, pager.rows);
 			Map session = ActionContext.getContext().getSession();
-			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
-					.getTableMap("ppinsurance");
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel().getTableMap("ppinsurance");
 
 			session.put("hql", hql);
 			session.put("param1", param);
@@ -794,11 +788,9 @@ public class ImpServiceImpl<T> implements ImpService {
 				Long cnt = ppFundDAO.count(hqlc, param);
 				pager.setRecords(cnt);
 			}
-			list = (List<T>) ppFundDAO
-					.find(hql, param, pager.pager, pager.rows);
+			list = (List<T>) ppFundDAO.find(hql, param, pager.pager, pager.rows);
 			Map session = ActionContext.getContext().getSession();
-			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
-					.getTableMap("ppfund");
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel().getTableMap("ppfund");
 			session.put("hql", hql);
 			session.put("param1", param);
 			session.put("param", null);
@@ -816,11 +808,9 @@ public class ImpServiceImpl<T> implements ImpService {
 				Long cnt = ppBurialDAO.count(hqlc, param);
 				pager.setRecords(cnt);
 			}
-			list = (List<T>) ppBurialDAO.find(hql, param, pager.pager,
-					pager.rows);
+			list = (List<T>) ppBurialDAO.find(hql, param, pager.pager, pager.rows);
 			Map session = ActionContext.getContext().getSession();
-			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
-					.getTableMap("ppburial");
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel().getTableMap("ppburial");
 
 			session.put("hql", hql);
 			session.put("param1", param);
@@ -839,11 +829,9 @@ public class ImpServiceImpl<T> implements ImpService {
 				Long cnt = ppHousepropertyDAO.count(hqlc, param);
 				pager.setRecords(cnt);
 			}
-			list = (List<T>) ppHousepropertyDAO.find(hql, param, pager.pager,
-					pager.rows);
+			list = (List<T>) ppHousepropertyDAO.find(hql, param, pager.pager, pager.rows);
 			Map session = ActionContext.getContext().getSession();
-			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
-					.getTableMap("pphouseproperty");
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel().getTableMap("pphouseproperty");
 
 			session.put("hql", hql);
 			session.put("param1", param);
@@ -862,11 +850,9 @@ public class ImpServiceImpl<T> implements ImpService {
 				Long cnt = ppVehicleDAO.count(hqlc, param);
 				pager.setRecords(cnt);
 			}
-			list = (List<T>) ppVehicleDAO.find(hql, param, pager.pager,
-					pager.rows);
+			list = (List<T>) ppVehicleDAO.find(hql, param, pager.pager, pager.rows);
 			Map session = ActionContext.getContext().getSession();
-			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel()
-					.getTableMap("ppvehicle");
+			LinkedHashMap<String, String> title = XmlExcel.getXmlexcel().getTableMap("ppvehicle");
 
 			session.put("hql", hql);
 			session.put("param1", param);

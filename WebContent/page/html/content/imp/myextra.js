@@ -23,7 +23,7 @@ function impexcel(p1, basepath, ftype) {
 		type : "GET",
 		dataType : "JSON",
 		 cache:false,
-		 async : true, //默认为true 异步
+		 async : false, //默认为true 异步
 		data : {
 			'fileDTO.fileId' : p1,
 			'fileDTO.ftype' : ftype
