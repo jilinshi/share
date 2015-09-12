@@ -79,6 +79,11 @@
 				<param name="root">map</param>
 			</result>
 		</action>
+		<action name="getExtract" method="getExtract" class="reportAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 	
 	<package name="printreport" extends="json-default"

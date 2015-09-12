@@ -18,6 +18,7 @@ import org.apache.struts2.ServletActionContext;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.mongodb.DBObject;
@@ -63,6 +64,7 @@ public class ReportAction extends ActionSupport {
 	private List<String> afilenames;
 
 	private FileDTO fileDTO;
+	private String piId;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryPersonalInfo() {
@@ -256,6 +258,24 @@ public class ReportAction extends ActionSupport {
 		map = jsonMap;
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getExtract(){
+		Map jsonMap = new HashMap();
+		try {
+			int u = reportService.updatePersonalById(piId);
+			if(u>0){
+				jsonMap.put("msg", "操作成功！");
+			}else{
+				jsonMap.put("msg", "操作失败！");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonMap.put("msg", "系统错误！");
+		}
+		map = jsonMap;
+		return SUCCESS;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public Map getMap() {
@@ -377,6 +397,14 @@ public class ReportAction extends ActionSupport {
 
 	public void setIdcard(String idcard) {
 		this.idcard = idcard;
+	}
+
+	public String getPiId() {
+		return piId;
+	}
+
+	public void setPiId(String piId) {
+		this.piId = piId;
 	}
 
 }

@@ -140,13 +140,17 @@
 				datatype : "json",
 				postData : formData,
 				height : 321,
-				colNames : ['姓名','身份证号码','家庭关系','户主姓名','户主身份证号码'],
+				colNames : ['','姓名','身份证号码','家庭关系','户主姓名','户主身份证号码','人员状态','标识','操作'],
 				colModel : [
+					{name:'piId',formatter:"actionFormatter",hidden:true},
 					{name:'pname',formatter:"actionFormatter"},
 				    {name:'idno',formatter:"actionFormatter"},
 					{name:'col10',formatter:"actionFormatter"},
 				    {name:'mastername',formatter:'actionFormatter'},
-				    {name:'masterid',formatter:'actionFormatter'}
+				    {name:'masterid',formatter:'actionFormatter'},
+				    {name:'col3',formatter:'actionFormatter'},
+				    {name:'remark',formatter:'actionFormatter',cellattr: addCellAttr_color},
+				    {name:'VIEW', index:'VIEW',align:'center'}
 				],
 				rownumbers: true,
 				autowidth : true,
@@ -159,6 +163,7 @@
 					var table = this;
 					setTimeout(function(){
 						updatePagerIcons(table);
+						checkbutton(table);
 					}, 0);
 				}, 
 				caption : "居民数据信息显示"
@@ -181,6 +186,16 @@
  			//改变列背景颜色
  			function addCellAttr_bgcolor(rowId, val, rawObject, cm, rdata) {
  				return "style='background-color:pink'";
+ 			}
+ 			
+ 			function checkbutton(table){
+ 				var ids = jQuery("#grid-table").jqGrid('getDataIDs');
+ 		        for (var i = 0; i < ids.length; i++) {
+ 		          var id = ids[i];
+ 		          var rowData = $("#grid-table").getRowData(id);
+				  var viewBtn ="<div class='hidden-sm hidden-xs btn-group'><button id='v_"+rowData.piId+"' class='btn btn-minier btn-success' onclick='extract("+rowData.piId+")'><i class='ace-icon fa fa-sign-out bigger-100'></i>核对</button></div>"
+ 		          jQuery("#grid-table").jqGrid('setRowData', ids[i], { VIEW: viewBtn });
+ 				}
  			}
  			
 			function updatePagerIcons(table) {
@@ -458,6 +473,24 @@
 			});
 		}
 	};
+	
+	function extract(id){
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/report/getExtract.action",
+			data: {piId:id},
+			async : false,
+			success : function(data) {
+				var msg = data.msg;
+				alert(msg);
+				var jsonuserinfo = $('#searchform').serializeObject();  
+		        jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
+			}
+			
+		});
+	};
+	
 	function returnLogin(){
 		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
 		window.open('', '_self');

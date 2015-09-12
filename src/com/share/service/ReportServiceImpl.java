@@ -297,4 +297,16 @@ public class ReportServiceImpl implements ReportService {
 		}
 		return mems;
 	}
+	
+	@Override
+	public int updatePersonalById(String piId){
+		int u = 0;
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = "ºË¶Ô";
+		param[1] = Long.parseLong(piId);
+		String hql = "update Personalinfo p set p.remark=? where p.piId=?";
+		u = personalinfoDAO.update(hql, param);
+		return u;
+	}
 }

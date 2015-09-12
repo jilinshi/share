@@ -35,4 +35,5 @@ public interface ReportService {
 			List<Object> param, String jwhere);
 	public void savePersonalinfo(MemberDTO m);
 	public List<MemberDTO> queryPersonByCard(String idcard);
+	public int updatePersonalById(String piId);
 }
