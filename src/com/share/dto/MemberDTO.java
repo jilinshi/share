@@ -37,6 +37,7 @@ public class MemberDTO {
 	private String sickentype;
 	private String ssn;
 	private String area;
+	private String orgid;
 	
 	public String getArea() {
 		return area;
@@ -229,6 +230,12 @@ public class MemberDTO {
 	}
 	public void setMasetPaperid(String masetPaperid) {
 		this.masetPaperid = masetPaperid;
+	}
+	public String getOrgid() {
+		return orgid;
+	}
+	public void setOrgid(String orgid) {
+		this.orgid = orgid;
 	}
 
 }

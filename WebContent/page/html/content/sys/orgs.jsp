@@ -148,7 +148,7 @@
 </div>
 
 <script type="text/javascript">
-var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/publicSetup.js", null ]
+var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null ]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
 			var setting = {
@@ -171,9 +171,6 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					success : function(data) {
 						var zNodes = data.districts;
 						$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-					},
-					error : function(XMLHttpRequest, textStatus, errorThrown) {
-						alert(errorThrown);
 					}
 				});
 		});
@@ -204,9 +201,6 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 				success : function(data) {
 					var zNodes = data.orgs;
 					$.fn.zTree.init($("#treeDemo_org"), setting, zNodes);
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert(errorThrown);
 				}
 		});
 	};

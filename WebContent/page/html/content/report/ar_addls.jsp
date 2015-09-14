@@ -8,6 +8,10 @@
 			+ path + "/";
 	UserDTO user =(UserDTO) session.getAttribute("user");
 	Long orgId=user.getOrgId();
+	String uaccout=user.getUaccount();
+	if("admin".equals(uaccout)){
+		uaccout=orgId+"";
+	}
 %>
 <title>吉林市信息共享平台</title>
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
@@ -23,6 +27,7 @@
 				<form class="form-inline" id="searchform">
 					<label>身份证号码</label>
 					<input type="text" class="input-large" placeholder="身份证号码" name="memberDTO.paperid"/>
+					<input type="hidden" name="memberDTO.orgid" value="<%=uaccout %>" />
 					<button type="button" class="btn btn-info btn-sm" onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
 					</button>
@@ -140,9 +145,10 @@
 				datatype : "json",
 				postData : formData,
 				height : 321,
-				colNames : ['','姓名','身份证号码','家庭关系','户主姓名','户主身份证号码','人员状态','标识','操作'],
+				colNames : ['','家庭编号','姓名','身份证号码','家庭关系','户主姓名','户主身份证号码','人员状态','标识','操作'],
 				colModel : [
 					{name:'piId',formatter:"actionFormatter",hidden:true},
+					{name:'col1',formatter:"actionFormatter"},
 					{name:'pname',formatter:"actionFormatter"},
 				    {name:'idno',formatter:"actionFormatter"},
 					{name:'col10',formatter:"actionFormatter"},

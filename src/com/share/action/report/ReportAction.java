@@ -200,9 +200,11 @@ public class ReportAction extends ActionSupport {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String queryPersonals() {
+		//System.out.println(memberDTO.getOrgid());
 		Pager pager = new Pager(page, rows, new Long(0));
 		List<Object> param = new ArrayList<Object>();
-		String jwhere = "";
+		String jwhere = " and p.col1 like ?";
+		param.add(this.memberDTO.getOrgid()+"%");
 		if (this.memberDTO.getPaperid() == null
 				|| "".equals(this.memberDTO.getPaperid())) {
 		} else {

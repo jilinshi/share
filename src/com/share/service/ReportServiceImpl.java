@@ -232,7 +232,7 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<Personalinfo> queryPersonalinfoAll(Pager pager,
 			List<Object> param, String jwhere) {
-		String hql = "select p from Personalinfo p where 1=1 " + jwhere + " order by p.masterid";
+		String hql = "select p from Personalinfo p where 1=1 " + jwhere + " order by p.col1, p.masterid";
 		String hqlc = "select count(*) as cnt from Personalinfo p where 1=1 " + jwhere + " order by p.masterid";
 		Long cnt = personalinfoDAO.count(hqlc, param);
 		pager.setRecords(cnt);

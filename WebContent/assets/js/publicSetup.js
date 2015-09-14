@@ -1,8 +1,8 @@
 //全局ajax控制，用于session超时 无权限时 提示  
 $.ajaxSetup({  
-    cache: false, //close AJAX cache  
+    //cache: false, //close AJAX cache  
     contentType:"application/x-www-form-urlencoded;charset=utf-8",
-    timeout : 1000, //超时时间设置，单位毫秒
+    timeout : 60000, //超时时间设置，单位毫秒
     complete: function(XMLHttpRequest, textStatus) {
     	//"success","timeout", "error", "notmodified" 和 "parsererror"。
     	//alert(textStatus);

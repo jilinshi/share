@@ -209,6 +209,7 @@ public class SysAction extends ActionSupport {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String findDistrictList1(){
+		try{
 		String hql = " select sd from SysDistrict sd where 1=1 and sd.flag=? order by sd.districtsId ";
 		Object[] param = null;
 		param = new Object[1];
@@ -226,10 +227,14 @@ public class SysAction extends ActionSupport {
 			}
 			s.setName(e.getDistrictsNmae());
 			sl.add(s);
+			Map jsonMap = new HashMap();
+			jsonMap.put("districts", sl);
+			map = jsonMap;
 		}
-		Map jsonMap = new HashMap();
-		jsonMap.put("districts", sl);
-		map = jsonMap;
+		}catch(Exception e){
+			System.out.println(e);
+		}
+
 		return SUCCESS;
 	}
 	
