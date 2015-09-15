@@ -1,6 +1,5 @@
 package com.share.service;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,17 +15,21 @@ import org.springframework.stereotype.Service;
 import com.opensymphony.xwork2.ActionContext;
 import com.share.dao.BaseDAO;
 import com.share.dto.AttorneyrecordDTO;
+import com.share.dto.DistrictsDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.VJdOnnoDTO;
 import com.share.model.Attorneyrecord;
 import com.share.model.Personalinfo;
 import com.share.model.PersonalinfoL;
+import com.share.model.SysDistrict;
 import com.share.model.SysOrganization;
 import com.share.model.VCkburial;
 import com.share.model.VCkfund;
 import com.share.model.VCkhouseproperty;
 import com.share.model.VCkinsurance;
 import com.share.model.VCkvehicle;
+import com.share.model.VJdOnno;
 import com.share.util.IDCard;
 import com.share.util.Pager;
 
@@ -51,6 +54,12 @@ public class ReportServiceImpl implements ReportService {
 	private BaseDAO<SysOrganization> sysOrganizationDAO;
 	@Resource
 	private BaseDAO<Attorneyrecord> attorneyrecordDAO;
+	@Resource
+	private BaseDAO<SysDistrict> sysDistrictDAO;
+	@Resource
+	private BaseDAO<VJdOnno> vJdOnnoDAO;
+	@Resource
+	private BaseDAO<String> ss;
 
 	/*
 	 * (non-Javadoc)
@@ -96,6 +105,53 @@ public class ReportServiceImpl implements ReportService {
 			e.setOrgCode(s.getOrgCode());
 			e.setOrgName(s.getOrgName());
 			e.setParentId(s.getParentId());
+			resultlist.add(e);
+		}
+		return resultlist;
+	}
+	
+	@Override
+	public List<DistrictsDTO> findDistrictslist(long orgid) {
+		List<DistrictsDTO> resultlist = new ArrayList<DistrictsDTO>();
+		String hql = "select o from SysDistrict o where o.districtsId = ? or o.parentId = ? order by  o.districtsId";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = orgid+"";
+		param[1] = orgid+"";
+		List<SysDistrict> rs = sysDistrictDAO.find(hql, param);
+		for (SysDistrict s : rs) {
+			DistrictsDTO e = new DistrictsDTO();
+			e.setDistrictsId(s.getDistrictsId());
+			e.setCol1(s.getCol1());
+			e.setCol2(s.getCol2());
+			e.setCol3(s.getCol3());
+			e.setDistrictsCode(s.getDistrictsCode());
+			e.setDistrictsNmae(s.getDistrictsNmae());
+			e.setFlag(s.getFlag());
+			e.setFullname(s.getFullname());
+			e.setOrd(s.getOrd());
+			e.setParentId(s.getParentId());
+			resultlist.add(e);
+		}
+		return resultlist;
+	}
+	
+	@Override
+	public List<VJdOnnoDTO> findVJdOnnolist(long orgid) {
+		List<VJdOnnoDTO> resultlist = new ArrayList<VJdOnnoDTO>();
+		String hql = "select o from VJdOnno o where o.onNo like ? order by  o.onNo";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = orgid+"%";
+		List<VJdOnno> rs = vJdOnnoDAO.find(hql, param);
+		for (VJdOnno s : rs) {
+			VJdOnnoDTO e = new VJdOnnoDTO();
+			e.setOnNo(s.getOnNo());
+			e.setOnName(s.getOnName());
+			e.setOnId(s.getOnId());
+			e.setOnLevel(s.getOnLevel());
+			e.setOnFatherid(s.getOnFatherid());
+			e.setOnAllname(s.getOnAllname());
 			resultlist.add(e);
 		}
 		return resultlist;
@@ -308,5 +364,27 @@ public class ReportServiceImpl implements ReportService {
 		String hql = "update Personalinfo p set p.remark=? where p.piId=?";
 		u = personalinfoDAO.update(hql, param);
 		return u;
+	}
+	
+	@Override
+	public List<MemberDTO> findRemarklist(long orgid){
+		List<MemberDTO> resultlist = new ArrayList<MemberDTO>();
+		String hql = "select o.remark from Personalinfo o where o.col1 like ? group by  o.remark";
+		Object[] param = null;
+		param = new Object[1];
+		param[0] = orgid+"%";
+		List<String> rs = ss.find(hql, param);
+		for (String s : rs) {
+			MemberDTO e = new MemberDTO();
+			String remark = "";
+			if(s==null||"".equals(s)){
+			}else{
+				remark = s;
+			}
+			e.setRemarkid(remark);
+			e.setRemark(remark);
+			resultlist.add(e);
+		}
+		return resultlist;
 	}
 }

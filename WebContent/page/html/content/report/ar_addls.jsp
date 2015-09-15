@@ -14,6 +14,9 @@
 	}
 %>
 <title>吉林市信息共享平台</title>
+<meta http-equiv="pragma" content="no-cache"> 
+<meta http-equiv="cache-control" content="no-cache"> 
+<meta http-equiv="expires" content="0"> 
 <link rel="stylesheet" href="<%=basePath%>assets/css/jquery-ui.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/datepicker.css" />
 <link rel="stylesheet" href="<%=basePath%>assets/css/ui.jqgrid.css" />
@@ -25,8 +28,14 @@
 			<div class="widget-body">
 			<div class="widget-main">
 				<form class="form-inline" id="searchform">
+					<label for="form-field-select-hd1">机构</label>
+					<select style="width:200px;" class="chosen-select" id="form-field-select-hd1" name="memberDTO.onNo" data-placeholder="请选择 . . .">
+					</select>
 					<label>身份证号码</label>
 					<input type="text" class="input-large" placeholder="身份证号码" name="memberDTO.paperid"/>
+					<label>标识</label>
+					<select style="width:200px;" class="chosen-select" id="form-field-select-hd2" name="memberDTO.remark" data-placeholder="请选择 . . .">
+					</select>
 					<input type="hidden" name="memberDTO.orgid" value="<%=uaccout %>" />
 					<button type="button" class="btn btn-info btn-sm" onclick="javascript:onClik();">
 						<i class="ace-icon fa fa-search bigger-110"></i>查询
@@ -48,7 +57,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="onNo"> 所在辖区 </label>
 						<div class="col-sm-9">
-							<select style="width:200px;" class="chosen-select form-control" id="onNo" name="memberDTO.onNo" data-placeholder="请选择 . . ."></select>
+							<select style="width:250px;" class="chosen-select form-control" id="onNo" name="memberDTO.onNo" data-placeholder="请选择 . . ."></select>
 						</div>
 					</div>
 					<div class="form-group">
@@ -66,7 +75,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="relmaster"> 本人家庭关系 </label>
 						<div class="col-sm-9">
-							<select style="width:200px;" class="chosen-select form-control" id="relmaster" name="memberDTO.relmaster" data-placeholder="请选择 . . ."></select>
+							<select style="width:250px;" class="chosen-select form-control" id="relmaster" name="memberDTO.relmaster" data-placeholder="请选择 . . ."></select>
 						</div>
 					</div>
 					<div class="form-group">
@@ -119,9 +128,11 @@
 <script src="<%=basePath%>assets/js/ace/elements.scroller.js"></script>
 <script src="<%=basePath%>assets/js/jquery.inputlimiter.1.3.1.js"></script>
 <script type="text/javascript">
-	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js","<%=basePath%>assets/js/publicSetup.js", null]
+	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
+			chosen_onno();
+			chosen_remark();
 			var grid_selector = "#grid-table";
 			var pager_selector = "#grid-pager";
 			var formData = $("#searchform").serializeObject();
@@ -251,7 +262,7 @@
 	};
 	
 	function add(){
-		 var orgid = <%=orgId%>;
+		 var orgid = <%=uaccout%>;
 		 chosen_Init('2');
 		 chosen_onNo(orgid);
 		 var dialog = $("#dialog-confirm").removeClass('hide').dialog({
@@ -386,16 +397,16 @@
 		$.ajax({
 			type : "post",
 			dataType : "json",
-			url : "<%=basePath%>page/html/content/common/getOrgs.action",
+			url : "<%=basePath%>page/html/content/report/getVJdOnnoList.action",
 			data: {orgId:orgid},
 			async : true,
 			success : function(data) {
-			    var o = data.districts;
+			    var o = data.vjdonnos;
 				var len = o.length;
 				var a = " ";
 				 for(var i=0; i<len; i++){
-					var value = o[i].districtsCode;
-					var text = o[i].districtsCode+"-"+o[i].districtsNmae;
+					var value = o[i].onNo;
+					var text = o[i].onNo+"-"+o[i].onName;
 					a = a + "<option value='"+ value +"'>"+ text +"</option>";
 				}
 				$("#onNo").append("<option value=' '> </option>").append(a);
@@ -496,7 +507,49 @@
 			
 		});
 	};
-	
+	function chosen_onno(){
+		//$("#form-field-select-hd1").trigger("liszt:updated"); 
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/report/getVJdOnnoList.action",
+			success : function(data) {
+				var vjdonnos = data.vjdonnos;
+				var len = vjdonnos.length;
+				var a = " ";
+				for(var i=0; i<len; i++){
+					var value = vjdonnos[i].onNo;
+					var text = vjdonnos[i].onName;
+					a = a + "<option value='"+ value +"'>"+ text +"</option>";
+				}
+				
+				$("#form-field-select-hd1").append("<option value=' '> </option>").append(a);
+				$("#form-field-select-hd1").chosen({allow_single_deselect:true});
+				
+			}
+		});
+	};
+	function chosen_remark(){
+		$.ajax({
+			type : "post",
+			dataType : "json",
+			url : "<%=basePath%>page/html/content/report/getRemarkList.action",
+			success : function(data) {
+				var remarks = data.remarks;
+				var len = remarks.length;
+				var a = " ";
+				for(var i=0; i<len; i++){
+					var value = remarks[i].remarkid;
+					var text = remarks[i].remark;
+					a = a + "<option value='"+ value +"'>"+ text +"</option>";
+				}
+				
+				$("#form-field-select-hd2").append("<option value=' '> </option>").append(a);
+				$("#form-field-select-hd2").chosen({allow_single_deselect:true});
+				
+			}
+		});
+	};
 	function returnLogin(){
 		window.open('<%=basePath%>login.jsp', '吉林市社会救助局信息共享平台');
 		window.open('', '_self');

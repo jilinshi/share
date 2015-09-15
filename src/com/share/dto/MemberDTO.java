@@ -38,6 +38,8 @@ public class MemberDTO {
 	private String ssn;
 	private String area;
 	private String orgid;
+	private String remark;
+	private String remarkid;
 	
 	public String getArea() {
 		return area;
@@ -236,6 +238,18 @@ public class MemberDTO {
 	}
 	public void setOrgid(String orgid) {
 		this.orgid = orgid;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public String getRemarkid() {
+		return remarkid;
+	}
+	public void setRemarkid(String remarkid) {
+		this.remarkid = remarkid;
 	}
 
 }

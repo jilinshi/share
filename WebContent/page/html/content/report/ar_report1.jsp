@@ -326,14 +326,14 @@
 		$.ajax({
 			type : "post",
 			dataType : "json",
-			url : "<%=basePath%>page/html/content/report/getOrgList.action",
+			url : "<%=basePath%>page/html/content/report/getVJdOnnoList.action",
 			success : function(data) {
-				var orgs = data.orgs;
-				var len = orgs.length;
+				var vjdonnos = data.vjdonnos;
+				var len = vjdonnos.length;
 				var a = " ";
 				for(var i=0; i<len; i++){
-					var value = orgs[i].orgId;
-					var text = orgs[i].orgName;
+					var value = vjdonnos[i].onNo;
+					var text = vjdonnos[i].onName;
 					a = a + "<option value='"+ value +"'>"+ text +"</option>";
 				}
 				$("#form-field-select").append("<option value=' '> </option>").append(a);

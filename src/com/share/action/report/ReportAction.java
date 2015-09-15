@@ -18,17 +18,18 @@ import org.apache.struts2.ServletActionContext;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.mongodb.DBObject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.share.dto.AttorneyrecordDTO;
+import com.share.dto.DistrictsDTO;
 import com.share.dto.FileDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
 import com.share.dto.UserDTO;
+import com.share.dto.VJdOnnoDTO;
 import com.share.model.Personalinfo;
 import com.share.mongodb.MongoDBManager;
 import com.share.service.ReportService;
@@ -52,6 +53,9 @@ public class ReportAction extends ActionSupport {
 	private String rows;
 	private MemberDTO memberDTO;
 	private List<OrganizationDTO> orgs;
+	private List<DistrictsDTO> districts;
+	private List<VJdOnnoDTO> vjdonnos;
+	private List<MemberDTO> ms;
 	private String result;
 	private String familyno;
 	private String masterid;
@@ -104,10 +108,66 @@ public class ReportAction extends ActionSupport {
 	public String getOrgList() {
 		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
 				.get("user");
-		long orgid = new Long(user.getOrgId());
+		long orgid = 0;
+		if("admin".equals(user.getUaccount())){
+			orgid = new Long("2202");
+		}else{
+			orgid = new Long(user.getUaccount());
+		}
 		orgs = reportService.findOrganlist(orgid);
 		Map jsonMap = new HashMap();
 		jsonMap.put("orgs", orgs);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getDistrictsList(){
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+				.get("user");
+		long orgid = 0;
+		if("admin".equals(user.getUaccount())){
+			orgid = new Long("2202");
+		}else{
+			orgid = new Long(user.getUaccount());
+		}
+		districts = reportService.findDistrictslist(orgid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("districts", districts);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getVJdOnnoList(){
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+						.get("user");
+		long orgid = 0;
+		if("admin".equals(user.getUaccount())){
+			orgid = new Long("2202");
+		}else{
+			orgid = new Long(user.getUaccount());
+		}
+		vjdonnos = reportService.findVJdOnnolist(orgid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("vjdonnos", vjdonnos);
+		map = jsonMap;
+		return SUCCESS;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getRemarkList(){
+		UserDTO user = (UserDTO) ActionContext.getContext().getSession()
+						.get("user");
+		long orgid = 0;
+		if("admin".equals(user.getUaccount())){
+			orgid = new Long("2202");
+		}else{
+			orgid = new Long(user.getUaccount());
+		}
+		ms = reportService.findRemarklist(orgid);
+		Map jsonMap = new HashMap();
+		jsonMap.put("remarks", ms);
 		map = jsonMap;
 		return SUCCESS;
 	}
@@ -203,13 +263,29 @@ public class ReportAction extends ActionSupport {
 		//System.out.println(memberDTO.getOrgid());
 		Pager pager = new Pager(page, rows, new Long(0));
 		List<Object> param = new ArrayList<Object>();
-		String jwhere = " and p.col1 like ?";
-		param.add(this.memberDTO.getOrgid()+"%");
+		String jwhere = "";
+		
+		if (this.memberDTO.getOnNo() == null
+				|| "".equals(this.memberDTO.getOnNo().trim())) {
+			param.add(this.memberDTO.getOrgid()+"%");
+			jwhere = jwhere + " and p.col1 like ?";
+		} else {
+			param.add(this.memberDTO.getOnNo() + "%");
+			jwhere = jwhere + " and p.col1 like ? ";
+		}
+		
 		if (this.memberDTO.getPaperid() == null
 				|| "".equals(this.memberDTO.getPaperid())) {
 		} else {
 			param.add(this.memberDTO.getPaperid());
 			jwhere = jwhere + " and p.idno=? ";
+		}
+		
+		if (this.memberDTO.getRemark() == null
+				|| "".equals(this.memberDTO.getRemark().trim())) {
+		} else {
+			param.add(this.memberDTO.getRemark());
+			jwhere = jwhere + " and p.remark=? ";
 		}
 		List<Personalinfo> rs = reportService.queryPersonalinfoAll(pager,
 				param, jwhere);
@@ -407,6 +483,30 @@ public class ReportAction extends ActionSupport {
 
 	public void setPiId(String piId) {
 		this.piId = piId;
+	}
+
+	public List<DistrictsDTO> getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(List<DistrictsDTO> districts) {
+		this.districts = districts;
+	}
+
+	public List<VJdOnnoDTO> getVjdonnos() {
+		return vjdonnos;
+	}
+
+	public void setVjdonnos(List<VJdOnnoDTO> vjdonnos) {
+		this.vjdonnos = vjdonnos;
+	}
+
+	public List<MemberDTO> getMs() {
+		return ms;
+	}
+
+	public void setMs(List<MemberDTO> ms) {
+		this.ms = ms;
 	}
 
 }

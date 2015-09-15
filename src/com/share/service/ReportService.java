@@ -3,8 +3,10 @@ package com.share.service;
 import java.util.List;
 
 import com.share.dto.AttorneyrecordDTO;
+import com.share.dto.DistrictsDTO;
 import com.share.dto.MemberDTO;
 import com.share.dto.OrganizationDTO;
+import com.share.dto.VJdOnnoDTO;
 import com.share.model.Personalinfo;
 import com.share.model.VCkburial;
 import com.share.model.VCkfund;
@@ -36,4 +38,7 @@ public interface ReportService {
 	public void savePersonalinfo(MemberDTO m);
 	public List<MemberDTO> queryPersonByCard(String idcard);
 	public int updatePersonalById(String piId);
+	public List<DistrictsDTO> findDistrictslist(long orgid);
+	public List<VJdOnnoDTO> findVJdOnnolist(long orgid);
+	public List<MemberDTO> findRemarklist(long orgid);
 }

@@ -49,6 +49,54 @@
 				</param>
 			</result>
 		</action>
+		<action name="getDistrictsList" method="getDistrictsList" class="reportAction">
+			<result type="json">
+				<param name="root">
+					map
+				</param>
+				<param name="ignoreHierarchy">
+					false
+				</param>
+				<param name="noCache">
+					true
+				</param>
+				<param name="excludeNullProperties">
+					true
+				</param>
+			</result>
+		</action>
+		<action name="getVJdOnnoList" method="getVJdOnnoList" class="reportAction">
+			<result type="json">
+				<param name="root">
+					map
+				</param>
+				<param name="ignoreHierarchy">
+					false
+				</param>
+				<param name="noCache">
+					true
+				</param>
+				<param name="excludeNullProperties">
+					true
+				</param>
+			</result>
+		</action>
+		<action name="getRemarkList" method="getRemarkList" class="reportAction">
+			<result type="json">
+				<param name="root">
+					map
+				</param>
+				<param name="ignoreHierarchy">
+					false
+				</param>
+				<param name="noCache">
+					true
+				</param>
+				<param name="excludeNullProperties">
+					true
+				</param>
+			</result>
+		</action>
 		<action name="upload" method="upload" class="reportAction">
 			<result name="success">
 				/page/common/result.jsp
