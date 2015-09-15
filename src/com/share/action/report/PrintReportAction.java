@@ -28,6 +28,8 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.struts2.ServletActionContext;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.mongodb.BasicDBObject;
@@ -52,6 +54,7 @@ import com.share.service.ReportService;
 import com.share.util.Pager;
 
 @Controller
+@Scope(BeanDefinition.SCOPE_PROTOTYPE) 
 public class PrintReportAction extends ActionSupport {
 
 	/**

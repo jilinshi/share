@@ -131,7 +131,7 @@
 	var scripts = [null,"<%=basePath%>assets/js/date-time/bootstrap-datepicker.js","<%=basePath%>assets/js/jqGrid/jquery.jqGrid.src.js","<%=basePath%>assets/js/jqGrid/i18n/grid.locale-cn.js", null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 		jQuery(function($) {
-			chosen_onno();
+			chosen_on();
 			chosen_remark();
 			var grid_selector = "#grid-table";
 			var pager_selector = "#grid-pager";
@@ -258,6 +258,7 @@
 	
 	function onClik(){
         var jsonuserinfo = $('#searchform').serializeObject();  
+        jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
         jQuery("#grid-table").setGridParam({postData : jsonuserinfo,page : 1}).trigger("reloadGrid");
 	};
 	
@@ -507,8 +508,9 @@
 			
 		});
 	};
-	function chosen_onno(){
-		//$("#form-field-select-hd1").trigger("liszt:updated"); 
+	function chosen_on(){
+    	$('#form-field-select-hd1 option[value=" "]').attr("selected","selected");
+    	$("#form-field-select-hd1").trigger("chosen:updated");
 		$.ajax({
 			type : "post",
 			dataType : "json",

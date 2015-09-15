@@ -19,6 +19,8 @@ import javax.annotation.Resource;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -31,6 +33,7 @@ import com.share.service.ImpService;
 import com.share.util.Pager;
 
 @Controller
+@Scope(BeanDefinition.SCOPE_PROTOTYPE) 
 public class ImpAction extends ActionSupport {
 
 	private static Logger log = LoggerFactory.getLogger(ImpAction.class);

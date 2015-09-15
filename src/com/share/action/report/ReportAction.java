@@ -18,6 +18,8 @@ import org.apache.struts2.ServletActionContext;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.mongodb.DBObject;
@@ -37,6 +39,7 @@ import com.share.util.IDCard;
 import com.share.util.Pager;
 
 @Controller
+@Scope(BeanDefinition.SCOPE_PROTOTYPE) 
 public class ReportAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")

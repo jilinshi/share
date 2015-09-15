@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -32,6 +34,7 @@ import com.share.util.XmlExcel;
 
 @Controller
 @SuppressWarnings("all")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE) 
 public class DownloadExcelAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
