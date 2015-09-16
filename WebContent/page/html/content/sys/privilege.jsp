@@ -321,7 +321,6 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 					var zNodes = data.rs;
 					$.fn.zTree.init($("#treeDemo_menus"), setting, zNodes);
 					var treeObj = $.fn.zTree.getZTreeObj("treeDemo_menus");
-					alert(ids);
 					for (var i=0; i<zNodes.length;  i++) {
 						for(var j=0; j<ids.length; j++){
 							if(ids[j]==zNodes[i].id){
