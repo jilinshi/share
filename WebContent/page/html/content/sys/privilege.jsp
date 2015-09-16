@@ -203,7 +203,7 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 		$("#tasks_menus").children().filter('li').remove();
 		/* $("#tasks_function").children().filter('li').remove();
 		$("#tasks_file").children().filter('li').remove(); */
-		if(tabid=='tab1'){
+		if(tabid=='tab1'){  
 			InitRole(roleids);
 			InitPrivilege();
 		}else if(tabid=='tab2'){
@@ -302,7 +302,8 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 			 },
 			 data: {
 				simpleData: {
-					enable: true
+					enable: true,
+					checked: true
 				}
 			 },
 			 callback: {
@@ -315,15 +316,19 @@ var scripts = [null,"<%=basePath %>assets/ztree/js/jquery.ztree.core-3.5.js","<%
 	            type: "post", 
 	            url: "<%=basePath%>page/html/content/sys/queryMenus.action",
 				dataType : "json",
+				async: false,//同步
 				success : function(data) {
 					var zNodes = data.rs;
 					$.fn.zTree.init($("#treeDemo_menus"), setting, zNodes);
 					var treeObj = $.fn.zTree.getZTreeObj("treeDemo_menus");
+					alert(ids);
 					for (var i=0; i<zNodes.length;  i++) {
 						for(var j=0; j<ids.length; j++){
 							if(ids[j]==zNodes[i].id){
-								var node = treeObj.getNodeByTId(zNodes[i].id);
-								treeObj.checkNode(node, true, false);
+								var node = treeObj.getNodeByTId(ids[j]);
+								//treeObj.checkNode(node, true, false);
+								node.checked = true; 
+								treeObj.updateNode(node);
 
 							}
 						}
