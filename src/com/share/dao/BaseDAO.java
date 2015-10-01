@@ -241,4 +241,6 @@ public interface BaseDAO<T> {
 	 * @param list
 	 */
 	public void saveBatch(List<T> list);
+	
+	public void executeJDBCSql(String jdbcsql);
 }

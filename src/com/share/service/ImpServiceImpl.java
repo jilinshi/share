@@ -646,6 +646,15 @@ public class ImpServiceImpl<T> implements ImpService {
 				}
 			}
 			resInsuranceDAO.saveBatch(r);
+			resInsuranceDAO.executeHql("delete CkInsurance");
+			String jdbcsql = "insert into ck_insurance  (in_id, col1, col2, col3, col4, "
+					+ " col5, col6, col7, col8, col9, comp, fno, idno, oo1, oo2, "
+					+ " oo3, pname, remark, sbidno, sbname, subject, txmoney, txtime, info_id) "
+					+ " select v.nextval,   t.COL1,   t.COL2,   t.COL3, "
+					+ " t.COL4,   t.COL5,   t.COL6,   t.COL7,   t.COL8, "
+					+ " t.COL9,   t.danwei,   t.COL1,   t.IDNO,   t.o1, "
+					+ " t.o2,   t.o3,  t.PNAME,t.REMARK,t.idno1,t.pname1,t.inno,t.lq_money,t.lq_begin,t.info_id from pp_insurance t where t.file_id is not null";
+			resInsuranceDAO.executeJDBCSql(jdbcsql);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

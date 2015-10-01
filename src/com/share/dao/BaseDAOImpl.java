@@ -294,4 +294,10 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 		}
 
 	}
+	
+	@Override
+	public void executeJDBCSql(String jdbcsql) {
+		SQLQuery sq=this.getCurrentSession().createSQLQuery(jdbcsql);
+		sq.executeUpdate();
+	}
 }

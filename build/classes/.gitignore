@@ -1,1 +1,11 @@
 /com/
+/db.properties
+/ehcache.xml
+/hibernate.cfg.xml
+/logback.xml
+/mchange-commons.properties
+/mchange-log.properties
+/proxool-conf.xml
+/struts.xml
+/applicationContext.xml
+/c3p0.properties
